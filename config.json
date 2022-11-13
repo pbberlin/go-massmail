@@ -1,0 +1,83 @@
+{
+    "loc": "Europe/Berlin",
+    "relay_horsts": {
+      "email.zew.de": {
+        "HostNamePort": "email.zew.de:25",
+        "Username": ""
+      },
+      "hermes.zew-private.de": {
+        "HostNamePort": "hermes.zew-private.de:25",
+        "Username": ""
+      },
+      "hermes.zew.de": {
+        "HostNamePort": "hermes.zew.de:25",
+        "Username": ""
+      },
+      "zimbra.zew.de": {
+        "HostNamePort": "zimbra.zew.de:25",
+        "Username": "fmt-relay"
+      }
+    },
+    "waves": {
+      "fmt": [
+        {
+          "year": 2022,
+          "month": 11,
+          "closing_date_preliminary": "2022-11-11T17:00:00-02:00",
+          "closing_date_last_due": "2022-11-14T17:00:00-02:00"
+        },
+        {
+          "year": 2022,
+          "month": 12,
+          "closing_date_preliminary": "2022-12-07T17:00:00-02:00",
+          "closing_date_last_due": "2022-12-10T17:00:00-02:00"
+        }
+      ]
+    },
+    "tasks": {
+      "fmt": [
+        {
+          "name": "invitation",
+          "time": "0001-01-01T00:00:00Z",
+          "relay_host": "zimbra.zew.de"
+        },
+        {
+          "name": "reminder",
+          "time": "0001-01-01T00:00:00Z",
+          "relay_host": "zimbra.zew.de"
+        },
+        {
+          "name": "results",
+          "time": "2022-11-13T10:00:00-02:00",
+          "attachments": [
+            {
+              "Language": "de",
+              "Label": "ZEW-FMT-Datenblatt-%v-%02v.pdf",
+              "Filename": "tabellen/tab.pdf"
+            },
+            {
+              "Language": "de",
+              "Label": "ZEW-FMT-Pressemitteilung-%v-%02v.pdf",
+              "Filename": "pressemitteilungen/pressemitteilung-de.pdf"
+            },
+            {
+              "Language": "de",
+              "Label": "ZEW-Index-Press-Release-%v-%02v.pdf",
+              "Filename": "pressemitteilungen/pressemitteilung-en.pdf"
+            },
+            {
+              "Language": "en",
+              "Label": "ZEW-Index-Data-Table.pdf",
+              "Filename": "tabellen/tab-en.pdf"
+            },
+            {
+              "Language": "en",
+              "Label": "ZEW-Index-Press-Release-%v-%02v.pdf",
+              "Filename": "pressemitteilungen/pressemitteilung-en.pdf"
+            }
+          ],
+          "relay_host": "zimbra.zew.de"
+        }
+      ]
+    }
+  }

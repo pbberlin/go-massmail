@@ -1,0 +1,8 @@
+github.com/gocarina/gocsv v0.0.0-20221105105431-c8ef78125b99 h1:qNAaZUnCulf2xIQc7rM6F3uGYr80h40rtilsVKyAHoM=
+github.com/gocarina/gocsv v0.0.0-20221105105431-c8ef78125b99/go.mod h1:5YoVOkjYAQumqlV356Hj3xeYh4BdZuLE0/nRkf2NKkI=
+github.com/zew/go-mail v0.0.0-20221108140513-950596073a92 h1:72dFoZzUKTwhz9EkAnLQx+lttJ6VI+fLvgU7zW0Kvsc=
+github.com/zew/go-mail v0.0.0-20221108140513-950596073a92/go.mod h1:2FrRtYDhiKGhv7Y/++N+ONKt7FJbJd4rYcusdJkheX8=
+github.com/zew/go-mail v0.0.0-20221113135452-c496ada66ac2 h1:CigAXJk5TzMqMidyEIfD0ZLWUupF/j5JQqxZOSq29sk=
+github.com/zew/go-mail v0.0.0-20221113135452-c496ada66ac2/go.mod h1:2FrRtYDhiKGhv7Y/++N+ONKt7FJbJd4rYcusdJkheX8=
+github.com/zew/go-mail v0.2.3 h1:V5LI9kxrFdtETlx4DmzgCNqVEi+7L0stKlEGtwgIxVA=
+github.com/zew/go-mail v0.2.3/go.mod h1:2FrRtYDhiKGhv7Y/++N+ONKt7FJbJd4rYcusdJkheX8=
