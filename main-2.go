@@ -17,11 +17,12 @@ import (
 )
 
 type Recipient struct {
-	Email    string `csv:"email"`
-	Sex      int    `csv:"sex"`
-	Title    string `csv:"title"`
-	Lastname string `csv:"lastname"`
-	NoMail   string `csv:"!Mail !Call"`
+	Email       string `csv:"email"`
+	Sex         int    `csv:"sex"`
+	Title       string `csv:"title"`
+	Lastname    string `csv:"lastname"`
+	NoMail      string `csv:"!Mail !Call"`
+	SourceTable string `csv:"src_table"`
 
 	Link     template.HTML `csv:"link"` // avoid escaping
 	Language string        `csv:"lang"`
@@ -66,29 +67,36 @@ func formatDate(dt time.Time, lang string) string {
 }
 
 func (r *Recipient) SetDerived(wv WaveT) {
-	if r.Language == "de" {
-		if r.Sex == 1 {
-			r.Anrede = "Sehr geehrter Herr "
+
+	if r.SourceTable == "" {
+
+		// => r.SourceTable NOT EQUAL 'mailadresse'
+
+		if r.Language == "de" {
+			if r.Sex == 1 {
+				r.Anrede = "Sehr geehrter Herr "
+			}
+			if r.Sex == 2 {
+				r.Anrede = "Sehr geehrte Frau "
+			}
+			if r.Title != "" {
+				r.Anrede += r.Title + " "
+			}
+			r.Anrede += r.Lastname
 		}
-		if r.Sex == 2 {
-			r.Anrede = "Sehr geehrte Frau "
+		if r.Language == "en" {
+			if r.Sex == 1 {
+				r.Anrede = "Dear Mr. "
+			}
+			if r.Sex == 2 {
+				r.Anrede = "Dear Ms. "
+			}
+			if r.Title != "" {
+				r.Anrede = "Dear " + r.Title + " "
+			}
+			r.Anrede += r.Lastname
 		}
-		if r.Title != "" {
-			r.Anrede += r.Title + " "
-		}
-		r.Anrede += r.Lastname
-	}
-	if r.Language == "en" {
-		if r.Sex == 1 {
-			r.Anrede = "Dear Mr. "
-		}
-		if r.Sex == 2 {
-			r.Anrede = "Dear Ms. "
-		}
-		if r.Title != "" {
-			r.Anrede = "Dear " + r.Title + " "
-		}
-		r.Anrede += r.Lastname
+
 	}
 
 	// survey identifier
@@ -161,6 +169,10 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, task TaskT) erro
 	m.From.Name = "Finanzmarkttest"
 	m.From.Address = "noreply@zew.de"
 	m.To = []string{rec.Email}
+
+	if rec.Email == "" || !strings.Contains(rec.Email, "@") {
+		return fmt.Errorf("singleEmail email %v is suspect", rec.Email)
+	}
 
 	m.ReplyTo = "finanzmarkttest@zew.de"
 	// return-path is a hidden email header
@@ -239,6 +251,9 @@ func ProcessCSV() {
 	project, wave, task := getProjectTask()
 
 	fn := fmt.Sprintf("./csv/%v-%v.csv", project, task.Name)
+	if operationMode != "prod" {
+		fn = fmt.Sprintf("./csv/%v-%v.csv", "testproject", "testtask")
+	}
 	log.Printf("using filename %v\n", fn)
 
 	inFile, err := os.OpenFile(
@@ -289,6 +304,13 @@ func ProcessCSV() {
 		}
 	}
 
+	fmt.Print("\n\n\tcontinue in 4 secs - cancel with CTRL+C\n\t")
+	for i := 0; i < 4*5; i++ {
+		fmt.Print(".")
+		time.Sleep(time.Second / 4)
+	}
+	fmt.Print("\n")
+
 	// back to start of file
 	if _, err := inFile.Seek(0, 0); err != nil {
 		log.Print(err)
@@ -307,7 +329,7 @@ func ProcessCSV() {
 			log.Printf("  skipping 'noMail'")
 			continue
 		}
-		if true {
+		if false {
 			err := singleEmail("prod", project, *rec, wave, task)
 			if err != nil {
 				log.Printf("error in prod run:\n\t%v", err)

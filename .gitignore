@@ -7,6 +7,8 @@
 *.exe
 *.exe~
 
+attachments/fmt/**
+
 tmp/*
 tmp*
 

@@ -58,22 +58,22 @@
             {
               "Language": "de",
               "Label": "ZEW-FMT-Pressemitteilung-%v-%02v.pdf",
-              "Filename": "pressemitteilungen/pressemitteilung-de.pdf"
+              "Filename": "pressemitteilungen/pressemitteilung_dt.pdf"
             },
             {
               "Language": "de",
               "Label": "ZEW-Index-Press-Release-%v-%02v.pdf",
-              "Filename": "pressemitteilungen/pressemitteilung-en.pdf"
+              "Filename": "pressemitteilungen/pressemitteilung_en.pdf"
             },
             {
               "Language": "en",
               "Label": "ZEW-Index-Data-Table.pdf",
-              "Filename": "tabellen/tab-en.pdf"
+              "Filename": "tabellen/tab-engl.pdf"
             },
             {
               "Language": "en",
               "Label": "ZEW-Index-Press-Release-%v-%02v.pdf",
-              "Filename": "pressemitteilungen/pressemitteilung-en.pdf"
+              "Filename": "pressemitteilungen/pressemitteilung_en.pdf"
             }
           ],
           "relay_host": "zimbra.zew.de"

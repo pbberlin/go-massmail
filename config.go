@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	"net/smtp"
@@ -10,7 +11,47 @@ import (
 	"time"
 )
 
+var operationMode string // test or prod
+
 var loc *time.Location // init in load config
+
+func init() {
+
+	writeExampleConfig()
+
+	// defining  string flag
+	// strFlag := flag.String("language", "Golang", "Golang is the awesome google language")
+	om := flag.String(
+		"mode",
+		"invalid-default", // default
+		"mode must be 'test' or 'prod' \n\tgo-massmail -mode=test", // can be one or two leading hyphens
+	)
+	flag.Parse()
+
+	operationMode = *om
+	if operationMode != "test" && operationMode != "prod" {
+		log.Fatalf("mode must be 'test' or 'prod', was %q\n\tgo-massmail -mode=test", operationMode)
+	}
+	log.Printf("\n\toperation mode is %q\n", operationMode)
+
+	// read prod config
+	bts2, err := os.ReadFile("config.json")
+	if err != nil {
+		log.Fatalf("could not read config\n\t%v", err)
+	}
+
+	err = json.Unmarshal(bts2, &cfg)
+	if err != nil {
+		log.Fatalf("could not unmarsch config\n\t%v", err)
+	}
+
+	loc, err = time.LoadLocation(cfg.Location)
+	if err != nil {
+		log.Printf("configured location %v failed; using UTC_-2\n\t%v", cfg.Location, err)
+		loc = time.FixedZone("UTC_-2", -2*60*60)
+	}
+
+}
 
 type RelayHorst struct {
 	HostNamePort string
@@ -145,22 +186,22 @@ func writeExampleConfig() {
 						{
 							Language: "de",
 							Label:    "ZEW-FMT-Pressemitteilung-%v-%02v.pdf",
-							Filename: "pressemitteilungen/pressemitteilung-de.pdf",
+							Filename: "pressemitteilungen/pressemitteilung_dt.pdf",
 						},
 						{
 							Language: "de",
 							Label:    "ZEW-Index-Press-Release-%v-%02v.pdf",
-							Filename: "pressemitteilungen/pressemitteilung-en.pdf",
+							Filename: "pressemitteilungen/pressemitteilung_en.pdf",
 						},
 						{
 							Language: "en",
 							Label:    "ZEW-Index-Data-Table.pdf",
-							Filename: "tabellen/tab-en.pdf",
+							Filename: "tabellen/tab-engl.pdf",
 						},
 						{
 							Language: "en",
 							Label:    "ZEW-Index-Press-Release-%v-%02v.pdf",
-							Filename: "pressemitteilungen/pressemitteilung-en.pdf",
+							Filename: "pressemitteilungen/pressemitteilung_en.pdf",
 						},
 					},
 					RelayHost: "zimbra.zew.de",
@@ -175,25 +216,3 @@ func writeExampleConfig() {
 }
 
 var cfg = configT{}
-
-func init() {
-
-	writeExampleConfig()
-
-	bts2, err := os.ReadFile("config.json")
-	if err != nil {
-		log.Fatalf("could not read config\n\t%v", err)
-	}
-
-	err = json.Unmarshal(bts2, &cfg)
-	if err != nil {
-		log.Fatalf("could not unmarsch config\n\t%v", err)
-	}
-
-	loc, err = time.LoadLocation(cfg.Location)
-	if err != nil {
-		log.Printf("configured location %v failed; using UTC_-2\n\t%v", cfg.Location, err)
-		loc = time.FixedZone("UTC_-2", -2*60*60)
-	}
-
-}
