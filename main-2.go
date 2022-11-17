@@ -235,16 +235,25 @@ func dueTasks() (projects []string, waves []WaveT, tasks []TaskT) {
 	msg := &strings.Builder{}
 
 	nw := time.Now()
-	nw1Day := nw.AddDate(0, 0, 1)
 
 	for projKey, wvs := range cfg.Waves {
 		last := len(wvs) - 1
 		wv := wvs[last]
 		{
 			for _, tsk := range cfg.Tasks[projKey] {
-				pastDue := tsk.ExecutionTime.After(nw)
-				fresh := !tsk.ExecutionTime.After(nw1Day)
-				if pastDue && fresh {
+
+				if tsk.ExecutionTime.IsZero() {
+					// log.Printf("\t%v-%-22v has no exec time; skipping", projKey, tsk.Name)
+					continue
+				}
+
+				due := nw.After(tsk.ExecutionTime)
+
+				until := tsk.ExecutionTime.AddDate(0, 0, 1)
+				fresh := !nw.After(until)
+
+				// log.Printf("\t%v-%-22v   %v\n\t\t\t due %v      fresh %v", projKey, tsk.Name, tsk.Description, due, fresh)
+				if due && fresh {
 					projects = append(projects, projKey)
 					waves = append(waves, wv)
 					tasks = append(tasks, tsk)
@@ -258,7 +267,7 @@ func dueTasks() (projects []string, waves []WaveT, tasks []TaskT) {
 	if len(projects) > 0 {
 		log.Printf("%02v due tasks found:\n%v", len(projects), msg)
 	} else {
-		log.Printf("no due task found")
+		log.Printf("no due task(s) found")
 	}
 
 	return

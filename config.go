@@ -45,12 +45,14 @@ func init() {
 		log.Fatalf("could not unmarsch config\n\t%v", err)
 	}
 
+	// time zone
 	loc, err = time.LoadLocation(cfg.Location)
 	if err != nil {
 		log.Printf("configured location %v failed; using UTC_-2\n\t%v", cfg.Location, err)
 		loc = time.FixedZone("UTC_-2", -2*60*60)
 	}
 
+	// relay host integrity
 	if _, ok := cfg.RelayHorsts[cfg.DefaultHorst]; !ok {
 		log.Fatalf("cfg.DefaultHorst must be a key to RelayHorsts; %v", cfg.DefaultHorst)
 	}
@@ -60,6 +62,35 @@ func init() {
 				if _, ok := cfg.RelayHorsts[cfg.DefaultHorst]; !ok {
 					log.Fatalf("project %v -  task %v - RelayHost %v does not exist", project, t.Name, t.RelayHost)
 				}
+			}
+		}
+	}
+
+	// same as
+	for project, tasks := range cfg.Tasks {
+		for _, t := range tasks {
+			if t.SameAs != "" {
+
+			findSameAs:
+				for candProj, candTasks := range cfg.Tasks {
+					if candProj != project {
+						continue
+					}
+					for _, candT := range candTasks {
+						if candT.Name == t.SameAs {
+							log.Printf("%v-%v will use %v", project, t.Name, candT.Name)
+							// preserve name and description
+							nm := t.Name
+							de := t.Description
+							// clobber everything else from 'sameAs'
+							t = candT
+							t.Name = nm
+							t.Description = de
+							break findSameAs
+						}
+					}
+				}
+
 			}
 		}
 	}
@@ -126,13 +157,18 @@ type WaveT struct {
 
 // TaskT additional specific data for a wave
 type TaskT struct {
-	Name          string        `json:"name,omitempty"` // no hyphens
-	Description   string        `json:"description,omitempty"`
-	ExecutionTime time.Time     `json:"execution_time,omitempty"` // when should the task be started - for cron jobs and parallel tasks
-	Attachments   []AttachmentT `json:"attachments,omitempty"`
+	Name          string    `json:"name,omitempty"` // no hyphens
+	Description   string    `json:"description,omitempty"`
+	ExecutionTime time.Time `json:"execution_time,omitempty"` // when should the task be started - for cron jobs and parallel tasks
+
+	Attachments []AttachmentT `json:"attachments,omitempty"`
 	// distinct SMTP server for distinct tasks
 	// if empty, then default horst will be chosen
 	RelayHost string `json:"relay_host,omitempty"`
+	//
+	// use metadata from another task;
+	//   only difference is recipient list
+	SameAs string `json:"same_as,omitempty"`
 }
 
 type configT struct {
@@ -213,8 +249,8 @@ func writeExampleConfig() {
 					ExecutionTime: time.Date(2022, 11, 11, 11, 0, 0, 0, locPreliminary),
 				},
 				{
-					Name:          "results",
-					Description:   "Dienstags um 11",
+					Name:          "results1a",
+					Description:   "Dienstags um 11 - 270 Teilnehmer",
 					ExecutionTime: time.Date(2022, 11, 15, 11, 0, 0, 0, locPreliminary),
 					Attachments: []AttachmentT{
 						{
@@ -245,8 +281,13 @@ func writeExampleConfig() {
 					},
 				},
 				{
-					Name:          "results2",
-					Description:   "Finanzmarkt Report am Freitag - teilnehmer",
+					Name:        "results1b",
+					Description: "Dienstags um 11 - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
+					SameAs:      "results1a",
+				},
+				{
+					Name:          "results2a",
+					Description:   "Finanzmarkt Report am Freitag - 270 teilnehmer",
 					ExecutionTime: time.Date(2022, 11, 18, 11, 0, 0, 0, locPreliminary),
 					Attachments: []AttachmentT{
 						{
@@ -259,8 +300,8 @@ func writeExampleConfig() {
 					},
 				},
 				{
-					Name:          "results3",
-					Description:   "Finanzmarkt Report am Freitag - interessenten",
+					Name:          "results2b",
+					Description:   "Finanzmarkt Report am Freitag - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
 					ExecutionTime: time.Date(2022, 11, 18, 11, 0, 0, 0, locPreliminary),
 					Attachments: []AttachmentT{
 						{

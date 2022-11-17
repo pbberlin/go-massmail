@@ -56,8 +56,8 @@
           "execution_time": "2022-11-11T11:00:00-02:00"
         },
         {
-          "name": "results",
-          "description": "Dienstags um 11",
+          "name": "results1a",
+          "description": "Dienstags um 11 - 270 Teilnehmer",
           "execution_time": "2022-11-15T11:00:00-02:00",
           "attachments": [
             {
@@ -88,8 +88,14 @@
           ]
         },
         {
-          "name": "results2",
-          "description": "Finanzmarkt Report am Freitag - teilnehmer",
+          "name": "results1b",
+          "description": "Dienstags um 11 - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
+          "execution_time": "0001-01-01T00:00:00Z",
+          "same_as": "results1a"
+        },
+        {
+          "name": "results2a",
+          "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
           "execution_time": "2022-11-18T11:00:00-02:00",
           "attachments": [
             {
@@ -100,8 +106,8 @@
           ]
         },
         {
-          "name": "results3",
-          "description": "Finanzmarkt Report am Freitag - interessenten",
+          "name": "results2b",
+          "description": "Finanzmarkt Report am Freitag - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
           "execution_time": "2022-11-18T11:00:00-02:00",
           "attachments": [
             {
