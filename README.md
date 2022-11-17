@@ -21,7 +21,12 @@
 * Each task can be routed to a different SMTP server;  
   for internal or external recipients. 
 
+* Command line flag `mode=[test|prod]`  
+  for test and production runs
+
+
 * Sending via cron job
+
 
 ## Todo
 
@@ -29,4 +34,5 @@
 
 * Proper separation of function for dynamic template fields by project
 
-* Default to demo mode; command line flags for dry runs and production runs
+* Default to demo mode; 
+

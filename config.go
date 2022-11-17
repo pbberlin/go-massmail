@@ -17,13 +17,13 @@ var loc *time.Location // init in load config
 
 func init() {
 
+	log.SetFlags(log.Lshortfile | log.Ltime)
+
 	writeExampleConfig()
 
-	// defining  string flag
-	// strFlag := flag.String("language", "Golang", "Golang is the awesome google language")
 	om := flag.String(
-		"mode",
-		"invalid-default", // default
+		"mode",            // -mode=xxx
+		"invalid-default", // default value
 		"mode must be 'test' or 'prod' \n\tgo-massmail -mode=test", // can be one or two leading hyphens
 	)
 	flag.Parse()
@@ -49,6 +49,19 @@ func init() {
 	if err != nil {
 		log.Printf("configured location %v failed; using UTC_-2\n\t%v", cfg.Location, err)
 		loc = time.FixedZone("UTC_-2", -2*60*60)
+	}
+
+	if _, ok := cfg.RelayHorsts[cfg.DefaultHorst]; !ok {
+		log.Fatalf("cfg.DefaultHorst must be a key to RelayHorsts; %v", cfg.DefaultHorst)
+	}
+	for project, tasks := range cfg.Tasks {
+		for _, t := range tasks {
+			if t.RelayHost != "" {
+				if _, ok := cfg.RelayHorsts[cfg.DefaultHorst]; !ok {
+					log.Fatalf("project %v -  task %v - RelayHost %v does not exist", project, t.Name, t.RelayHost)
+				}
+			}
+		}
 	}
 
 }
@@ -95,6 +108,15 @@ func (rh RelayHorst) getAuth() (auth smtp.Auth) {
 	)
 }
 
+// AttachmentT represents a file attachment for an email
+type AttachmentT struct {
+	Label    string
+	Filename string
+	Language string // matching recipient language - recipient lists are multi-language
+}
+
+// WaveT - data that changes with each wave
+// but is not task specific
 type WaveT struct {
 	Year                   int        `json:"year,omitempty"`
 	Month                  time.Month `json:"month,omitempty"`
@@ -102,24 +124,23 @@ type WaveT struct {
 	ClosingDateLastDue     time.Time  `json:"closing_date_last_due,omitempty"`
 }
 
-type AttachmentT struct {
-	Language string
-	Label    string
-	Filename string
-}
-
+// TaskT additional specific data for a wave
 type TaskT struct {
-	Name        string        `json:"name,omitempty"`
-	Time        time.Time     `json:"time,omitempty"`
-	Attachments []AttachmentT `json:"attachments,omitempty"`
-	RelayHost   string        `json:"relay_host,omitempty"` // distinct SMTP server for distinct tasks
+	Name          string        `json:"name,omitempty"` // no hyphens
+	Description   string        `json:"description,omitempty"`
+	ExecutionTime time.Time     `json:"execution_time,omitempty"` // when should the task be started - for cron jobs and parallel tasks
+	Attachments   []AttachmentT `json:"attachments,omitempty"`
+	// distinct SMTP server for distinct tasks
+	// if empty, then default horst will be chosen
+	RelayHost string `json:"relay_host,omitempty"`
 }
 
 type configT struct {
-	Location    string                `json:"loc,omitempty"` // todo
-	RelayHorsts map[string]RelayHorst `json:"relay_horsts,omitempty"`
-	Waves       map[string][]WaveT    `json:"waves,omitempty"`
-	Tasks       map[string][]TaskT    `json:"tasks,omitempty"`
+	Location     string                `json:"loc,omitempty"` // todo
+	RelayHorsts  map[string]RelayHorst `json:"relay_horsts,omitempty"`
+	DefaultHorst string                `json:"default_horst,omitempty"` // one of relayhorsts
+	Waves        map[string][]WaveT    `json:"waves,omitempty"`
+	Tasks        map[string][]TaskT    `json:"tasks,omitempty"`
 }
 
 func writeExampleConfig() {
@@ -130,6 +151,8 @@ func writeExampleConfig() {
 	var example = configT{
 
 		Location: "Europe/Berlin",
+
+		DefaultHorst: "zimbra.zew.de",
 
 		RelayHorsts: map[string]RelayHorst{
 			"zimbra.zew.de": {
@@ -163,20 +186,36 @@ func writeExampleConfig() {
 					ClosingDateLastDue:     time.Date(2022, 12, 07+3, 17, 0, 0, 0, locPreliminary),
 				},
 			},
+			"pds": {
+				{
+					Year:  2023,
+					Month: 01,
+				},
+			},
 		},
 		Tasks: map[string][]TaskT{
+			"pds": {
+				{
+					Name:          "invitation",
+					Description:   "PDS invitation",
+					ExecutionTime: time.Date(2022, 11, 18, 11, 0, 0, 0, locPreliminary),
+				},
+			},
 			"fmt": {
 				{
-					Name:      "invitation",
-					RelayHost: "zimbra.zew.de",
+					Name:          "invitation",
+					Description:   "Montag",
+					ExecutionTime: time.Date(2022, 11, 07, 11, 0, 0, 0, locPreliminary),
 				},
 				{
-					Name:      "reminder",
-					RelayHost: "zimbra.zew.de",
+					Name:          "reminder",
+					Description:   "Freitag",
+					ExecutionTime: time.Date(2022, 11, 11, 11, 0, 0, 0, locPreliminary),
 				},
 				{
-					Name: "results",
-					Time: time.Date(2022, 11, 13, 10, 0, 0, 0, locPreliminary),
+					Name:          "results",
+					Description:   "Dienstags um 11",
+					ExecutionTime: time.Date(2022, 11, 15, 11, 0, 0, 0, locPreliminary),
 					Attachments: []AttachmentT{
 						{
 							Language: "de",
@@ -204,7 +243,34 @@ func writeExampleConfig() {
 							Filename: "pressemitteilungen/pressemitteilung_en.pdf",
 						},
 					},
-					RelayHost: "zimbra.zew.de",
+				},
+				{
+					Name:          "results2",
+					Description:   "Finanzmarkt Report am Freitag - teilnehmer",
+					ExecutionTime: time.Date(2022, 11, 18, 11, 0, 0, 0, locPreliminary),
+					Attachments: []AttachmentT{
+						{
+							Language: "de",
+							// should be named next month
+							// Label:    "ZEW-Finanzmarktreport-%v-%02v.pdf",
+							Label:    "ZEW-Finanzmarktreport.pdf",
+							Filename: "fmr/report.pdf",
+						},
+					},
+				},
+				{
+					Name:          "results3",
+					Description:   "Finanzmarkt Report am Freitag - interessenten",
+					ExecutionTime: time.Date(2022, 11, 18, 11, 0, 0, 0, locPreliminary),
+					Attachments: []AttachmentT{
+						{
+							Language: "de",
+							// should be named next month
+							// Label:    "ZEW-Finanzmarktreport-%v-%02v.pdf",
+							Label:    "ZEW-Finanzmarktreport.pdf",
+							Filename: "fmr/report.pdf",
+						},
+					},
 				},
 			},
 		},

@@ -155,8 +155,8 @@ func getText(rec Recipient, project, task, language string) (subject, body strin
 // task - invitation, reminder
 func singleEmail(mode, project string, rec Recipient, wv WaveT, task TaskT) error {
 
-	if mode != "prod" && mode != "dry" {
-		return fmt.Errorf("singleEmail mode must be 'prod' or 'dry'; is %v", mode)
+	if mode != "prod" && mode != "test" {
+		return fmt.Errorf("singleEmail mode must be 'prod' or 'test'; is %v", mode)
 	}
 
 	m := gm.NewMessagePlain(getText(rec, project, task.Name, rec.Language))
@@ -188,10 +188,9 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, task TaskT) erro
 
 		lbl := att.Label
 		// xx = tpl.ParseFiles("")
-		yr := wv.Year
-		mnth := int(wv.Month)
+		// if attachment label contains placeholders, replace with wave data
 		if strings.Contains(lbl, "%v") {
-			lbl = fmt.Sprintf(lbl, yr, mnth)
+			lbl = fmt.Sprintf(lbl, wv.Year, int(wv.Month))
 		}
 
 		pth := filepath.Join(".", "attachments", project, att.Filename)
@@ -203,22 +202,26 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, task TaskT) erro
 
 	m.AddCustomHeader("X-Mailer", "go-mail")
 
-	relayHost := cfg.RelayHorsts[task.RelayHost]
+	relayHostKey := cfg.DefaultHorst
+	if task.RelayHost != "" {
+		relayHostKey = task.RelayHost
+	}
+	rh := cfg.RelayHorsts[relayHostKey]
 
 	log.Printf("  sending %q via %s... to %v with %v attach",
-		mode, relayHost.HostNamePort, rec.Lastname, len(m.Attachments),
+		mode, rh.HostNamePort, rec.Lastname, len(m.Attachments),
 	)
 	if mode != "prod" {
 		return nil
 	}
 
 	err := gm.Send(
-		relayHost.HostNamePort,
-		relayHost.getAuth(),
+		rh.HostNamePort,
+		rh.getAuth(),
 		m,
 	)
 	if err != nil {
-		return fmt.Errorf(" error sending lib-email  %v:\n\t%w", relayHost, err)
+		return fmt.Errorf(" error sending lib-email  %v:\n\t%w", relayHostKey, err)
 	} else {
 		// log.Printf("  lib-email sent")
 		return nil
@@ -226,31 +229,55 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, task TaskT) erro
 
 }
 
-func getProjectTask() (string, WaveT, TaskT) {
+// dueTasks searches the config and returns due tasks
+func dueTasks() (projects []string, waves []WaveT, tasks []TaskT) {
+
+	msg := &strings.Builder{}
 
 	nw := time.Now()
-	nwYr := nw.Year()
-	nwMt := nw.Month()
+	nw1Day := nw.AddDate(0, 0, 1)
 
-	for projKey, waves := range cfg.Waves {
-		for _, wv := range waves {
-			if wv.Year == nwYr && wv.Month == nwMt {
-				last := len(cfg.Tasks[projKey]) - 1
-				tsk := cfg.Tasks[projKey][last]
-				return projKey, wv, tsk
+	for projKey, wvs := range cfg.Waves {
+		last := len(wvs) - 1
+		wv := wvs[last]
+		{
+			for _, tsk := range cfg.Tasks[projKey] {
+				pastDue := tsk.ExecutionTime.After(nw)
+				fresh := !tsk.ExecutionTime.After(nw1Day)
+				if pastDue && fresh {
+					projects = append(projects, projKey)
+					waves = append(waves, wv)
+					tasks = append(tasks, tsk)
+					fmt.Fprintf(msg, "\t%v-%-22v   %v\n", projKey, tsk.Name, tsk.Description)
+				}
 			}
 		}
 
 	}
 
-	return "", WaveT{}, TaskT{}
+	if len(projects) > 0 {
+		log.Printf("%02v due tasks found:\n%v", len(projects), msg)
+	} else {
+		log.Printf("no due task found")
+	}
+
+	return
 }
 
-func ProcessCSV() {
+func iterTasks() {
 
-	project, wave, task := getProjectTask()
+	projects, waves, tasks := dueTasks()
+	for idx, p := range projects {
+		processTask(p, waves[idx], tasks[idx])
+	}
 
-	fn := fmt.Sprintf("./csv/%v-%v.csv", project, task.Name)
+}
+
+func processTask(project string, wv WaveT, tsk TaskT) {
+
+	log.Printf("\n\t%v-%-22v   %v\n\t==================", project, tsk.Name, tsk.Description)
+
+	fn := fmt.Sprintf("./csv/%v-%v.csv", project, tsk.Name)
 	if operationMode != "prod" {
 		fn = fmt.Sprintf("./csv/%v-%v.csv", "testproject", "testtask")
 	}
@@ -258,7 +285,8 @@ func ProcessCSV() {
 
 	inFile, err := os.OpenFile(
 		fn,
-		os.O_RDWR|os.O_CREATE,
+		// os.O_RDWR|os.O_CREATE,
+		os.O_RDWR,
 		os.ModePerm,
 	)
 	if err != nil {
@@ -284,9 +312,9 @@ func ProcessCSV() {
 		return
 	}
 
-	log.Print("\ndry")
+	log.Print("\n\tpreflight")
 	for idx1, rec := range recipients {
-		rec.SetDerived(wave)
+		rec.SetDerived(wv)
 		// if idx1 > 5 || idx1 < len(recipients)-5 {
 		// 	continue
 		// }
@@ -297,9 +325,9 @@ func ProcessCSV() {
 			rec.ClosingDatePreliminary,
 			rec.Anrede,
 		)
-		err := singleEmail("dry", project, *rec, wave, task)
+		err := singleEmail("test", project, *rec, wv, tsk)
 		if err != nil {
-			log.Printf("error in dry run:\n\t%v", err)
+			log.Printf("error in preflight run:\n\t%v", err)
 			return
 		}
 	}
@@ -317,7 +345,7 @@ func ProcessCSV() {
 		return
 	}
 
-	log.Print("\nprod")
+	log.Print("\n\tprod")
 	for idx1, rec := range recipients {
 		log.Printf("#%03v - %2v - %1v - %10v %-16v - %-32v ",
 			idx1+1,
@@ -329,8 +357,8 @@ func ProcessCSV() {
 			log.Printf("  skipping 'noMail'")
 			continue
 		}
-		if false {
-			err := singleEmail("prod", project, *rec, wave, task)
+		if true {
+			err := singleEmail("prod", project, *rec, wv, tsk)
 			if err != nil {
 				log.Printf("error in prod run:\n\t%v", err)
 				return

@@ -10,7 +10,7 @@ import (
 func RegistrationFMTEnH(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	// gm.ReadCSVExample()
-	ProcessCSV()
+	iterTasks()
 }
 
 func main() {

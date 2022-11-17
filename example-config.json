@@ -18,6 +18,7 @@
         "Username": "fmt-relay"
       }
     },
+    "default_horst": "zimbra.zew.de",
     "waves": {
       "fmt": [
         {
@@ -32,51 +33,90 @@
           "closing_date_preliminary": "2022-12-07T17:00:00-02:00",
           "closing_date_last_due": "2022-12-10T17:00:00-02:00"
         }
+      ],
+      "pds": [
+        {
+          "year": 2023,
+          "month": 1,
+          "closing_date_preliminary": "0001-01-01T00:00:00Z",
+          "closing_date_last_due": "0001-01-01T00:00:00Z"
+        }
       ]
     },
     "tasks": {
       "fmt": [
         {
           "name": "invitation",
-          "time": "0001-01-01T00:00:00Z",
-          "relay_host": "zimbra.zew.de"
+          "description": "Montag",
+          "execution_time": "2022-11-07T11:00:00-02:00"
         },
         {
           "name": "reminder",
-          "time": "0001-01-01T00:00:00Z",
-          "relay_host": "zimbra.zew.de"
+          "description": "Freitag",
+          "execution_time": "2022-11-11T11:00:00-02:00"
         },
         {
           "name": "results",
-          "time": "2022-11-13T10:00:00-02:00",
+          "description": "Dienstags um 11",
+          "execution_time": "2022-11-15T11:00:00-02:00",
           "attachments": [
             {
-              "Language": "de",
               "Label": "ZEW-FMT-Datenblatt-%v-%02v.pdf",
-              "Filename": "tabellen/tab.pdf"
+              "Filename": "tabellen/tab.pdf",
+              "Language": "de"
             },
             {
-              "Language": "de",
               "Label": "ZEW-FMT-Pressemitteilung-%v-%02v.pdf",
-              "Filename": "pressemitteilungen/pressemitteilung_dt.pdf"
+              "Filename": "pressemitteilungen/pressemitteilung_dt.pdf",
+              "Language": "de"
             },
             {
-              "Language": "de",
               "Label": "ZEW-Index-Press-Release-%v-%02v.pdf",
-              "Filename": "pressemitteilungen/pressemitteilung_en.pdf"
+              "Filename": "pressemitteilungen/pressemitteilung_en.pdf",
+              "Language": "de"
             },
             {
-              "Language": "en",
               "Label": "ZEW-Index-Data-Table.pdf",
-              "Filename": "tabellen/tab-engl.pdf"
+              "Filename": "tabellen/tab-engl.pdf",
+              "Language": "en"
             },
             {
-              "Language": "en",
               "Label": "ZEW-Index-Press-Release-%v-%02v.pdf",
-              "Filename": "pressemitteilungen/pressemitteilung_en.pdf"
+              "Filename": "pressemitteilungen/pressemitteilung_en.pdf",
+              "Language": "en"
             }
-          ],
-          "relay_host": "zimbra.zew.de"
+          ]
+        },
+        {
+          "name": "results2",
+          "description": "Finanzmarkt Report am Freitag - teilnehmer",
+          "execution_time": "2022-11-18T11:00:00-02:00",
+          "attachments": [
+            {
+              "Label": "ZEW-Finanzmarktreport.pdf",
+              "Filename": "fmr/report.pdf",
+              "Language": "de"
+            }
+          ]
+        },
+        {
+          "name": "results3",
+          "description": "Finanzmarkt Report am Freitag - interessenten",
+          "execution_time": "2022-11-18T11:00:00-02:00",
+          "attachments": [
+            {
+              "Label": "ZEW-Finanzmarktreport.pdf",
+              "Filename": "fmr/report.pdf",
+              "Language": "de"
+            }
+          ]
+        }
+      ],
+      "pds": [
+        {
+          "name": "invitation",
+          "description": "PDS invitation",
+          "execution_time": "2022-11-18T11:00:00-02:00"
         }
       ]
     }
