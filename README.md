@@ -24,9 +24,21 @@
 * Command line flag `mode=[test|prod]`  
   for test and production runs
 
-
 * Sending via cron job
 
+## Structure
+
+A `project` contains a set of emails.
+
+`Sets` of emails can be sent in recurrent `waves`. A `wave` belongs to a project. It usually has a characteristic month or quarter or season. And a wave has common data points, to which multiple email task can refer.
+
+Each task `task` may have additional data points, for exanmple text elements or attachments.
+
+### Two intricacies
+
+* Tasks with distinct recipients list, while everything else is equal. We could just repeat the config settings, instead we write `SameAs=[otherTask]`. For exactly these case, we also set `TemplateName=xx`, maing it distinct from the default, which would be task name, which would necessary be different for source task and `sameAs` task.
+
+* Each task can be sent via a different SMTP relay host. Since this only rarely needed, there is a default setting for the SMTP relay host.
 
 ## Todo
 

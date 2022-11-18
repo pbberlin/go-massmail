@@ -125,9 +125,14 @@ func (r *Recipient) SetDerived(wv WaveT) {
 
 }
 
-func getText(rec Recipient, project, task, language string) (subject, body string) {
+func getText(rec Recipient, project string, tsk TaskT, language string) (subject, body string) {
 
-	fn := fmt.Sprintf("%v-%v.md", task, language)
+	templateFile := tsk.Name
+	// check for explicitly different email template
+	if tsk.TemplateName != "" {
+		templateFile = tsk.TemplateName
+	}
+	fn := fmt.Sprintf("%v-%v.md", templateFile, language)
 	pth := filepath.Join(".", "tpl", project, fn)
 	t, err := template.ParseFiles(pth)
 	if err != nil {
@@ -153,13 +158,13 @@ func getText(rec Recipient, project, task, language string) (subject, body strin
 
 // project - fmt, pds, difi
 // task - invitation, reminder
-func singleEmail(mode, project string, rec Recipient, wv WaveT, task TaskT) error {
+func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error {
 
 	if mode != "prod" && mode != "test" {
 		return fmt.Errorf("singleEmail mode must be 'prod' or 'test'; is %v", mode)
 	}
 
-	m := gm.NewMessagePlain(getText(rec, project, task.Name, rec.Language))
+	m := gm.NewMessagePlain(getText(rec, project, tsk, rec.Language))
 	// 	m = gm.NewMessageHTML(getSubject(subject, relayHorst.HostNamePort), getBody(senderHorst, true))
 	log.Printf("  subject: %v", m.Subject)
 	// log.Print(m.Body)
@@ -181,7 +186,7 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, task TaskT) erro
 
 	//
 	// attachments
-	for _, att := range task.Attachments {
+	for _, att := range tsk.Attachments {
 		if att.Language != rec.Language {
 			continue
 		}
@@ -203,8 +208,8 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, task TaskT) erro
 	m.AddCustomHeader("X-Mailer", "go-mail")
 
 	relayHostKey := cfg.DefaultHorst
-	if task.RelayHost != "" {
-		relayHostKey = task.RelayHost
+	if tsk.RelayHost != "" {
+		relayHostKey = tsk.RelayHost
 	}
 	rh := cfg.RelayHorsts[relayHostKey]
 
@@ -243,7 +248,8 @@ func dueTasks() (projects []string, waves []WaveT, tasks []TaskT) {
 			for _, tsk := range cfg.Tasks[projKey] {
 
 				if tsk.ExecutionTime.IsZero() {
-					// log.Printf("\t%v-%-22v has no exec time; skipping", projKey, tsk.Name)
+					log.Printf("\t%v-%-22v has no exec time; skipping", projKey, tsk.Name)
+					// log.Print(util.IndentedDump(tsk))
 					continue
 				}
 
@@ -252,7 +258,7 @@ func dueTasks() (projects []string, waves []WaveT, tasks []TaskT) {
 				until := tsk.ExecutionTime.AddDate(0, 0, 1)
 				fresh := !nw.After(until)
 
-				// log.Printf("\t%v-%-22v   %v\n\t\t\t due %v      fresh %v", projKey, tsk.Name, tsk.Description, due, fresh)
+				// log.Printf("\t%v-%-22v   %v\n\t\t\t\t due %v      fresh %v", projKey, tsk.Name, tsk.Description, due, fresh)
 				if due && fresh {
 					projects = append(projects, projKey)
 					waves = append(waves, wv)
@@ -265,7 +271,7 @@ func dueTasks() (projects []string, waves []WaveT, tasks []TaskT) {
 	}
 
 	if len(projects) > 0 {
-		log.Printf("%02v due tasks found:\n%v", len(projects), msg)
+		log.Printf("%02v due tasks found:\n%v\n", len(projects), msg)
 	} else {
 		log.Printf("no due task(s) found")
 	}
@@ -284,9 +290,10 @@ func iterTasks() {
 
 func processTask(project string, wv WaveT, tsk TaskT) {
 
-	log.Printf("\n\t%v-%-22v   %v\n\t==================", project, tsk.Name, tsk.Description)
+	log.Printf("\n\n\t%v-%-22v   %v\n\t==================", project, tsk.Name, tsk.Description)
 
-	fn := fmt.Sprintf("./csv/%v-%v.csv", project, tsk.Name)
+	participantFile := tsk.Name
+	fn := fmt.Sprintf("./csv/%v-%v.csv", project, participantFile)
 	if operationMode != "prod" {
 		fn = fmt.Sprintf("./csv/%v-%v.csv", "testproject", "testtask")
 	}
@@ -341,7 +348,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		}
 	}
 
-	fmt.Print("\n\n\tcontinue in 4 secs - cancel with CTRL+C\n\t")
+	fmt.Print("\tcontinue in 4 secs - cancel with CTRL+C\n\t")
 	for i := 0; i < 4*5; i++ {
 		fmt.Print(".")
 		time.Sleep(time.Second / 4)

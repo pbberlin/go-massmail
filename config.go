@@ -49,7 +49,8 @@ func init() {
 	loc, err = time.LoadLocation(cfg.Location)
 	if err != nil {
 		log.Printf("configured location %v failed; using UTC_-2\n\t%v", cfg.Location, err)
-		loc = time.FixedZone("UTC_-2", -2*60*60)
+		// loc = time.FixedZone("UTC_-2", 2*60*60)
+		loc = time.FixedZone("UTC_+2", 2*60*60)
 	}
 
 	// relay host integrity
@@ -68,7 +69,7 @@ func init() {
 
 	// same as
 	for project, tasks := range cfg.Tasks {
-		for _, t := range tasks {
+		for idx1, t := range tasks {
 			if t.SameAs != "" {
 
 			findSameAs:
@@ -82,10 +83,14 @@ func init() {
 							// preserve name and description
 							nm := t.Name
 							de := t.Description
+							tn := t.TemplateName
 							// clobber everything else from 'sameAs'
 							t = candT
 							t.Name = nm
 							t.Description = de
+							t.TemplateName = tn
+							t.SameAs = "" // prevent transitive copies
+							cfg.Tasks[candProj][idx1] = t
 							break findSameAs
 						}
 					}
@@ -94,6 +99,8 @@ func init() {
 			}
 		}
 	}
+
+	// log.Print(util.IndentedDump(cfg))
 
 }
 
@@ -161,13 +168,15 @@ type TaskT struct {
 	Description   string    `json:"description,omitempty"`
 	ExecutionTime time.Time `json:"execution_time,omitempty"` // when should the task be started - for cron jobs and parallel tasks
 
-	Attachments []AttachmentT `json:"attachments,omitempty"`
+	TemplateName string        `json:"template_name,omitempty"` // default is Name
+	Attachments  []AttachmentT `json:"attachments,omitempty"`
 	// distinct SMTP server for distinct tasks
 	// if empty, then default horst will be chosen
 	RelayHost string `json:"relay_host,omitempty"`
 	//
 	// use metadata from another task;
 	//   only difference is recipient list
+	// 	 template name *may* be different
 	SameAs string `json:"same_as,omitempty"`
 }
 
@@ -182,7 +191,7 @@ type configT struct {
 func writeExampleConfig() {
 
 	// writeExample already needs a location
-	locPreliminary := time.FixedZone("UTC_-2", -2*60*60)
+	locPreliminary := time.FixedZone("UTC_+2", 2*60*60)
 
 	var example = configT{
 
@@ -215,12 +224,12 @@ func writeExampleConfig() {
 					ClosingDatePreliminary: time.Date(2022, 11, 11+0, 17, 0, 0, 0, locPreliminary),
 					ClosingDateLastDue:     time.Date(2022, 11, 11+3, 17, 0, 0, 0, locPreliminary),
 				},
-				{
-					Year:                   2022,
-					Month:                  12,
-					ClosingDatePreliminary: time.Date(2022, 12, 07+0, 17, 0, 0, 0, locPreliminary),
-					ClosingDateLastDue:     time.Date(2022, 12, 07+3, 17, 0, 0, 0, locPreliminary),
-				},
+				// {
+				// 	Year:                   2022,
+				// 	Month:                  12,
+				// 	ClosingDatePreliminary: time.Date(2022, 12, 07+0, 17, 0, 0, 0, locPreliminary),
+				// 	ClosingDateLastDue:     time.Date(2022, 12, 07+3, 17, 0, 0, 0, locPreliminary),
+				// },
 			},
 			"pds": {
 				{
@@ -234,7 +243,7 @@ func writeExampleConfig() {
 				{
 					Name:          "invitation",
 					Description:   "PDS invitation",
-					ExecutionTime: time.Date(2022, 11, 18, 11, 0, 0, 0, locPreliminary),
+					ExecutionTime: time.Date(2022, 12, 07, 11, 0, 0, 0, locPreliminary),
 				},
 			},
 			"fmt": {
@@ -252,6 +261,7 @@ func writeExampleConfig() {
 					Name:          "results1a",
 					Description:   "Dienstags um 11 - 270 Teilnehmer",
 					ExecutionTime: time.Date(2022, 11, 15, 11, 0, 0, 0, locPreliminary),
+					TemplateName:  "results1",
 					Attachments: []AttachmentT{
 						{
 							Language: "de",
@@ -281,14 +291,15 @@ func writeExampleConfig() {
 					},
 				},
 				{
-					Name:        "results1b",
-					Description: "Dienstags um 11 - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
-					SameAs:      "results1a",
+					Name:         "results1b",
+					Description:  "Dienstags um 11 - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
+					TemplateName: "results1",
+					SameAs:       "results1a",
 				},
 				{
 					Name:          "results2a",
 					Description:   "Finanzmarkt Report am Freitag - 270 teilnehmer",
-					ExecutionTime: time.Date(2022, 11, 18, 11, 0, 0, 0, locPreliminary),
+					ExecutionTime: time.Date(2022, 11, 18, 10, 0, 0, 0, locPreliminary),
 					Attachments: []AttachmentT{
 						{
 							Language: "de",
@@ -302,7 +313,7 @@ func writeExampleConfig() {
 				{
 					Name:          "results2b",
 					Description:   "Finanzmarkt Report am Freitag - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
-					ExecutionTime: time.Date(2022, 11, 18, 11, 0, 0, 0, locPreliminary),
+					ExecutionTime: time.Date(2022, 11, 18, 10, 0, 0, 0, locPreliminary),
 					Attachments: []AttachmentT{
 						{
 							Language: "de",

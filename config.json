@@ -24,14 +24,14 @@
         {
           "year": 2022,
           "month": 11,
-          "closing_date_preliminary": "2022-11-11T17:00:00-02:00",
-          "closing_date_last_due": "2022-11-14T17:00:00-02:00"
+          "closing_date_preliminary": "2022-11-11T17:00:00+02:00",
+          "closing_date_last_due": "2022-11-14T17:00:00+02:00"
         },
         {
           "year": 2022,
           "month": 12,
-          "closing_date_preliminary": "2022-12-07T17:00:00-02:00",
-          "closing_date_last_due": "2022-12-10T17:00:00-02:00"
+          "closing_date_preliminary": "2022-12-09T17:00:00+02:00",
+          "closing_date_last_due": "2022-12-12T17:00:00+02:00"
         }
       ],
       "pds": [
@@ -48,17 +48,23 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2022-11-07T11:00:00-02:00"
+          "execution_time": "2022-11-07T11:00:00+02:00"
+        },
+        {
+          "name": "invitation-202212",
+          "description": "Montag",
+          "execution_time": "2022-12-05T10:15:00+02:00"
         },
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2022-11-11T11:00:00-02:00"
+          "execution_time": "2022-11-11T11:00:00+02:00"
         },
         {
           "name": "results1a",
           "description": "Dienstags um 11 - 270 Teilnehmer",
-          "execution_time": "2022-11-15T11:00:00-02:00",
+          "execution_time": "2022-11-15T11:00:00+02:00",
+          "template_name": "results1",
           "attachments": [
             {
               "Label": "ZEW-FMT-Datenblatt-%v-%02v.pdf",
@@ -91,12 +97,13 @@
           "name": "results1b",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
           "execution_time": "0001-01-01T00:00:00Z",
+          "template_name": "results1",
           "same_as": "results1a"
         },
         {
           "name": "results2a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2022-11-18T11:00:00-02:00",
+          "execution_time": "2022-11-18T10:00:00+02:00",
           "attachments": [
             {
               "Label": "ZEW-Finanzmarktreport.pdf",
@@ -108,7 +115,7 @@
         {
           "name": "results2b",
           "description": "Finanzmarkt Report am Freitag - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
-          "execution_time": "2022-11-18T11:00:00-02:00",
+          "execution_time": "2022-11-18T10:00:00+02:00",
           "attachments": [
             {
               "Label": "ZEW-Finanzmarktreport.pdf",
@@ -122,7 +129,7 @@
         {
           "name": "invitation",
           "description": "PDS invitation",
-          "execution_time": "2022-11-18T11:00:00-02:00"
+          "execution_time": "2022-12-07T11:00:00+02:00"
         }
       ]
     }
