@@ -199,6 +199,9 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		}
 
 		pth := filepath.Join(".", "attachments", project, att.Filename)
+		if cfg.AttachmentRoot != "" {
+			pth = filepath.Join(cfg.AttachmentRoot, project, att.Filename)
+		}
 		if err := m.Attach(lbl, pth); err != nil {
 			log.Printf("problem with attachment %+v\n\t%v", att, err)
 			return err
@@ -348,8 +351,15 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		}
 	}
 
+	var inpChr []byte = make([]byte, 1)
+	_ = inpChr
+
 	fmt.Print("\tcontinue in 4 secs - cancel with CTRL+C\n\t")
 	for i := 0; i < 4*5; i++ {
+		// os.Stdin.Read(inpChr)
+		// if inpChr[0] == 66 { // b
+		// 	break
+		// }
 		fmt.Print(".")
 		time.Sleep(time.Second / 4)
 	}

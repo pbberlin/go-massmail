@@ -181,11 +181,12 @@ type TaskT struct {
 }
 
 type configT struct {
-	Location     string                `json:"loc,omitempty"` // todo
-	RelayHorsts  map[string]RelayHorst `json:"relay_horsts,omitempty"`
-	DefaultHorst string                `json:"default_horst,omitempty"` // one of relayhorsts
-	Waves        map[string][]WaveT    `json:"waves,omitempty"`
-	Tasks        map[string][]TaskT    `json:"tasks,omitempty"`
+	Location       string                `json:"loc,omitempty"` // todo
+	AttachmentRoot string                `json:"attachment_root,omitempty"`
+	RelayHorsts    map[string]RelayHorst `json:"relay_horsts,omitempty"`
+	DefaultHorst   string                `json:"default_horst,omitempty"` // one of relayhorsts
+	Waves          map[string][]WaveT    `json:"waves,omitempty"`
+	Tasks          map[string][]TaskT    `json:"tasks,omitempty"`
 }
 
 func writeExampleConfig() {
@@ -195,7 +196,8 @@ func writeExampleConfig() {
 
 	var example = configT{
 
-		Location: "Europe/Berlin",
+		Location:       "Europe/Berlin",
+		AttachmentRoot: `C:\Users\pbu\Documents\zew_work\daten\`,
 
 		DefaultHorst: "zimbra.zew.de",
 

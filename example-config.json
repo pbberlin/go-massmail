@@ -1,5 +1,6 @@
 {
     "loc": "Europe/Berlin",
+    "attachment_root": "C:\\Users\\pbu\\Documents\\zew_work\\daten\\",
     "relay_horsts": {
       "email.zew.de": {
         "HostNamePort": "email.zew.de:25",

@@ -1,5 +1,6 @@
 {
     "loc": "Europe/Berlin",
+    "attachment_root": "C:\\Users\\pbu\\Documents\\zew_work\\daten\\",
     "relay_horsts": {
       "email.zew.de": {
         "HostNamePort": "email.zew.de:25",
@@ -51,19 +52,14 @@
           "execution_time": "2022-11-07T11:00:00+02:00"
         },
         {
-          "name": "invitation-202212",
-          "description": "Montag",
-          "execution_time": "2022-12-05T10:15:00+02:00"
-        },
-        {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2022-11-11T11:00:00+02:00"
+          "execution_time": "2022-12-09T09:00:00+02:00"
         },
         {
-          "name": "results1a",
+          "name": "results-a",
           "description": "Dienstags um 11 - 270 Teilnehmer",
-          "execution_time": "2022-11-15T11:00:00+02:00",
+          "execution_time": "2022-12-13T11:00:00+02:00",
           "template_name": "results1",
           "attachments": [
             {
@@ -94,16 +90,16 @@
           ]
         },
         {
-          "name": "results1b",
+          "name": "results-b",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
-          "execution_time": "0001-01-01T00:00:00Z",
+          "execution_time": "2022-12-13T11:00:00+02:00",
           "template_name": "results1",
-          "same_as": "results1a"
+          "same_as": "results-a"
         },
         {
-          "name": "results2a",
+          "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2022-11-18T10:00:00+02:00",
+          "execution_time": "2022-12-16T10:00:00+02:00",
           "attachments": [
             {
               "Label": "ZEW-Finanzmarktreport.pdf",
@@ -113,9 +109,9 @@
           ]
         },
         {
-          "name": "results2b",
-          "description": "Finanzmarkt Report am Freitag - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
-          "execution_time": "2022-11-18T10:00:00+02:00",
+          "name": "report-b",
+          "description": "Finanzmarkt Report am Freitag - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt und 118 x FMR Email",
+          "execution_time": "2022-12-16T10:00:00+02:00",
           "attachments": [
             {
               "Label": "ZEW-Finanzmarktreport.pdf",
