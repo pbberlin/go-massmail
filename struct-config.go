@@ -177,7 +177,8 @@ type TaskT struct {
 	// use metadata from another task;
 	//   only difference is recipient list
 	// 	 template name *may* be different
-	SameAs string `json:"same_as,omitempty"`
+	SameAs   string `json:"same_as,omitempty"`
+	testmode bool
 }
 
 type configT struct {
@@ -185,6 +186,7 @@ type configT struct {
 	AttachmentRoot string                `json:"attachment_root,omitempty"`
 	RelayHorsts    map[string]RelayHorst `json:"relay_horsts,omitempty"`
 	DefaultHorst   string                `json:"default_horst,omitempty"` // one of relayhorsts
+	TestRecipients []string              `json:"test_recipients,omitempty"`
 	Waves          map[string][]WaveT    `json:"waves,omitempty"`
 	Tasks          map[string][]TaskT    `json:"tasks,omitempty"`
 }
@@ -218,7 +220,18 @@ func writeExampleConfig() {
 			},
 		},
 
+		TestRecipients: []string{
+			"peter.buchmann@web.de",
+			"peter.buchmann.68@gmail.com",
+		},
+
 		Waves: map[string][]WaveT{
+			"pds": {
+				{
+					Year:  2023,
+					Month: 01,
+				},
+			},
 			"fmt": {
 				{
 					Year:                   2022,
@@ -232,12 +245,6 @@ func writeExampleConfig() {
 				// 	ClosingDatePreliminary: time.Date(2022, 12, 07+0, 17, 0, 0, 0, locPreliminary),
 				// 	ClosingDateLastDue:     time.Date(2022, 12, 07+3, 17, 0, 0, 0, locPreliminary),
 				// },
-			},
-			"pds": {
-				{
-					Year:  2023,
-					Month: 01,
-				},
 			},
 		},
 		Tasks: map[string][]TaskT{

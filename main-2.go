@@ -166,7 +166,8 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 
 	m := gm.NewMessagePlain(getText(rec, project, tsk, rec.Language))
 	// 	m = gm.NewMessageHTML(getSubject(subject, relayHorst.HostNamePort), getBody(senderHorst, true))
-	log.Printf("  subject: %v", m.Subject)
+	log.Printf("  recipient: %v", rec.Email)
+	log.Printf("  subject:   %v", m.Subject)
 	// log.Print(m.Body)
 	// return
 
@@ -237,44 +238,71 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 
 }
 
-// dueTasks searches the config and returns due tasks
-func dueTasks() (projects []string, waves []WaveT, tasks []TaskT) {
+// inBetween if start < t < start+24h
+func inBetween(desc string, t, start, stop time.Time) bool {
+
+	//     t > start"
+	due := t.After(start)
+
+	//     t < stpp
+	fresh := stop.After(t)
+
+	if due && fresh {
+		log.Printf(
+			"%6v: %v < %v < %v",
+			desc,
+			start.Format("2006-01-02--15:04"),
+			t.Format("2006-01-02--15:04"),
+			stop.Format("2006-01-02--15:04"),
+		)
+
+		return true
+	}
+
+	return false
+
+}
+
+// dueTasks searches the config and returns due tasks.
+// test runs are executed 24 hours before in advance
+func dueTasks() (surveys []string, waves []WaveT, tasks []TaskT) {
 
 	msg := &strings.Builder{}
 
-	nw := time.Now()
+	now := time.Now()
 
-	for projKey, wvs := range cfg.Waves {
+	for survey, wvs := range cfg.Waves {
 		last := len(wvs) - 1
 		wv := wvs[last]
-		{
-			for _, tsk := range cfg.Tasks[projKey] {
+		for _, tsk := range cfg.Tasks[survey] {
 
-				if tsk.ExecutionTime.IsZero() {
-					log.Printf("\t%v-%-22v has no exec time; skipping", projKey, tsk.Name)
-					// log.Print(util.IndentedDump(tsk))
-					continue
-				}
+			if tsk.ExecutionTime.IsZero() {
+				log.Printf("\t%v-%-22v has no exec time; skipping", survey, tsk.Name)
+				// log.Print(util.IndentedDump(tsk))
+				continue
+			}
 
-				due := nw.After(tsk.ExecutionTime)
+			if inBetween("prod", now, tsk.ExecutionTime, tsk.ExecutionTime.AddDate(0, 0, 1)) {
+				surveys = append(surveys, survey)
+				waves = append(waves, wv)
+				tasks = append(tasks, tsk)
+				fmt.Fprintf(msg, "\t%v-%-22v   %v\n", survey, tsk.Name, tsk.Description)
+			}
 
-				until := tsk.ExecutionTime.AddDate(0, 0, 1)
-				fresh := !nw.After(until)
-
-				// log.Printf("\t%v-%-22v   %v\n\t\t\t\t due %v      fresh %v", projKey, tsk.Name, tsk.Description, due, fresh)
-				if due && fresh {
-					projects = append(projects, projKey)
-					waves = append(waves, wv)
-					tasks = append(tasks, tsk)
-					fmt.Fprintf(msg, "\t%v-%-22v   %v\n", projKey, tsk.Name, tsk.Description)
-				}
+			dayBefore := tsk.ExecutionTime.AddDate(0, 0, -1) //  advance for testing
+			if inBetween("advance", now, dayBefore, dayBefore.AddDate(0, 0, 1)) {
+				surveys = append(surveys, survey)
+				waves = append(waves, wv)
+				tsk.testmode = true
+				tasks = append(tasks, tsk)
+				fmt.Fprintf(msg, "\t%v-%-22v   %v\n", survey, tsk.Name, tsk.Description)
 			}
 		}
 
 	}
 
-	if len(projects) > 0 {
-		log.Printf("%02v due tasks found:\n%v\n", len(projects), msg)
+	if len(surveys) > 0 {
+		log.Printf("%02v due tasks found:\n%v\n", len(surveys), msg)
 	} else {
 		log.Printf("no due task(s) found")
 	}
@@ -284,22 +312,19 @@ func dueTasks() (projects []string, waves []WaveT, tasks []TaskT) {
 
 func iterTasks() {
 
-	projects, waves, tasks := dueTasks()
-	for idx, p := range projects {
-		processTask(p, waves[idx], tasks[idx])
+	surveys, waves, tasks := dueTasks()
+	for idx, survey := range surveys {
+		processTask(survey, waves[idx], tasks[idx])
 	}
 
 }
 
-func processTask(project string, wv WaveT, tsk TaskT) {
+func processTask(survey string, wv WaveT, tsk TaskT) {
 
-	log.Printf("\n\n\t%v-%-22v   %v\n\t==================", project, tsk.Name, tsk.Description)
+	log.Printf("\n\n\t%v-%-22v   %v\n\t==================", survey, tsk.Name, tsk.Description)
 
 	participantFile := tsk.Name
-	fn := fmt.Sprintf("./csv/%v-%v.csv", project, participantFile)
-	if operationMode != "prod" {
-		fn = fmt.Sprintf("./csv/%v-%v.csv", "testproject", "testtask")
-	}
+	fn := fmt.Sprintf("./csv/%v-%v.csv", survey, participantFile)
 	log.Printf("using filename %v\n", fn)
 
 	inFile, err := os.OpenFile(
@@ -314,7 +339,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 	}
 	defer inFile.Close()
 
-	recipients := []*Recipient{}
+	recs := []*Recipient{} // recipients
 
 	// set option for gocsv lib
 	// use semicolon as delimiter
@@ -326,13 +351,67 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		return r
 	})
 
-	if err := gocsv.UnmarshalFile(inFile, &recipients); err != nil {
+	if err := gocsv.UnmarshalFile(inFile, &recs); err != nil {
 		log.Print(err)
 		return
 	}
 
-	log.Print("\n\tpreflight")
-	for idx1, rec := range recipients {
+	if operationMode != "prod" || tsk.testmode {
+
+		lnTR := len(cfg.TestRecipients)
+		if lnTR < 1 {
+			log.Printf("TestRecipients must be set in config")
+			return
+		}
+
+		// langs is a map of languages containing a list of recipient IDs.
+		// For each TestRecipient email and each language, we want to find
+		// a recipient record to use as test
+		// For example
+		// 		de: [120  0]
+		// 		en: [ 68 82]
+		langs := map[string][]int{}
+
+		//
+		// add recipients with email _similar_ to any in TestRecipients
+		for i1 := 0; i1 < len(recs); i1++ {
+			for _, testEmail := range cfg.TestRecipients {
+				if testEmail == recs[i1].Email {
+					langs[recs[i1].Language] = append(langs[recs[i1].Language], i1)
+				}
+			}
+		}
+
+		//
+		// all distinct languages and their first, second, ...  occurrence
+		for i := 0; i < len(recs); i++ {
+			if len(langs[recs[i].Language]) < lnTR {
+				langs[recs[i].Language] = append(langs[recs[i].Language], i)
+			}
+		}
+		log.Printf("  distinct languages - recipients at %v", langs)
+
+		subsetRec := []*Recipient{}
+
+		for _, idxes := range langs {
+
+			for i := 0; i < len(idxes); i++ {
+
+				subsetRec = append(subsetRec, recs[idxes[i]])
+
+				log.Printf("    test %v using %-32v with %v", recs[idxes[i]].Language, recs[idxes[i]].Email, cfg.TestRecipients[i])
+				lastIdx := len(subsetRec) - 1
+				subsetRec[lastIdx].Email = cfg.TestRecipients[i]
+			}
+
+		}
+
+		recs = subsetRec
+
+	}
+
+	log.Print("\n\t preflight")
+	for idx1, rec := range recs {
 		rec.SetDerived(wv)
 		// if idx1 > 5 || idx1 < len(recipients)-5 {
 		// 	continue
@@ -344,7 +423,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 			rec.ClosingDatePreliminary,
 			rec.Anrede,
 		)
-		err := singleEmail("test", project, *rec, wv, tsk)
+		err := singleEmail("test", survey, *rec, wv, tsk)
 		if err != nil {
 			log.Printf("error in preflight run:\n\t%v", err)
 			return
@@ -371,8 +450,8 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		return
 	}
 
-	log.Print("\n\tprod")
-	for idx1, rec := range recipients {
+	log.Print("\n\t prod")
+	for idx1, rec := range recs {
 		log.Printf("#%03v - %2v - %1v - %10v %-16v - %-32v ",
 			idx1+1,
 			rec.Language, rec.Sex,
@@ -384,7 +463,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 			continue
 		}
 		if true {
-			err := singleEmail("prod", project, *rec, wv, tsk)
+			err := singleEmail("prod", survey, *rec, wv, tsk)
 			if err != nil {
 				log.Printf("error in prod run:\n\t%v", err)
 				return

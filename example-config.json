@@ -20,6 +20,10 @@
       }
     },
     "default_horst": "zimbra.zew.de",
+    "test_recipients": [
+      "peter.buchmann@web.de",
+      "peter.buchmann.68@gmail.com"
+    ],
     "waves": {
       "fmt": [
         {
