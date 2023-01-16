@@ -69,8 +69,8 @@
         {
           "name": "results-a",
           "description": "Dienstags um 11 - 270 Teilnehmer",
-          "execution_time": "2022-12-13T11:00:00+02:00",
-          "template_name": "results1",
+          "execution_time": "2023-01-17T11:00:00+02:00",
+          "template_name": "results",
           "attachments": [
             {
               "Label": "ZEW-FMT-Datenblatt-%v-%02v.pdf",
@@ -102,9 +102,21 @@
         {
           "name": "results-b",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
-          "execution_time": "2022-12-13T11:00:00+02:00",
-          "template_name": "results1",
+          "execution_time": "2023-01-17T11:00:00+02:00",
+          "template_name": "results",
           "same_as": "results-a"
+        },
+        {
+          "name": "results-expectation-data",
+          "description": "Dienstags um 11 - Ergebnisverteiler - ca. 25 Interessenten - english only - CSV says german",
+          "execution_time": "2023-01-17T11:00:00+02:00",
+          "attachments": [
+            {
+              "Label": "ZEW_FMT_Expectation_Data.xlsx",
+              "Filename": "verkauf/ZEW_FMT_Expectation_Data.xlsx",
+              "Language": "de"
+            }
+          ]
         },
         {
           "name": "report-a",

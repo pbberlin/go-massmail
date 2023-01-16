@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/csv"
 	"fmt"
 	"html/template"
@@ -217,7 +218,7 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	}
 	rh := cfg.RelayHorsts[relayHostKey]
 
-	log.Printf("  sending %q via %s... to %v with %v attach",
+	log.Printf("  sending %q via %s... to %v with %v attach(s)",
 		mode, rh.HostNamePort, rec.Lastname, len(m.Attachments),
 	)
 	if mode != "prod" {
@@ -321,10 +322,10 @@ func iterTasks() {
 
 func processTask(survey string, wv WaveT, tsk TaskT) {
 
-	log.Printf("\n\n\t%v-%-22v   %v\n\t==================", survey, tsk.Name, tsk.Description)
+	log.Printf("\n\n\t%v-%-22v   %v - %v att(s)\n\t==================", survey, tsk.Name, tsk.Description, len(tsk.Attachments))
 
 	participantFile := tsk.Name
-	fn := fmt.Sprintf("./csv/%v-%v.csv", survey, participantFile)
+	fn := fmt.Sprintf("./csv/%v-%v-%d-%02d.csv", survey, participantFile, wv.Year, wv.Month)
 	log.Printf("using filename %v\n", fn)
 
 	inFile, err := os.OpenFile(
@@ -430,17 +431,50 @@ func processTask(survey string, wv WaveT, tsk TaskT) {
 		}
 	}
 
-	var inpChr []byte = make([]byte, 1)
-	_ = inpChr
+	const waitSeconds = 8
 
-	fmt.Print("\tcontinue in 4 secs - cancel with CTRL+C\n\t")
-	for i := 0; i < 4*5; i++ {
-		// os.Stdin.Read(inpChr)
-		// if inpChr[0] == 66 { // b
-		// 	break
-		// }
+	fmt.Printf("\tcontinue in %v secs\n", waitSeconds)
+	fmt.Print("\tc - continue task\n")
+	fmt.Print("\ts - skip to next task\n")
+	fmt.Print("\ta - abort (CTRL+C)\n")
+
+continueSending:
+	for i := 0; i < waitSeconds*5; i++ {
+		scanner := bufio.NewScanner(os.Stdin)
+		// scanner.Split(bufio.ScanBytes)
+		// scanner := bufio.ScanBytes()
+		// scanner.Buffer(make([]byte, 2), 2)
+		for scanner.Scan() {
+			if err := scanner.Err(); err != nil {
+				log.Fatalf("error reading os.Stdin: %v", err)
+			}
+			txt := scanner.Text()
+			bts := scanner.Bytes()
+			var bt1 byte
+			if len(bts) > 0 {
+				bt1 = bts[0]
+			}
+			outp := fmt.Sprintf("%02d: got text %v - byte %v - byte1 %v \n", i, txt, bts, bt1)
+			_ = outp
+
+			// a - bt1 ==  97   => abort
+			// c - bt1 ==  99   => continue
+			// s - bt1 == 115   => skip (next)
+			if bt1 == 97 {
+				log.Print("aborted")
+				os.Exit(0)
+			}
+			if bt1 == 99 {
+				break continueSending
+			}
+			if bt1 == 115 {
+				log.Print("next task")
+				return
+			}
+
+		}
 		fmt.Print(".")
-		time.Sleep(time.Second / 4)
+		time.Sleep(time.Second / 5)
 	}
 	fmt.Print("\n")
 

@@ -60,6 +60,13 @@ The software is thus intended to be started every day around 10:30 am by cron jo
 
 ## Todo
 
+* Continue after 8 seconds;  
+  can we get rid of the enter key?
+
+* Setup - windows cron job XML
+
+* Setup - logging to file
+
 * The CSV files containing the recipient emails and meta data,  
   should be made downloadable via HTTPS request immediately before the task execution.
 
