@@ -1,5 +1,18 @@
 # go-massmail
 
+* Headless massmailing software - ready for cron job automation
+
+* Everything multi-language
+
+* Everything configured in a single `config.json`
+
+* Email templates in plain text files;  
+  attachments from file system
+
+* Recipient lists in CSV files
+
+## Features
+
 * Early alpha
 
 * Read recipient data from CSV
@@ -8,6 +21,8 @@
   * dynamic functions
   * file attachments
   * email structures and submission using [go-mail](https://github.com/pbberlin/go-mail)
+
+* Only plain text email, though the email composer module would support HTML.
 
 * Each `project/survey` can have multiple `waves`,  
   representing monthly or quarterly repetitions
@@ -45,6 +60,8 @@ Each task `task` may have additional data points, for exanmple text elements or 
 -mode=test will only send one email for each entry in config TestRecipients.
 
 If the email has more than one language version, test emails are sent for each language and TestRecipient.
+
+If the regular recipient list _contains_ one of the test emails, then this recipient record is chosen for test email.
 
 ## Time control
 

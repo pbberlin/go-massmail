@@ -108,15 +108,74 @@
         },
         {
           "name": "results-expectation-data",
-          "description": "Dienstags um 11 - Ergebnisverteiler - ca. 25 Interessenten - english only - CSV says german",
-          "execution_time": "2023-01-17T11:00:00+02:00",
+          "description": "Dienstags um 11 - Ergebnisverteiler - ca. 25 Interessenten",
+          "execution_time": "2023-01-17T11:01:00+02:00",
           "attachments": [
+            {
+              "Label": "ZEW_FMT_Expectation_Data.xlsx",
+              "Filename": "verkauf/ZEW_FMT_Expectation_Data.xlsx",
+              "Language": "en"
+            },
             {
               "Label": "ZEW_FMT_Expectation_Data.xlsx",
               "Filename": "verkauf/ZEW_FMT_Expectation_Data.xlsx",
               "Language": "de"
             }
           ]
+        },
+        {
+          "name": "results-gmind",
+          "description": "Dienstags um 11 - Ergebnisverteiler - ca. 12 Interessenten",
+          "execution_time": "2023-01-17T11:01:00+02:00",
+          "attachments": [
+            {
+              "Label": "G-Mind_werte.xlsx",
+              "Filename": "verkauf/G-Mind_werte.xlsx",
+              "Language": "en"
+            },
+            {
+              "Label": "G-Mind_werte.xlsx",
+              "Filename": "verkauf/G-Mind_werte.xlsx",
+              "Language": "de"
+            }
+          ]
+        },
+        {
+          "name": "results-economy",
+          "description": "Dienstags um 11 - Ergebnisverteiler - 1 Interessenten",
+          "execution_time": "2023-01-17T11:01:00+02:00",
+          "attachments": [
+            {
+              "Label": "Economy.xlsx",
+              "Filename": "verkauf/Economy.xlsx",
+              "Language": "en"
+            }
+          ]
+        },
+        {
+          "name": "results-haver",
+          "description": "Dienstags um 11 - Ergebnisverteiler - ca. 2 Interessenten",
+          "execution_time": "2023-01-17T11:01:00+02:00",
+          "attachments": [
+            {
+              "Label": "haver.xlsx",
+              "Filename": "verkauf/haver_gmind.xlsx",
+              "Language": "en"
+            }
+          ]
+        },
+        {
+          "name": "results-ndr",
+          "description": "Dienstags um 11 - Ergebnisverteiler - ca. 2 Interessenten",
+          "execution_time": "2023-01-17T11:01:00+02:00",
+          "attachments": [
+            {
+              "Label": "NDR.xlsx",
+              "Filename": "verkauf/NDR.xlsx",
+              "Language": "en"
+            }
+          ],
+          "comments": "do we need the proquote ??"
         },
         {
           "name": "report-a",

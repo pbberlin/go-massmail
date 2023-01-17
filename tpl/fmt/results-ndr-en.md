@@ -1,9 +1,9 @@
-ZEW Expectation Data
+ZEW Financial Market Survey - latest results
 {{.Anrede}},
 
-Anbei die Ergebnisse des letzten Finanzmarkttest.
+Please find attached the stock market expectations from the latest ZEW Financial Market Survey in Germany.
 
-Mit freundlichem Gruß,
+Regards
   Peter Buchmann
 
 ---------------------------------------------------------------------

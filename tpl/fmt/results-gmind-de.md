@@ -1,9 +1,10 @@
-ZEW Expectation Data
+ZEW Finanzmarkttest - G-Mind Werte
 {{.Anrede}},
 
-Anbei die Ergebnisse des letzten Finanzmarkttest.
+anbei finden Sie die aktuellen Werte des G-Minds, der aus den Ergebnisse des monatlichen ZEW-Finanzmarkttests berechnet wird. G-Mind(Stocks) und G-Mind(Bonds) sind Subindizes des G-Mind. Sie geben die Stimmung an dem deutschen Aktienmarkt (bzw. Rentenmarkt) 
+wieder.
 
-Mit freundlichem Gruß,
+Mit freundlichen Grüßen
   Peter Buchmann
 
 ---------------------------------------------------------------------

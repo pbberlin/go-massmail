@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"encoding/csv"
 	"fmt"
 	"html/template"
@@ -23,7 +22,7 @@ type Recipient struct {
 	Title       string `csv:"title"`
 	Lastname    string `csv:"lastname"`
 	NoMail      string `csv:"!Mail !Call"`
-	SourceTable string `csv:"src_table"`
+	SourceTable string `csv:"src_table"` // either emtpy string or 'mailadresse', serves to control computation of derived fields
 
 	Link     template.HTML `csv:"link"` // avoid escaping
 	Language string        `csv:"lang"`
@@ -67,11 +66,10 @@ func formatDate(dt time.Time, lang string) string {
 	return ret
 }
 
+// SetDerived computes helper fields from base columns
 func (r *Recipient) SetDerived(wv WaveT) {
 
 	if r.SourceTable == "" {
-
-		// => r.SourceTable NOT EQUAL 'mailadresse'
 
 		if r.Language == "de" {
 			if r.Sex == 1 {
@@ -96,6 +94,15 @@ func (r *Recipient) SetDerived(wv WaveT) {
 				r.Anrede = "Dear " + r.Title + " "
 			}
 			r.Anrede += r.Lastname
+		}
+
+	} else if r.SourceTable == "mailadresse" {
+
+		// this database table has no language column;
+		// default language is 'de'.
+		// we derive the language from the 'anrede'
+		if strings.Contains(r.Anrede, "Dear") {
+			r.Language = "en"
 		}
 
 	}
@@ -438,41 +445,45 @@ func processTask(survey string, wv WaveT, tsk TaskT) {
 	fmt.Print("\ts - skip to next task\n")
 	fmt.Print("\ta - abort (CTRL+C)\n")
 
-continueSending:
+	// continueSending:
 	for i := 0; i < waitSeconds*5; i++ {
-		scanner := bufio.NewScanner(os.Stdin)
-		// scanner.Split(bufio.ScanBytes)
-		// scanner := bufio.ScanBytes()
-		// scanner.Buffer(make([]byte, 2), 2)
-		for scanner.Scan() {
-			if err := scanner.Err(); err != nil {
-				log.Fatalf("error reading os.Stdin: %v", err)
-			}
-			txt := scanner.Text()
-			bts := scanner.Bytes()
-			var bt1 byte
-			if len(bts) > 0 {
-				bt1 = bts[0]
-			}
-			outp := fmt.Sprintf("%02d: got text %v - byte %v - byte1 %v \n", i, txt, bts, bt1)
-			_ = outp
+		/*
+			scanner := bufio.NewScanner(os.Stdin)
+			// scanner.Split(bufio.ScanBytes)
+			// scanner := bufio.ScanBytes()
+			// scanner.Buffer(make([]byte, 2), 2)
 
-			// a - bt1 ==  97   => abort
-			// c - bt1 ==  99   => continue
-			// s - bt1 == 115   => skip (next)
-			if bt1 == 97 {
-				log.Print("aborted")
-				os.Exit(0)
-			}
-			if bt1 == 99 {
-				break continueSending
-			}
-			if bt1 == 115 {
-				log.Print("next task")
-				return
-			}
+				for scanner.Scan() {
+					if err := scanner.Err(); err != nil {
+						log.Fatalf("error reading os.Stdin: %v", err)
+					}
+					txt := scanner.Text()
+					bts := scanner.Bytes()
+					var bt1 byte
+					if len(bts) > 0 {
+						bt1 = bts[0]
+					}
+					outp := fmt.Sprintf("%02d: got text %v - byte %v - byte1 %v \n", i, txt, bts, bt1)
+					_ = outp
 
-		}
+					// a - bt1 ==  97   => abort
+					// c - bt1 ==  99   => continue
+					// s - bt1 == 115   => skip (next)
+					if bt1 == 97 {
+						log.Print("aborted")
+						os.Exit(0)
+					}
+					if bt1 == 99 {
+						break continueSending
+					}
+					if bt1 == 115 {
+						log.Print("next task")
+						return
+					}
+
+				}
+
+		*/
 		fmt.Print(".")
 		time.Sleep(time.Second / 5)
 	}
