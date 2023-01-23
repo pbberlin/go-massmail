@@ -180,7 +180,7 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2022-12-22T10:00:00+02:00",
+          "execution_time": "2023-01-24T10:15:00+02:00",
           "attachments": [
             {
               "Label": "ZEW-Finanzmarktreport.pdf",
@@ -192,7 +192,7 @@
         {
           "name": "report-b",
           "description": "Finanzmarkt Report am Freitag - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt und 118 x FMR Email",
-          "execution_time": "2022-12-22T10:00:00+02:00",
+          "execution_time": "2023-01-24T10:15:00+02:00",
           "attachments": [
             {
               "Label": "ZEW-Finanzmarktreport.pdf",
