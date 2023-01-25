@@ -140,7 +140,13 @@ func getText(rec Recipient, project string, tsk TaskT, language string) (subject
 	if tsk.TemplateName != "" {
 		templateFile = tsk.TemplateName
 	}
-	fn := fmt.Sprintf("%v-%v.md", templateFile, language)
+
+	ext := "md"
+	if tsk.HTML {
+		ext = "html"
+	}
+
+	fn := fmt.Sprintf("%v-%v.%v", templateFile, language, ext)
 	pth := filepath.Join(".", "tpl", project, fn)
 	t, err := template.ParseFiles(pth)
 	if err != nil {
@@ -174,14 +180,24 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 
 	m := gm.NewMessagePlain(getText(rec, project, tsk, rec.Language))
 	// 	m = gm.NewMessageHTML(getSubject(subject, relayHorst.HostNamePort), getBody(senderHorst, true))
+	if tsk.HTML {
+		m.ContentType = "text/html"
+	}
+
 	log.Printf("  recipient: %v", rec.Email)
 	log.Printf("  subject:   %v", m.Subject)
 	// log.Print(m.Body)
 	// return
 
 	m.From = mail.Address{}
-	m.From.Name = "Finanzmarkttest"
-	m.From.Address = "noreply@zew.de"
+	m.From = *tsk.From
+	if tsk.From == nil {
+		m.From = *cfg.DefaultFrom
+		if m.From.Address == "" {
+			return fmt.Errorf("Task.From or Config.DefaultFrom email must be set")
+		}
+	}
+
 	m.To = []string{rec.Email}
 
 	if rec.Email == "" || !strings.Contains(rec.Email, "@") {
@@ -196,8 +212,15 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	//
 	// attachments
 	for _, att := range tsk.Attachments {
+
 		if att.Language != rec.Language {
 			continue
+		}
+
+		if filepath.Ext(att.Filename) != filepath.Ext(att.Label) {
+			err := fmt.Errorf("file %v must have a label with matching extension", att.Filename)
+			log.Print(err)
+			return err
 		}
 
 		lbl := att.Label
@@ -211,8 +234,22 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		if cfg.AttachmentRoot != "" {
 			pth = filepath.Join(cfg.AttachmentRoot, project, att.Filename)
 		}
-		if err := m.Attach(lbl, pth); err != nil {
-			log.Printf("problem with attachment %+v\n\t%v", att, err)
+
+		fi, err := os.Stat(pth)
+		if err != nil {
+			log.Printf("error getting file info for %v\n\t%v", pth, err)
+			return err
+		}
+
+		modTimePlus := fi.ModTime().Add(20 * 24 * 3600 * time.Second)
+		if time.Now().After(modTimePlus) {
+			err := fmt.Errorf("file %v is more than 20 days old", pth)
+			log.Print(err)
+			return err
+		}
+
+		if err := m.Attach(lbl, pth, att.Inline); err != nil {
+			log.Printf("error doing attachment %+v\n\t%v", att, err)
 			return err
 		}
 	}

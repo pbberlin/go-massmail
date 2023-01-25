@@ -20,6 +20,10 @@
       }
     },
     "default_horst": "zimbra.zew.de",
+    "default_from": {
+      "Name": "Finanzmarkttest",
+      "Address": "noreply@zew.de"
+    },
     "test_recipients": [
       "peter.buchmann@web.de",
       "peter.buchmann.68@gmail.com"
@@ -61,29 +65,29 @@
           "template_name": "results1",
           "attachments": [
             {
-              "Label": "ZEW-FMT-Datenblatt-%v-%02v.pdf",
-              "Filename": "tabellen/tab.pdf",
-              "Language": "de"
+              "label": "ZEW-FMT-Datenblatt-%v-%02v.pdf",
+              "filename": "tabellen/tab.pdf",
+              "language": "de"
             },
             {
-              "Label": "ZEW-FMT-Pressemitteilung-%v-%02v.pdf",
-              "Filename": "pressemitteilungen/pressemitteilung_dt.pdf",
-              "Language": "de"
+              "label": "ZEW-FMT-Pressemitteilung-%v-%02v.pdf",
+              "filename": "pressemitteilungen/pressemitteilung_dt.pdf",
+              "language": "de"
             },
             {
-              "Label": "ZEW-Index-Press-Release-%v-%02v.pdf",
-              "Filename": "pressemitteilungen/pressemitteilung_en.pdf",
-              "Language": "de"
+              "label": "ZEW-Index-Press-Release-%v-%02v.pdf",
+              "filename": "pressemitteilungen/pressemitteilung_en.pdf",
+              "language": "de"
             },
             {
-              "Label": "ZEW-Index-Data-Table.pdf",
-              "Filename": "tabellen/tab-engl.pdf",
-              "Language": "en"
+              "label": "ZEW-Index-Data-Table.pdf",
+              "filename": "tabellen/tab-engl.pdf",
+              "language": "en"
             },
             {
-              "Label": "ZEW-Index-Press-Release-%v-%02v.pdf",
-              "Filename": "pressemitteilungen/pressemitteilung_en.pdf",
-              "Language": "en"
+              "label": "ZEW-Index-Press-Release-%v-%02v.pdf",
+              "filename": "pressemitteilungen/pressemitteilung_en.pdf",
+              "language": "en"
             }
           ]
         },
@@ -100,9 +104,9 @@
           "execution_time": "2022-11-18T10:00:00+02:00",
           "attachments": [
             {
-              "Label": "ZEW-Finanzmarktreport.pdf",
-              "Filename": "fmr/report.pdf",
-              "Language": "de"
+              "label": "ZEW-Finanzmarktreport.pdf",
+              "filename": "fmr/report.pdf",
+              "language": "de"
             }
           ]
         },
@@ -112,9 +116,9 @@
           "execution_time": "2022-11-18T10:00:00+02:00",
           "attachments": [
             {
-              "Label": "ZEW-Finanzmarktreport.pdf",
-              "Filename": "fmr/report.pdf",
-              "Language": "de"
+              "label": "ZEW-Finanzmarktreport.pdf",
+              "filename": "fmr/report.pdf",
+              "language": "de"
             }
           ]
         }

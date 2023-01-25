@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net/mail"
 	"net/smtp"
 	"os"
 	"strings"
@@ -148,9 +149,10 @@ func (rh RelayHorst) getAuth() (auth smtp.Auth) {
 
 // AttachmentT represents a file attachment for an email
 type AttachmentT struct {
-	Label    string
-	Filename string
-	Language string // matching recipient language - recipient lists are multi-language
+	Label    string `json:"label,omitempty"`
+	Filename string `json:"filename,omitempty"`
+	Language string `json:"language,omitempty"` // matching recipient language - recipient lists are multi-language
+	Inline   bool   `json:"inline,omitempty"`
 }
 
 // WaveT - data that changes with each wave
@@ -173,12 +175,17 @@ type TaskT struct {
 	// distinct SMTP server for distinct tasks
 	// if empty, then default horst will be chosen
 	RelayHost string `json:"relay_host,omitempty"`
+
+	From *mail.Address `json:"from,omitempty"` // as pointer to avoid json clutter
+
 	//
 	// use metadata from another task;
 	//   only difference is recipient list
 	// 	 template name *may* be different
 	SameAs   string `json:"same_as,omitempty"`
 	testmode bool
+
+	HTML bool `json:"html,omitempty"`
 }
 
 type configT struct {
@@ -186,6 +193,7 @@ type configT struct {
 	AttachmentRoot string                `json:"attachment_root,omitempty"`
 	RelayHorsts    map[string]RelayHorst `json:"relay_horsts,omitempty"`
 	DefaultHorst   string                `json:"default_horst,omitempty"` // one of relayhorsts
+	DefaultFrom    *mail.Address         `json:"default_from,omitempty"`  // as pointer to avoid json clutter
 	TestRecipients []string              `json:"test_recipients,omitempty"`
 	Waves          map[string][]WaveT    `json:"waves,omitempty"`
 	Tasks          map[string][]TaskT    `json:"tasks,omitempty"`
@@ -200,8 +208,6 @@ func writeExampleConfig() {
 
 		Location:       "Europe/Berlin",
 		AttachmentRoot: `C:\Users\pbu\Documents\zew_work\daten\`,
-
-		DefaultHorst: "zimbra.zew.de",
 
 		RelayHorsts: map[string]RelayHorst{
 			"zimbra.zew.de": {
@@ -218,6 +224,13 @@ func writeExampleConfig() {
 			"email.zew.de": {
 				HostNamePort: "email.zew.de:25",
 			},
+		},
+
+		DefaultHorst: "zimbra.zew.de",
+
+		DefaultFrom: &mail.Address{
+			Name:    "Finanzmarkttest",
+			Address: "noreply@zew.de",
 		},
 
 		TestRecipients: []string{
