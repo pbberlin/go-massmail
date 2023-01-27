@@ -105,6 +105,15 @@ func (r *Recipient) SetDerived(wv WaveT) {
 			r.Language = "en"
 		}
 
+	} else if r.SourceTable == "pds" {
+
+		r.Anrede = "Dear " + r.Lastname
+		if strings.Contains(r.Lastname, "Dear Sir or Madam") {
+			r.Anrede = r.Lastname
+		}
+		r.Anrede = strings.TrimSpace(r.Anrede)
+		r.Language = "en"
+
 	}
 
 	// survey identifier
@@ -201,7 +210,7 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	m.To = []string{rec.Email}
 
 	if rec.Email == "" || !strings.Contains(rec.Email, "@") {
-		return fmt.Errorf("singleEmail email %v is suspect", rec.Email)
+		return fmt.Errorf("email field %q is suspect \n\t%+v", rec.Email, rec)
 	}
 
 	m.ReplyTo = "finanzmarkttest@zew.de"
@@ -261,6 +270,11 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		relayHostKey = tsk.RelayHost
 	}
 	rh := cfg.RelayHorsts[relayHostKey]
+
+	if strings.HasSuffix(rec.Email, "@zew.de") {
+		rh = cfg.RelayHorsts["hermes.zew.de"]
+		rh = cfg.RelayHorsts["hermes.zew-private.de"]
+	}
 
 	log.Printf("  sending %q via %s... to %v with %v attach(s)",
 		mode, rh.HostNamePort, rec.Lastname, len(m.Attachments),

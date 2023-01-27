@@ -212,7 +212,7 @@
         {
           "name": "invitation",
           "description": "PDS invitation",
-          "execution_time": "2023-01-25T19:00:00+02:00",
+          "execution_time": "2023-01-27T11:00:00+02:00",
           "html": true,
           "from": {
             "Name": "Privat Debt Survey",
@@ -220,8 +220,14 @@
           },
           "attachments": [
             {
-              "label": "doktor-brueckbauer.jpg",
+              "label": "doktor-f-brueckbauer.jpg",
               "filename": "tmp-brueckbauer.jpg",
+              "language": "en",
+              "inline": true
+            },
+            {
+              "label": "doktor-k-kirschenmann.jpg",
+              "filename": "tmp-kirschenmann.jpg",
               "language": "en",
               "inline": true
             }
