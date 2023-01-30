@@ -107,11 +107,11 @@ func (r *Recipient) SetDerived(wv WaveT) {
 
 	} else if r.SourceTable == "pds" {
 
-		r.Anrede = "Dear " + r.Lastname
-		if strings.Contains(r.Lastname, "Dear Sir or Madam") {
-			r.Anrede = r.Lastname
+		if !strings.Contains(r.Anrede, "Dear Sir or Madam") {
+			r.Anrede = strings.TrimSpace(r.Anrede)
+			r.Lastname = strings.TrimSpace(r.Lastname)
+			r.Anrede = "Dear " + r.Anrede + " " + r.Lastname
 		}
-		r.Anrede = strings.TrimSpace(r.Anrede)
 		r.Language = "en"
 
 	}

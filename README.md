@@ -22,8 +22,6 @@
   * file attachments
   * email composition and submission using [go-mail](https://github.com/pbberlin/go-mail)
 
-* Only plain text email, though the email composer module would support HTML.
-
 * Each `project/survey` can have multiple `waves`,  
   representing monthly or quarterly repetitions
 
@@ -96,4 +94,9 @@ The software is thus intended to be started every day around 10:30 am by cron jo
 * Make functions computing dynamic template fields configurable;  
   at the moment `SetDerived` switches depending on `r.SourceTable` 
 
-* HTML email templates
+* HTML email
+  * All non-text formatting is stripped by outlook
+  * Inline pictures are not shown by gmail.com
+  
+
+
