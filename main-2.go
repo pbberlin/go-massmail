@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"io"
 	"log"
+	"net"
 	"net/mail"
 	"os"
 	"path/filepath"
@@ -13,6 +14,7 @@ import (
 	"time"
 
 	"github.com/gocarina/gocsv"
+	"github.com/jackpal/gateway"
 	gm "github.com/zew/go-mail"
 )
 
@@ -34,6 +36,33 @@ type Recipient struct {
 	// two days later
 	ClosingDateLastDue string `csv:"-"` // Monday, 14th November 2022   Freitag, den 14. November 2022,
 	ExcelLink          string `csv:"-"`
+}
+
+func isInternalGateway() bool {
+	ipGW, err := gateway.DiscoverGateway()
+	if err != nil {
+		log.Printf("discovering gateway yielded error %v", err)
+		return false
+	}
+
+	// 192.168.178.1
+	guestGW := net.IPv4(192, 168, 178, 1)
+	if ipGW.Equal(guestGW) {
+		return false
+	}
+
+	membersGW1 := net.IPv4(192, 168, 50, 1)
+	membersGW2 := net.IPv4(192, 168, 50, 2)
+	if ipGW.Equal(membersGW1) || ipGW.Equal(membersGW2) {
+		return true
+	}
+
+	internalGW := net.IPv4(10, 7, 10, 60)
+	if ipGW.Equal(internalGW) {
+		return true
+	}
+
+	return false
 }
 
 func formatDate(dt time.Time, lang string) string {
@@ -213,10 +242,16 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		return fmt.Errorf("email field %q is suspect \n\t%+v", rec.Email, rec)
 	}
 
-	m.ReplyTo = "finanzmarkttest@zew.de"
-	// return-path is a hidden email header
-	// indicating where bounced emails will be processed.
-	m.AddCustomHeader("Return-Path", m.ReplyTo)
+	m.ReplyTo = m.From.Address
+	if cfg.DefaultReplyTo != "" {
+		m.ReplyTo = cfg.DefaultReplyTo
+	}
+
+	if cfg.DefaultBounce != "" {
+		// return-path is a hidden email header
+		// indicating where bounced emails will be processed.
+		m.AddCustomHeader("Return-Path", cfg.DefaultFrom.Address)
+	}
 
 	//
 	// attachments
@@ -271,9 +306,25 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	}
 	rh := cfg.RelayHorsts[relayHostKey]
 
-	if strings.HasSuffix(rec.Email, "@zew.de") {
-		rh = cfg.RelayHorsts["hermes.zew.de"]
-		rh = cfg.RelayHorsts["hermes.zew-private.de"]
+	nameDomain := strings.Split(rec.Email, "@")
+	if len(nameDomain) != 2 {
+		err := fmt.Errorf("rec.Email seems malformed %v", rec.Email)
+		return err
+	}
+	domain := "@" + nameDomain[1]
+
+	if key, ok := cfg.DomainsToRelayHorsts[domain]; ok {
+		if isInternalGateway() {
+			if _, ok := cfg.RelayHorsts[key]; ok {
+				log.Printf("\trecipient domain %v via internal SMTP host %v", domain, key)
+				rh = cfg.RelayHorsts[key]
+			} else {
+				err := fmt.Errorf("email domain %v points to SMTP host %v, which does not exist", domain, key)
+				return err
+			}
+		}
+		//  else
+		// rh = cfg.RelayHorsts["hermes.zew.de"]
 	}
 
 	log.Printf("  sending %q via %s... to %v with %v attach(s)",
@@ -383,7 +434,7 @@ func processTask(survey string, wv WaveT, tsk TaskT) {
 	log.Printf("\n\n\t%v-%-22v   %v - %v att(s)\n\t==================", survey, tsk.Name, tsk.Description, len(tsk.Attachments))
 
 	participantFile := tsk.Name
-	fn := fmt.Sprintf("./csv/%v-%v-%d-%02d.csv", survey, participantFile, wv.Year, wv.Month)
+	fn := fmt.Sprintf("./csv/%v/%v-%d-%02d.csv", survey, participantFile, wv.Year, wv.Month)
 	log.Printf("using filename %v\n", fn)
 
 	inFile, err := os.OpenFile(

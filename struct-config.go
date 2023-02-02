@@ -107,7 +107,7 @@ func init() {
 
 type RelayHorst struct {
 	HostNamePort string
-	Username     string
+	Username     string // smtp auth
 	// password, see getenv
 }
 
@@ -193,10 +193,22 @@ type configT struct {
 	AttachmentRoot string                `json:"attachment_root,omitempty"`
 	RelayHorsts    map[string]RelayHorst `json:"relay_horsts,omitempty"`
 	DefaultHorst   string                `json:"default_horst,omitempty"` // one of relayhorsts
-	DefaultFrom    *mail.Address         `json:"default_from,omitempty"`  // as pointer to avoid json clutter
-	TestRecipients []string              `json:"test_recipients,omitempty"`
-	Waves          map[string][]WaveT    `json:"waves,omitempty"`
-	Tasks          map[string][]TaskT    `json:"tasks,omitempty"`
+
+	DomainsToRelayHorsts map[string]string `json:"domains_to_relay_horsts,omitempty"`
+
+	// sender name - _shown_ by email clients
+	// as pointer to avoid json clutter
+	DefaultFrom *mail.Address `json:"default_from,omitempty"`
+	// email for responses and auto-responses, if different from 'from', defaults to from
+	DefaultReplyTo string `json:"default_replyto,omitempty"`
+
+	// email for errors due to unknown recipients or postbox full or rejection etc, defaults to from
+	// either <noreply@zew.de> or email of admin or operator
+	DefaultBounce string `json:"default_bounce,omitempty"`
+
+	TestRecipients []string           `json:"test_recipients,omitempty"`
+	Waves          map[string][]WaveT `json:"waves,omitempty"`
+	Tasks          map[string][]TaskT `json:"tasks,omitempty"`
 }
 
 func writeExampleConfig() {
@@ -214,12 +226,14 @@ func writeExampleConfig() {
 				HostNamePort: "zimbra.zew.de:25",
 				Username:     "fmt-relay",
 			},
-			"hermes.zew.de": {
-				HostNamePort: "hermes.zew.de:25",
-			},
+
+			//
 			//  from intern
 			"hermes.zew-private.de": {
 				HostNamePort: "hermes.zew-private.de:25",
+			},
+			"hermes.zew.de": {
+				HostNamePort: "hermes.zew.de:25",
 			},
 			"email.zew.de": {
 				HostNamePort: "email.zew.de:25",
@@ -228,10 +242,16 @@ func writeExampleConfig() {
 
 		DefaultHorst: "zimbra.zew.de",
 
+		DomainsToRelayHorsts: map[string]string{
+			"@zew.de": "hermes.zew-private.de",
+		},
+
 		DefaultFrom: &mail.Address{
 			Name:    "Finanzmarkttest",
 			Address: "noreply@zew.de",
 		},
+		// DefaultBounce: "noreply@zew.de",
+		DefaultBounce: "peter.buchmann@zew.de",
 
 		TestRecipients: []string{
 			"peter.buchmann@web.de",

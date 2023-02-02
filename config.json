@@ -20,13 +20,20 @@
       }
     },
     "default_horst": "zimbra.zew.de",
+    "domains_to_relay_horsts": {
+      "@zew.de": "hermes.zew-private.de"
+    },
     "default_from": {
       "Name": "Finanzmarkttest",
       "Address": "noreply@zew.de"
     },
+    "default_bounce": "peter.buchmann@zew.de",
+    "default_bounce2": "noreply@zew.de",
     "test_recipients": [
       "peter.buchmann@web.de",
-      "peter.buchmann.68@gmail.com"
+      "peter.buchmann.68@gmail.com",
+      "peter.buchmann@zew.de",
+      "peter.non-existing@gmail.com"
     ],
     "waves": {
       "pds": [
@@ -212,7 +219,7 @@
         {
           "name": "invitation",
           "description": "PDS invitation",
-          "execution_time": "2023-01-30T11:00:00+02:00",
+          "execution_time": "2023-02-02T11:00:00+02:00",
           "html": true,
           "from": {
             "Name": "Privat Debt Survey",

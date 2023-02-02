@@ -20,10 +20,14 @@
       }
     },
     "default_horst": "zimbra.zew.de",
+    "domains_to_relay_horsts": {
+      "@zew.de": "hermes.zew-private.de"
+    },
     "default_from": {
       "Name": "Finanzmarkttest",
       "Address": "noreply@zew.de"
     },
+    "default_bounce": "peter.buchmann@zew.de",
     "test_recipients": [
       "peter.buchmann@web.de",
       "peter.buchmann.68@gmail.com"

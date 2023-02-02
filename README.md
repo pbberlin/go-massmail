@@ -2,16 +2,15 @@
 
 * Headless massmailing software - ready for cron job automation
 
-* Everything multi-language
-
 * Everything configured in `config.json`
 
-* Email templates from plain text files;  
-  attachments from file system
+* Email templates and attachments from file system
 
 * Recipient lists in CSV files
 
-* This is early beta
+* Everything multi-language
+
+* Early beta
 
 ## Features
 
@@ -97,6 +96,3 @@ The software is thus intended to be started every day around 10:30 am by cron jo
 * HTML email
   * All non-text formatting is stripped by outlook
   * Inline pictures are not shown by gmail.com
-  
-
-
