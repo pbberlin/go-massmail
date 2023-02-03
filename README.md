@@ -78,8 +78,9 @@ The software is thus intended to be started every day around 10:30 am by cron jo
 
 ## Todo
 
-* Continue after 8 seconds or keyboard input:  
-  can we get rid of the enter key?
+* ReplyTo and Bounce are still unclear.  
+  Exchange server bounces are sent to ReplyTo;  
+  not to Bounce
 
 * XML example for windows cron
 
@@ -94,5 +95,46 @@ The software is thus intended to be started every day around 10:30 am by cron jo
   at the moment `SetDerived` switches depending on `r.SourceTable` 
 
 * HTML email
-  * All non-text formatting is stripped by outlook
+  * Outlook is stripping CSS block formatting (float:left etc.)
+
+* HTML inline pictures
   * Inline pictures are not shown by gmail.com
+  * [Content type - nested](stackoverflow.com/questions/6706891/)
+
+```log
+  Content-Type: multipart/related; boundary="a1b2c3d4e3f2g1"
+  --a1b2c3d4e3f2g1
+  ...
+```
+
+Better
+
+```log
+[Headers]
+Content-type:multipart/mixed; boundary="boundary1"
+--boundary1
+Content-type:multipart/alternative; boundary="boundary2"
+--boundary2
+Content-Type: text/html; charset=ISO-8859-15
+Content-Transfer-Encoding: 7bit
+[HTML code with a href="cid:..."]
+
+--boundary2
+Content-Type: image/png;
+name="moz-screenshot.png"
+Content-Transfer-Encoding: base64
+Content-ID: <part1.06090408.01060107>
+Content-Disposition: inline; filename="moz-screenshot.png"
+[base64 image data here]
+
+--boundary2--
+--boundary1--```
+
+  * Or embedding `<img src="data:image/jpg;base64,{{base64-data-string here}}" />`  
+    but "data URIs in emails aren't supported"
+
+
+
+* Continue after 8 seconds or keyboard input:  
+  can we get rid of the enter key?
+

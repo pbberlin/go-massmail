@@ -23,18 +23,36 @@
     "domains_to_relay_horsts": {
       "@zew.de": "hermes.zew-private.de"
     },
-    "default_from": {
-      "Name": "Finanzmarkttest",
-      "Address": "noreply@zew.de"
+    "projects": {
+      "fmt": {
+        "from": {
+          "Name": "Finanzmarkttest",
+          "Address": "noreply@zew.de"
+        },
+        "replyto": "finanzmarkttest@zew.de",
+        "bounce": "peter.buchmann.68@gmail.com",
+        "test_recipients": [
+          "peter.buchmann@web.de",
+          "peter.buchmann.68@gmail.com",
+          "peter.buchmann@zew.de",
+          "no-existing-recipient@gmail.com"
+        ]
+      },
+      "pds": {
+        "from": {
+          "Name": "Private Debt Survey",
+          "Address": "private-debt-survey@zew.de"
+        },
+        "replyto": "private-debt-survey@zew.de",
+        "bounce": "peter.buchmann.68@gmail.com",
+        "test_recipients": [
+          "peter.buchmann@web.de",
+          "peter.buchmann.68@gmail.com",
+          "peter.buchmann@zew.de",
+          "no-existing-recipient@gmail.com"
+        ]
+      }
     },
-    "default_bounce": "peter.buchmann@zew.de",
-    "default_bounce2": "noreply@zew.de",
-    "test_recipients": [
-      "peter.buchmann@web.de",
-      "peter.buchmann.68@gmail.com",
-      "peter.buchmann@zew.de",
-      "peter.non-existing@gmail.com"
-    ],
     "waves": {
       "pds": [
         {
@@ -219,12 +237,8 @@
         {
           "name": "invitation",
           "description": "PDS invitation",
-          "execution_time": "2023-02-02T11:00:00+02:00",
+          "execution_time": "2023-02-03T11:00:00+02:00",
           "html": true,
-          "from": {
-            "Name": "Privat Debt Survey",
-            "Address": "private-debt-survey@zew.de"
-          },
           "attachments": [
             {
               "label": "doktor-f-brueckbauer.jpg",

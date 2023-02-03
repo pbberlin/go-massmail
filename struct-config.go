@@ -68,6 +68,19 @@ func init() {
 		}
 	}
 
+	// consistency
+	for project, _ := range cfg.Tasks {
+		if _, ok := cfg.Projects[project]; !ok {
+			log.Fatalf("task %v has no project", project)
+		}
+	}
+
+	for project, _ := range cfg.Waves {
+		if _, ok := cfg.Projects[project]; !ok {
+			log.Fatalf("wave %v has no project", project)
+		}
+	}
+
 	// same as
 	for project, tasks := range cfg.Tasks {
 		for idx1, t := range tasks {
@@ -176,16 +189,31 @@ type TaskT struct {
 	// if empty, then default horst will be chosen
 	RelayHost string `json:"relay_host,omitempty"`
 
-	From *mail.Address `json:"from,omitempty"` // as pointer to avoid json clutter
+	HTML bool `json:"html,omitempty"`
 
 	//
 	// use metadata from another task;
 	//   only difference is recipient list
 	// 	 template name *may* be different
-	SameAs   string `json:"same_as,omitempty"`
-	testmode bool
+	SameAs string `json:"same_as,omitempty"`
 
-	HTML bool `json:"html,omitempty"`
+	testmode bool
+}
+
+// ProjectT is for data across all waves and tasks
+type ProjectT struct {
+	// sender name - _shown_ by email clients
+	// as pointer to avoid json clutter
+	From *mail.Address `json:"from,omitempty"`
+	// email for responses and auto-responses, if different from 'from', defaults to from
+	ReplyTo string `json:"replyto,omitempty"`
+
+	// email for errors due to unknown recipients or postbox full or rejection etc, defaults to from
+	// either <noreply@zew.de> or email of admin or operator.
+	// Must be reachable from the SMTP gateway; i.e. bounce@zew.de is not reachable by zimbra.zew.de
+	Bounce string `json:"bounce,omitempty"`
+
+	TestRecipients []string `json:"test_recipients,omitempty"`
 }
 
 type configT struct {
@@ -196,19 +224,10 @@ type configT struct {
 
 	DomainsToRelayHorsts map[string]string `json:"domains_to_relay_horsts,omitempty"`
 
-	// sender name - _shown_ by email clients
-	// as pointer to avoid json clutter
-	DefaultFrom *mail.Address `json:"default_from,omitempty"`
-	// email for responses and auto-responses, if different from 'from', defaults to from
-	DefaultReplyTo string `json:"default_replyto,omitempty"`
-
-	// email for errors due to unknown recipients or postbox full or rejection etc, defaults to from
-	// either <noreply@zew.de> or email of admin or operator
-	DefaultBounce string `json:"default_bounce,omitempty"`
-
-	TestRecipients []string           `json:"test_recipients,omitempty"`
-	Waves          map[string][]WaveT `json:"waves,omitempty"`
-	Tasks          map[string][]TaskT `json:"tasks,omitempty"`
+	// Projects, waves and tasks a related to each other via the map key; i.e. "fmt" or "pds"
+	Projects map[string]ProjectT `json:"projects,omitempty"`
+	Waves    map[string][]WaveT  `json:"waves,omitempty"`
+	Tasks    map[string][]TaskT  `json:"tasks,omitempty"`
 }
 
 func writeExampleConfig() {
@@ -246,16 +265,44 @@ func writeExampleConfig() {
 			"@zew.de": "hermes.zew-private.de",
 		},
 
-		DefaultFrom: &mail.Address{
-			Name:    "Finanzmarkttest",
-			Address: "noreply@zew.de",
-		},
-		// DefaultBounce: "noreply@zew.de",
-		DefaultBounce: "peter.buchmann@zew.de",
+		Projects: map[string]ProjectT{
+			"fmt": {
+				//
+				From: &mail.Address{
+					Name:    "Finanzmarkttest",
+					Address: "noreply@zew.de",
+				},
+				ReplyTo: "finanzmarkttest@zew.de",
 
-		TestRecipients: []string{
-			"peter.buchmann@web.de",
-			"peter.buchmann.68@gmail.com",
+				// Bounce: "noreply@zew.de",
+				Bounce: "peter.buchmann.68@gmail.com",
+
+				TestRecipients: []string{
+					"peter.buchmann@web.de",
+					"peter.buchmann.68@gmail.com",
+					"peter.buchmann@zew.de",
+					"no-existing-recipient@gmail.com",
+				},
+			},
+			"pds": {
+				//
+				From: &mail.Address{
+					Name:    "Private Debt Survey",
+					Address: "private-debt-survey@zew.de",
+					// Address: "noreply@zew.de",
+				},
+				ReplyTo: "private-debt-survey@zew.de",
+
+				// Bounce: "noreply@zew.de",
+				Bounce: "peter.buchmann.68@gmail.com",
+
+				TestRecipients: []string{
+					"peter.buchmann@web.de",
+					"peter.buchmann.68@gmail.com",
+					"peter.buchmann@zew.de",
+					"no-existing-recipient@gmail.com",
+				},
+			},
 		},
 
 		Waves: map[string][]WaveT{
@@ -272,12 +319,12 @@ func writeExampleConfig() {
 					ClosingDatePreliminary: time.Date(2022, 11, 11+0, 17, 0, 0, 0, locPreliminary),
 					ClosingDateLastDue:     time.Date(2022, 11, 11+3, 17, 0, 0, 0, locPreliminary),
 				},
-				// {
-				// 	Year:                   2022,
-				// 	Month:                  12,
-				// 	ClosingDatePreliminary: time.Date(2022, 12, 07+0, 17, 0, 0, 0, locPreliminary),
-				// 	ClosingDateLastDue:     time.Date(2022, 12, 07+3, 17, 0, 0, 0, locPreliminary),
-				// },
+				{
+					Year:                   2022,
+					Month:                  12,
+					ClosingDatePreliminary: time.Date(2022, 12, 07+0, 17, 0, 0, 0, locPreliminary),
+					ClosingDateLastDue:     time.Date(2022, 12, 07+3, 17, 0, 0, 0, locPreliminary),
+				},
 			},
 		},
 		Tasks: map[string][]TaskT{

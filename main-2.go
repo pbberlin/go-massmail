@@ -7,7 +7,6 @@ import (
 	"io"
 	"log"
 	"net"
-	"net/mail"
 	"os"
 	"path/filepath"
 	"strings"
@@ -39,6 +38,7 @@ type Recipient struct {
 }
 
 func isInternalGateway() bool {
+
 	ipGW, err := gateway.DiscoverGateway()
 	if err != nil {
 		log.Printf("discovering gateway yielded error %v", err)
@@ -54,6 +54,11 @@ func isInternalGateway() bool {
 	membersGW1 := net.IPv4(192, 168, 50, 1)
 	membersGW2 := net.IPv4(192, 168, 50, 2)
 	if ipGW.Equal(membersGW1) || ipGW.Equal(membersGW2) {
+		return true
+	}
+
+	vpnGW := net.IPv4(192, 168, 26, 175)
+	if ipGW.Equal(vpnGW) {
 		return true
 	}
 
@@ -217,7 +222,6 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	}
 
 	m := gm.NewMessagePlain(getText(rec, project, tsk, rec.Language))
-	// 	m = gm.NewMessageHTML(getSubject(subject, relayHorst.HostNamePort), getBody(senderHorst, true))
 	if tsk.HTML {
 		m.ContentType = "text/html"
 	}
@@ -227,31 +231,24 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	// log.Print(m.Body)
 	// return
 
-	m.From = mail.Address{}
-	m.From = *tsk.From
-	if tsk.From == nil {
-		m.From = *cfg.DefaultFrom
-		if m.From.Address == "" {
-			return fmt.Errorf("Task.From or Config.DefaultFrom email must be set")
-		}
+	m.From = *cfg.Projects[project].From
+	if m.From.Address == "" {
+		return fmt.Errorf("Task.From or Config.DefaultFrom email must be set")
 	}
-
-	m.To = []string{rec.Email}
+	m.ReplyTo = m.From.Address
+	if cfg.Projects[project].ReplyTo != "" {
+		m.ReplyTo = cfg.Projects[project].ReplyTo
+	}
+	if cfg.Projects[project].Bounce != "" {
+		// return-path is a hidden email header
+		// indicating where bounced emails will be processed.
+		m.AddCustomHeader("Return-Path", cfg.Projects[project].Bounce)
+	}
 
 	if rec.Email == "" || !strings.Contains(rec.Email, "@") {
 		return fmt.Errorf("email field %q is suspect \n\t%+v", rec.Email, rec)
 	}
-
-	m.ReplyTo = m.From.Address
-	if cfg.DefaultReplyTo != "" {
-		m.ReplyTo = cfg.DefaultReplyTo
-	}
-
-	if cfg.DefaultBounce != "" {
-		// return-path is a hidden email header
-		// indicating where bounced emails will be processed.
-		m.AddCustomHeader("Return-Path", cfg.DefaultFrom.Address)
-	}
+	m.To = []string{rec.Email}
 
 	//
 	// attachments
@@ -322,9 +319,12 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 				err := fmt.Errorf("email domain %v points to SMTP host %v, which does not exist", domain, key)
 				return err
 			}
+		} else {
+			log.Printf("\trecipient domain %v - we are not internal", domain)
+			// rh = cfg.RelayHorsts["hermes.zew.de"]
 		}
-		//  else
-		// rh = cfg.RelayHorsts["hermes.zew.de"]
+		// } else {
+		// log.Printf("\trecipient domain %v has no SMTP host exception", domain)
 	}
 
 	log.Printf("  sending %q via %s... to %v with %v attach(s)",
@@ -429,12 +429,12 @@ func iterTasks() {
 
 }
 
-func processTask(survey string, wv WaveT, tsk TaskT) {
+func processTask(project string, wv WaveT, tsk TaskT) {
 
-	log.Printf("\n\n\t%v-%-22v   %v - %v att(s)\n\t==================", survey, tsk.Name, tsk.Description, len(tsk.Attachments))
+	log.Printf("\n\n\t%v-%-22v   %v - %v att(s)\n\t==================", project, tsk.Name, tsk.Description, len(tsk.Attachments))
 
 	participantFile := tsk.Name
-	fn := fmt.Sprintf("./csv/%v/%v-%d-%02d.csv", survey, participantFile, wv.Year, wv.Month)
+	fn := fmt.Sprintf("./csv/%v/%v-%d-%02d.csv", project, participantFile, wv.Year, wv.Month)
 	log.Printf("using filename %v\n", fn)
 
 	inFile, err := os.OpenFile(
@@ -468,7 +468,7 @@ func processTask(survey string, wv WaveT, tsk TaskT) {
 
 	if operationMode != "prod" || tsk.testmode {
 
-		lnTR := len(cfg.TestRecipients)
+		lnTR := len(cfg.Projects[project].TestRecipients)
 		if lnTR < 1 {
 			log.Printf("TestRecipients must be set in config")
 			return
@@ -485,7 +485,7 @@ func processTask(survey string, wv WaveT, tsk TaskT) {
 		//
 		// add recipients with email _similar_ to any in TestRecipients
 		for i1 := 0; i1 < len(recs); i1++ {
-			for _, testEmail := range cfg.TestRecipients {
+			for _, testEmail := range cfg.Projects[project].TestRecipients {
 				if testEmail == recs[i1].Email {
 					langs[recs[i1].Language] = append(langs[recs[i1].Language], i1)
 				}
@@ -509,9 +509,9 @@ func processTask(survey string, wv WaveT, tsk TaskT) {
 
 				subsetRec = append(subsetRec, recs[idxes[i]])
 
-				log.Printf("    test %v using %-32v with %v", recs[idxes[i]].Language, recs[idxes[i]].Email, cfg.TestRecipients[i])
+				log.Printf("    test lang %v using %-42v with %v", recs[idxes[i]].Language, recs[idxes[i]].Email, cfg.Projects[project].TestRecipients[i])
 				lastIdx := len(subsetRec) - 1
-				subsetRec[lastIdx].Email = cfg.TestRecipients[i]
+				subsetRec[lastIdx].Email = cfg.Projects[project].TestRecipients[i]
 			}
 
 		}
@@ -533,7 +533,7 @@ func processTask(survey string, wv WaveT, tsk TaskT) {
 			rec.ClosingDatePreliminary,
 			rec.Anrede,
 		)
-		err := singleEmail("test", survey, *rec, wv, tsk)
+		err := singleEmail("test", project, *rec, wv, tsk)
 		if err != nil {
 			log.Printf("error in preflight run:\n\t%v", err)
 			return
@@ -574,7 +574,7 @@ func processTask(survey string, wv WaveT, tsk TaskT) {
 			continue
 		}
 		if true {
-			err := singleEmail("prod", survey, *rec, wv, tsk)
+			err := singleEmail("prod", project, *rec, wv, tsk)
 			if err != nil {
 				log.Printf("error in prod run:\n\t%v", err)
 				return

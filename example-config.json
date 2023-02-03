@@ -23,15 +23,36 @@
     "domains_to_relay_horsts": {
       "@zew.de": "hermes.zew-private.de"
     },
-    "default_from": {
-      "Name": "Finanzmarkttest",
-      "Address": "noreply@zew.de"
+    "projects": {
+      "fmt": {
+        "from": {
+          "Name": "Finanzmarkttest",
+          "Address": "noreply@zew.de"
+        },
+        "replyto": "finanzmarkttest@zew.de",
+        "bounce": "peter.buchmann.68@gmail.com",
+        "test_recipients": [
+          "peter.buchmann@web.de",
+          "peter.buchmann.68@gmail.com",
+          "peter.buchmann@zew.de",
+          "no-existing-recipient@gmail.com"
+        ]
+      },
+      "pds": {
+        "from": {
+          "Name": "Private Debt Survey",
+          "Address": "private-debt-survey@zew.de"
+        },
+        "replyto": "private-debt-survey@zew.de",
+        "bounce": "peter.buchmann.68@gmail.com",
+        "test_recipients": [
+          "peter.buchmann@web.de",
+          "peter.buchmann.68@gmail.com",
+          "peter.buchmann@zew.de",
+          "no-existing-recipient@gmail.com"
+        ]
+      }
     },
-    "default_bounce": "peter.buchmann@zew.de",
-    "test_recipients": [
-      "peter.buchmann@web.de",
-      "peter.buchmann.68@gmail.com"
-    ],
     "waves": {
       "fmt": [
         {
@@ -39,6 +60,12 @@
           "month": 11,
           "closing_date_preliminary": "2022-11-11T17:00:00+02:00",
           "closing_date_last_due": "2022-11-14T17:00:00+02:00"
+        },
+        {
+          "year": 2022,
+          "month": 12,
+          "closing_date_preliminary": "2022-12-07T17:00:00+02:00",
+          "closing_date_last_due": "2022-12-10T17:00:00+02:00"
         }
       ],
       "pds": [
