@@ -197,6 +197,8 @@ type TaskT struct {
 	// 	 template name *may* be different
 	SameAs string `json:"same_as,omitempty"`
 
+	UrlCSV string `json:"urlcsv,omitempty"` // 'wget' URL for recipients CSV
+
 	testmode bool
 }
 
@@ -340,11 +342,13 @@ func writeExampleConfig() {
 					Name:          "invitation",
 					Description:   "Montag",
 					ExecutionTime: time.Date(2022, 11, 07, 11, 0, 0, 0, locPreliminary),
+					UrlCSV:        "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
 				},
 				{
 					Name:          "reminder",
 					Description:   "Freitag",
 					ExecutionTime: time.Date(2022, 11, 11, 11, 0, 0, 0, locPreliminary),
+					UrlCSV:        "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder",
 				},
 				{
 					Name:          "results1a",

@@ -82,12 +82,14 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2022-11-07T11:00:00+02:00"
+          "execution_time": "2022-11-07T11:00:00+02:00",
+          "urlcsv": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation"
         },
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2022-11-11T11:00:00+02:00"
+          "execution_time": "2022-11-11T11:00:00+02:00",
+          "urlcsv": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder"
         },
         {
           "name": "results1a",

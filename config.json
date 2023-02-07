@@ -80,6 +80,12 @@
           "month": 1,
           "closing_date_preliminary": "2023-01-13T17:00:00+02:00",
           "closing_date_last_due": "2023-01-16T17:00:00+02:00"
+        },
+        {
+          "year": 2023,
+          "month": 2,
+          "closing_date_preliminary": "2023-02-17T17:00:00+02:00",
+          "closing_date_last_due": "2023-02-20T17:00:00+02:00"
         }
       ]
     },
@@ -88,12 +94,15 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2023-01-09T10:15:00+02:00"
+          "xx-execution_time": "2023-02-13T10:15:00+02:00",
+          "execution_time": "2023-02-07T10:15:00+02:00",
+          "urlcsv": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation"
         },
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2023-01-13T09:00:00+02:00"
+          "execution_time": "2023-02-17T09:00:00+02:00",
+          "urlcsv": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder"
         },
         {
           "name": "results-a",

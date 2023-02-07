@@ -37,6 +37,9 @@ type Recipient struct {
 	ExcelLink          string `csv:"-"`
 }
 
+// IP addresses need to be configurable
+// map[string]bytes positive
+// map[string]bytes negative
 func isInternalGateway() bool {
 
 	ipGW, err := gateway.DiscoverGateway()
@@ -45,7 +48,6 @@ func isInternalGateway() bool {
 		return false
 	}
 
-	// 192.168.178.1
 	guestGW := net.IPv4(192, 168, 178, 1)
 	if ipGW.Equal(guestGW) {
 		return false
@@ -98,6 +100,36 @@ func formatDate(dt time.Time, lang string) string {
 	}
 
 	return ret
+}
+
+// stackoverflow.com/questions/30376921
+func fileCopy(in io.Reader, dst string) (err error) {
+
+	// Already exists?
+	if _, err := os.Stat(dst); err == nil {
+		// return nil  // skip
+	}
+	err = nil
+
+	out, err := os.Create(dst)
+	if err != nil {
+		return fmt.Errorf("error creating destination file: %w", err)
+	}
+	defer func() {
+		cerr := out.Close()
+		if err == nil {
+			err = cerr
+		}
+	}()
+
+	//
+	if _, err = io.Copy(out, in); err != nil {
+		return fmt.Errorf("error io.Copy: %v", err)
+	}
+
+	err = out.Sync()
+	return
+
 }
 
 // SetDerived computes helper fields from base columns
@@ -434,7 +466,8 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 	log.Printf("\n\n\t%v-%-22v   %v - %v att(s)\n\t==================", project, tsk.Name, tsk.Description, len(tsk.Attachments))
 
 	participantFile := tsk.Name
-	fn := fmt.Sprintf("./csv/%v/%v-%d-%02d.csv", project, participantFile, wv.Year, wv.Month)
+	fn := fmt.Sprintf("./csv/%v/%v.csv", project, participantFile)
+	fnCopy := fmt.Sprintf("./csv/%v/%v-%d-%02d.csv", project, participantFile, wv.Year, wv.Month)
 	log.Printf("using filename %v\n", fn)
 
 	inFile, err := os.OpenFile(
@@ -443,11 +476,49 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		os.O_RDWR,
 		os.ModePerm,
 	)
-	if err != nil {
+	if os.IsNotExist(err) {
+		if tsk.UrlCSV != "" {
+			log.Printf("downloading from %v\n", tsk.UrlCSV)
+			opts := WGetOpts{
+				URL:     tsk.UrlCSV,
+				OutFile: fn,
+				Verbose: true,
+				User:    "pbu",
+			}
+			err := wget(opts, os.Stderr)
+			if err != nil {
+				log.Printf("wget error %v", err)
+				return
+			}
+			inFile, err = os.OpenFile(
+				fn,
+				// os.O_RDWR|os.O_CREATE,
+				os.O_RDWR,
+				os.ModePerm,
+			)
+			if err != nil {
+				log.Printf("error opening wgetted file: %v", err)
+				return
+			}
+		}
+	} else if err != nil {
 		log.Print(err)
 		return
 	}
+
 	defer inFile.Close()
+
+	err = fileCopy(inFile, fnCopy)
+	if err != nil {
+		log.Printf("fileCopy error %v", err)
+		return
+	}
+
+	_, err = inFile.Seek(0, 0) // after the copy operation above
+	if err != nil {
+		log.Printf("seek back to start error %v", err)
+		return
+	}
 
 	recs := []*Recipient{} // recipients
 

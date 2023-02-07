@@ -40,7 +40,7 @@
 
 * Sending via cron job
 
-## Verbose explanations
+## Verbose explanation
 
 ### Structure
 
@@ -50,19 +50,34 @@ A `project/survey` contains a set of emails.
 
 Each task `task` may have additional data points, for example text elements or attachments.
 
-### Two intricacies
+### Relay hosts
 
-* Tasks with distinct recipients list, while everything else is equal. We could just repeat the config settings, instead we write `SameAs=[otherTask]`. For exactly these case, we also set `TemplateName=xx`, maing it distinct from the default, which would be task name, which would necessary be different for source task and `sameAs` task.
+* There is a global default setting for the SMTP relay host.
 
-* Each task can be sent via a different SMTP relay host. Since this only rarely needed, there is a default setting for the SMTP relay host.
+* Each task can have a specific SMTP relay host, if desired
+
+* `DomainsToRelayHorsts` specifies exceptions for certain recipient.  
+  For example, internal recipient can be configured to be messaged via the internal SMTP host
+
+* InternalGateway() sniffs, which gateway the sender is connected to.  
+  Additional logic can be applied based on the gateway (still work in progress).
+
+* Passwords for relay host auth must be supplied via environment variable.  
+  For instance `zimbra.zew.de` would require an advance `export PW_ZIMBRAZEWDE=secret`.
+
+### DRY - dont repeat tasks configurations
+
+* We have tasks with distinct recipients list, while everything else is equal. We could just repeat the config settings, instead we write `SameAs=[otherTask]`.
+
+* If we also wish the same template, we can set `TemplateName=[sourceTask]`.
 
 ### Test mode
 
--mode=test will only send one email for each entry in config TestRecipients.
+`-mode=test` will only send one email for each entry in config `TestRecipients`.
 
 If the email has more than one language version, test emails are sent for each language and TestRecipient.
 
-If the regular recipient list _contains_ one of the test emails, then this recipient record is chosen for test email.
+If the regular recipient list and `TestRecipients` _overlap_, then these records are used for the test run.
 
 ### Time control
 
@@ -76,7 +91,34 @@ then the task is executed.
 
 The software is thus intended to be started every day around 10:30 am by cron job.
 
+### URL for CSV files
+
+The CSV files containing the recipient emails and meta data  
+can be downloaded via HTTP before the task execution.  
+
+Example URLs
+
+* [FMT invitations](http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation)  
+* [FMT reminders](http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder)  
+
+
 ## Todo
+
+* isInternalGateway():  
+   IP addresses need to be configurable  
+     map[string]bytes positive  
+     map[string]bytes negative  
+  isInternalGateway could just be permission or not?  
+  Or RelayHorsts could be extended by a "sending-location" key;  
+  Thus relay hosts could be selected depending on sender and recipient domain.  
+  I need to simplify this.
+  
+
+* wget:
+   base64 authorization username must be configurable  
+   password is taken from environment var  
+   should the download be done every time?  
+   If older than 30 minutes? If older than 24 hours? Configurable?
 
 * ReplyTo and Bounce are still unclear.  
   Exchange server bounces are sent to ReplyTo;  
@@ -86,10 +128,7 @@ The software is thus intended to be started every day around 10:30 am by cron jo
 
 * Batch file setting up logging to file
 
-* The CSV files containing the recipient emails and meta data  
-  should be made downloadable via HTTPS request immediately before the task execution.
-
-* Allow inclusion of repeating text blocks (i.e. footer)
+* Includes of repeating text blocks (i.e. footer)
 
 * Make functions computing dynamic template fields configurable;  
   at the moment `SetDerived` switches depending on `r.SourceTable` 
