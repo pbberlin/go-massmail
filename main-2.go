@@ -476,14 +476,27 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		os.O_RDWR,
 		os.ModePerm,
 	)
-	if os.IsNotExist(err) {
-		if tsk.UrlCSV != "" {
-			log.Printf("downloading from %v\n", tsk.UrlCSV)
+
+	conditionInit := os.IsNotExist(err)
+
+	conditionStale := false
+	stat, _ := inFile.Stat()
+	stale := stat.ModTime().Add(tsk.URL.TTL) // ModTime => last downloaded
+	if time.Now().After(stale) {
+		log.Printf("   filename %v\n is stale", fn)
+		conditionStale = true
+	} else {
+		log.Printf("   filename %v\n is fresh", fn)
+	}
+
+	if conditionInit || conditionStale {
+		if tsk.URL != nil {
+			log.Printf("downloading from %v\n", tsk.URL.URL)
 			opts := WGetOpts{
-				URL:     tsk.UrlCSV,
+				URL:     tsk.URL.URL,
 				OutFile: fn,
 				Verbose: true,
-				User:    "pbu",
+				User:    tsk.URL.User,
 			}
 			err := wget(opts, os.Stderr)
 			if err != nil {

@@ -168,6 +168,12 @@ type AttachmentT struct {
 	Inline   bool   `json:"inline,omitempty"`
 }
 
+type UrlT struct {
+	URL  string
+	TTL  time.Duration
+	User string // http base64 auth, password from environ
+}
+
 // WaveT - data that changes with each wave
 // but is not task specific
 type WaveT struct {
@@ -197,7 +203,7 @@ type TaskT struct {
 	// 	 template name *may* be different
 	SameAs string `json:"same_as,omitempty"`
 
-	UrlCSV string `json:"urlcsv,omitempty"` // 'wget' URL for recipients CSV
+	URL *UrlT `json:"url,omitempty"` // 'wget' URL for recipients CSV
 
 	testmode bool
 }
@@ -342,13 +348,21 @@ func writeExampleConfig() {
 					Name:          "invitation",
 					Description:   "Montag",
 					ExecutionTime: time.Date(2022, 11, 07, 11, 0, 0, 0, locPreliminary),
-					UrlCSV:        "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
+					URL: &UrlT{
+						URL:  "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
+						TTL:  1 * time.Hour, // deadline for new participants
+						User: "pbu",
+					},
 				},
 				{
 					Name:          "reminder",
 					Description:   "Freitag",
 					ExecutionTime: time.Date(2022, 11, 11, 11, 0, 0, 0, locPreliminary),
-					UrlCSV:        "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder",
+					URL: &UrlT{
+						URL:  "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder",
+						TTL:  0 * time.Minute, // reminders should not be stale
+						User: "pbu",
+					},
 				},
 				{
 					Name:          "results1a",

@@ -83,13 +83,21 @@
           "name": "invitation",
           "description": "Montag",
           "execution_time": "2022-11-07T11:00:00+02:00",
-          "urlcsv": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation"
+          "url": {
+            "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
+            "TTL": 3600000000000,
+            "User": "pbu"
+          }
         },
         {
           "name": "reminder",
           "description": "Freitag",
           "execution_time": "2022-11-11T11:00:00+02:00",
-          "urlcsv": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder"
+          "url": {
+            "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder",
+            "TTL": 0,
+            "User": "pbu"
+          }
         },
         {
           "name": "results1a",

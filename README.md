@@ -48,7 +48,7 @@ A `project/survey` contains a set of emails.
 
 `Sets` of emails can be sent in recurrent `waves`. A `wave` belongs to a project. It usually has a characteristic month or quarter or season. And a wave has common data points, to which multiple email task can refer.
 
-Each task `task` may have additional data points, for example text elements or attachments.
+Each `task` may have additional data points, for example text elements or attachments.
 
 ### Relay hosts
 
@@ -96,6 +96,11 @@ The software is thus intended to be started every day around 10:30 am by cron jo
 The CSV files containing the recipient emails and meta data  
 can be downloaded via HTTP before the task execution.  
 
+Configurable TTL to enforce ultra fresh recipient lists if need be.
+
+HTTP base64 auth via User setting.  
+Password is taken from ENV.
+
 Example URLs
 
 * [FMT invitations](http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation)  
@@ -113,13 +118,6 @@ Example URLs
   Thus relay hosts could be selected depending on sender and recipient domain.  
   I need to simplify this.
   
-
-* wget:
-   base64 authorization username must be configurable  
-   password is taken from environment var  
-   should the download be done every time?  
-   If older than 30 minutes? If older than 24 hours? Configurable?
-
 * ReplyTo and Bounce are still unclear.  
   Exchange server bounces are sent to ReplyTo;  
   not to Bounce
