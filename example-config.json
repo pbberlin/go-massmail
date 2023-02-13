@@ -83,9 +83,10 @@
           "name": "invitation",
           "description": "Montag",
           "execution_time": "2022-11-07T11:00:00+02:00",
+          "relay_host": "zimbra.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
-            "TTL": 3600000000000,
+            "TTL": 3600,
             "User": "pbu"
           }
         },

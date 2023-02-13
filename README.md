@@ -165,7 +165,9 @@ Content-Disposition: inline; filename="moz-screenshot.png"
 [base64 image data here]
 
 --boundary2--
---boundary1--```
+--boundary1--
+
+```
 
   * Or embedding `<img src="data:image/jpg;base64,{{base64-data-string here}}" />`  
     but "data URIs in emails aren't supported"

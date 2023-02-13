@@ -258,7 +258,7 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		m.ContentType = "text/html"
 	}
 
-	log.Printf("  recipient: %v", rec.Email)
+	// log.Printf("  recipient: %v", rec.Email)
 	log.Printf("  subject:   %v", m.Subject)
 	// log.Print(m.Body)
 	// return
@@ -481,12 +481,12 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 
 	conditionStale := false
 	stat, _ := inFile.Stat()
-	stale := stat.ModTime().Add(tsk.URL.TTL) // ModTime => last downloaded
+	stale := stat.ModTime().Add(tsk.URL.TTL * time.Second) // ModTime => last downloaded
 	if time.Now().After(stale) {
-		log.Printf("   filename %v\n is stale", fn)
+		log.Printf("      filename %v  is stale", fn)
 		conditionStale = true
 	} else {
-		log.Printf("   filename %v\n is fresh", fn)
+		log.Printf("      filename %v  is fresh", fn)
 	}
 
 	if conditionInit || conditionStale {
@@ -611,11 +611,12 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		// 	continue
 		// }
 		log.Printf(
-			"#%03v - %12v  %26v  %v",
+			"#%03v %-28v %-28v - %v",
 			idx1+1,
-			rec.MonthYear,
-			rec.ClosingDatePreliminary,
+			// rec.MonthYear,
+			rec.Email,
 			rec.Anrede,
+			rec.ClosingDatePreliminary,
 		)
 		err := singleEmail("test", project, *rec, wv, tsk)
 		if err != nil {

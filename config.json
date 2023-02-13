@@ -34,8 +34,7 @@
         "test_recipients": [
           "peter.buchmann@web.de",
           "peter.buchmann.68@gmail.com",
-          "peter.buchmann@zew.de",
-          "no-existing-recipient@gmail.com"
+          "peter.buchmann@zew.de"
         ]
       },
       "pds": {
@@ -45,6 +44,8 @@
         },
         "replyto": "private-debt-survey@zew.de",
         "bounce": "peter.buchmann.68@gmail.com",
+        "xx-test_recipients": [
+        ],
         "test_recipients": [
           "peter.buchmann@web.de",
           "peter.buchmann.68@gmail.com",
@@ -85,7 +86,7 @@
           "year": 2023,
           "month": 2,
           "closing_date_preliminary": "2023-02-17T17:00:00+02:00",
-          "closing_date_last_due": "2023-02-20T17:00:00+02:00"
+          "closing_date_last_due":    "2023-02-20T17:00:00+02:00"
         }
       ]
     },
@@ -94,11 +95,14 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "xx-execution_time": "2023-02-13T10:15:00+02:00",
-          "execution_time": "2023-02-07T10:15:00+02:00",
+          "execution_time": "2023-02-13T10:15:00+02:00",
+          "xxexecution_time": "2023-02-07T10:15:00+02:00",
+          "xxrelay_host": "zimbra.zew.de",
+          "xxrelay_host": "hermes.zew-private.de",
+          "relay_host": "zimbra.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
-            "TTL": 3600000000000,
+            "TTL": 3600,
             "User": "pbu"
           }
         },

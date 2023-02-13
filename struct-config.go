@@ -348,9 +348,11 @@ func writeExampleConfig() {
 					Name:          "invitation",
 					Description:   "Montag",
 					ExecutionTime: time.Date(2022, 11, 07, 11, 0, 0, 0, locPreliminary),
+					// RelayHost: "email.zew.de",
+					RelayHost: "zimbra.zew.de",
 					URL: &UrlT{
 						URL:  "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
-						TTL:  1 * time.Hour, // deadline for new participants
+						TTL:  60 * 60, // deadline for new participants
 						User: "pbu",
 					},
 				},
@@ -360,7 +362,7 @@ func writeExampleConfig() {
 					ExecutionTime: time.Date(2022, 11, 11, 11, 0, 0, 0, locPreliminary),
 					URL: &UrlT{
 						URL:  "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder",
-						TTL:  0 * time.Minute, // reminders should not be stale
+						TTL:  0, // reminders should not be stale
 						User: "pbu",
 					},
 				},
