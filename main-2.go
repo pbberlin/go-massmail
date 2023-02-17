@@ -480,13 +480,21 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 	conditionInit := os.IsNotExist(err)
 
 	conditionStale := false
-	stat, _ := inFile.Stat()
-	stale := stat.ModTime().Add(tsk.URL.TTL * time.Second) // ModTime => last downloaded
-	if time.Now().After(stale) {
-		log.Printf("      filename %v  is stale", fn)
-		conditionStale = true
-	} else {
-		log.Printf("      filename %v  is fresh", fn)
+
+	if !conditionInit {
+		// checking for stale - if file already exists
+		stat, err := inFile.Stat()
+		if err != nil {
+			log.Printf("inFile Stat error: %v", err)
+			return
+		}
+		stale := stat.ModTime().Add(tsk.URL.TTL * time.Second) // ModTime => last downloaded
+		if time.Now().After(stale) {
+			log.Printf("      filename %v  is stale", fn)
+			conditionStale = true
+		} else {
+			log.Printf("      filename %v  is fresh", fn)
+		}
 	}
 
 	if conditionInit || conditionStale {
