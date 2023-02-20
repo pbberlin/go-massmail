@@ -94,18 +94,28 @@ func init() {
 					for _, candT := range candTasks {
 						if candT.Name == t.SameAs {
 							log.Printf("%v-%v will use %v", project, t.Name, candT.Name)
-							// preserve name and description
-							nm := t.Name
-							de := t.Description
-							tn := t.TemplateName
+
+							// preserve original name, description, template name, recipient URL
+							orig := t
+
 							// clobber everything else from 'sameAs'
 							t = candT
-							t.Name = nm
-							t.Description = de
-							t.TemplateName = tn
+
+							// restore some original values
+							t.Name = orig.Name // determines recipient list
+							t.Description = orig.Description
+							if orig.URL != nil {
+								t.URL = orig.URL
+							}
+							if orig.TemplateName != "" {
+								t.TemplateName = orig.TemplateName
+							}
+
 							t.SameAs = "" // prevent transitive copies
+
 							cfg.Tasks[candProj][idx1] = t
 							break findSameAs
+
 						}
 					}
 				}
@@ -185,8 +195,17 @@ type WaveT struct {
 
 // TaskT additional specific data for a wave
 type TaskT struct {
-	Name          string    `json:"name,omitempty"` // no hyphens
-	Description   string    `json:"description,omitempty"`
+	Name        string `json:"name,omitempty"` // no hyphens
+	Description string `json:"description,omitempty"`
+
+	//
+	// use metadata from another task;
+	//   recipient list    is different - because it is derived from task.Name
+	//   	template name  is also defaults to task.Name,
+	// 	 	template name  can be shared between source and destination
+	// 			by setting TemplateName for both
+	SameAs string `json:"same_as,omitempty"`
+
 	ExecutionTime time.Time `json:"execution_time,omitempty"` // when should the task be started - for cron jobs and parallel tasks
 
 	TemplateName string        `json:"template_name,omitempty"` // default is Name
@@ -196,12 +215,6 @@ type TaskT struct {
 	RelayHost string `json:"relay_host,omitempty"`
 
 	HTML bool `json:"html,omitempty"`
-
-	//
-	// use metadata from another task;
-	//   only difference is recipient list
-	// 	 template name *may* be different
-	SameAs string `json:"same_as,omitempty"`
 
 	URL *UrlT `json:"url,omitempty"` // 'wget' URL for recipients CSV
 
@@ -217,7 +230,7 @@ type ProjectT struct {
 	ReplyTo string `json:"replyto,omitempty"`
 
 	// email for errors due to unknown recipients or postbox full or rejection etc, defaults to from
-	// either <noreply@zew.de> or email of admin or operator.
+	// either <noreply1@zew.de> or email of admin or operator.
 	// Must be reachable from the SMTP gateway; i.e. bounce@zew.de is not reachable by zimbra.zew.de
 	Bounce string `json:"bounce,omitempty"`
 
@@ -278,11 +291,11 @@ func writeExampleConfig() {
 				//
 				From: &mail.Address{
 					Name:    "Finanzmarkttest",
-					Address: "noreply@zew.de",
+					Address: "noreply1@zew.de",
 				},
 				ReplyTo: "finanzmarkttest@zew.de",
 
-				// Bounce: "noreply@zew.de",
+				// Bounce: "noreply1@zew.de",
 				Bounce: "peter.buchmann.68@gmail.com",
 
 				TestRecipients: []string{
@@ -297,11 +310,11 @@ func writeExampleConfig() {
 				From: &mail.Address{
 					Name:    "Private Debt Survey",
 					Address: "private-debt-survey@zew.de",
-					// Address: "noreply@zew.de",
+					// Address: "noreply1@zew.de",
 				},
 				ReplyTo: "private-debt-survey@zew.de",
 
-				// Bounce: "noreply@zew.de",
+				// Bounce: "noreply1@zew.de",
 				Bounce: "peter.buchmann.68@gmail.com",
 
 				TestRecipients: []string{

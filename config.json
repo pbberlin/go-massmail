@@ -27,7 +27,7 @@
       "fmt": {
         "from": {
           "Name": "Finanzmarkttest",
-          "Address": "noreply@zew.de"
+          "Address": "noreply1@zew.de"
         },
         "replyto": "finanzmarkttest@zew.de",
         "bounce": "peter.buchmann.68@gmail.com",
@@ -96,7 +96,7 @@
           "name": "invitation",
           "description": "Montag",
           "execution_time": "2023-02-13T10:15:00+02:00",
-          "xxexecution_time": "2023-02-07T10:15:00+02:00",
+          "xxexecution_time": "2023-02-20T10:15:00+02:00",
           "xxrelay_host": "zimbra.zew.de",
           "xxrelay_host": "hermes.zew-private.de",
           "relay_host": "zimbra.zew.de",
@@ -119,8 +119,13 @@
         {
           "name": "results-a",
           "description": "Dienstags um 11 - 270 Teilnehmer",
-          "execution_time": "2023-01-17T11:00:00+02:00",
+          "execution_time": "2023-02-21T11:00:00+02:00",
           "template_name": "results",
+          "url": {
+            "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
+            "TTL": 3600,
+            "User": "pbu"
+          },
           "attachments": [
             {
               "label": "ZEW-FMT-Datenblatt-%v-%02v.pdf",
@@ -152,14 +157,17 @@
         {
           "name": "results-b",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
-          "execution_time": "2023-01-17T11:00:00+02:00",
           "template_name": "results",
+          "url": {
+            "TTL": 111113600,
+            "User": "url-not-empty"
+          },
           "same_as": "results-a"
         },
         {
           "name": "results-expectation-data",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 25 Interessenten",
-          "execution_time": "2023-01-17T11:01:00+02:00",
+          "execution_time": "2023-02-21T11:00:00+02:00",
           "attachments": [
             {
               "label": "ZEW_FMT_Expectation_Data.xlsx",
@@ -176,7 +184,7 @@
         {
           "name": "results-gmind",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 12 Interessenten",
-          "execution_time": "2023-01-17T11:01:00+02:00",
+          "execution_time": "2023-02-21T11:00:00+02:00",
           "attachments": [
             {
               "label": "G-Mind_werte.xlsx",
@@ -193,7 +201,7 @@
         {
           "name": "results-economy",
           "description": "Dienstags um 11 - Ergebnisverteiler - 1 Interessenten",
-          "execution_time": "2023-01-17T11:01:00+02:00",
+          "execution_time": "2023-02-21T11:00:00+02:00",
           "attachments": [
             {
               "label": "Economy.xlsx",
@@ -205,7 +213,7 @@
         {
           "name": "results-haver",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 2 Interessenten",
-          "execution_time": "2023-01-17T11:01:00+02:00",
+          "execution_time": "2023-02-21T11:00:00+02:00",
           "attachments": [
             {
               "label": "haver.xlsx",
@@ -217,7 +225,7 @@
         {
           "name": "results-ndr",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 2 Interessenten",
-          "execution_time": "2023-01-17T11:01:00+02:00",
+          "execution_time": "2023-02-21T11:00:00+02:00",
           "attachments": [
             {
               "label": "NDR.xlsx",
@@ -227,6 +235,7 @@
           ],
           "comments": "do we need the proquote ??"
         },
+
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",

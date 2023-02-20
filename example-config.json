@@ -27,7 +27,7 @@
       "fmt": {
         "from": {
           "Name": "Finanzmarkttest",
-          "Address": "noreply@zew.de"
+          "Address": "noreply1@zew.de"
         },
         "replyto": "finanzmarkttest@zew.de",
         "bounce": "peter.buchmann.68@gmail.com",
@@ -136,9 +136,9 @@
         {
           "name": "results1b",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
+          "same_as": "results1a",
           "execution_time": "0001-01-01T00:00:00Z",
-          "template_name": "results1",
-          "same_as": "results1a"
+          "template_name": "results1"
         },
         {
           "name": "results2a",

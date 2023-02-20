@@ -316,7 +316,7 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 
 		modTimePlus := fi.ModTime().Add(20 * 24 * 3600 * time.Second)
 		if time.Now().After(modTimePlus) {
-			err := fmt.Errorf("file %v is more than 20 days old", pth)
+			err := fmt.Errorf("file over 20 days old: %v ", filepath.Base(pth))
 			log.Print(err)
 			return err
 		}
@@ -437,7 +437,7 @@ func dueTasks() (surveys []string, waves []WaveT, tasks []TaskT) {
 				waves = append(waves, wv)
 				tsk.testmode = true
 				tasks = append(tasks, tsk)
-				fmt.Fprintf(msg, "\t%v-%-22v   %v\n", survey, tsk.Name, tsk.Description)
+				fmt.Fprintf(msg, "\t%v-%-26v   %v\n", survey, tsk.Name, tsk.Description)
 			}
 		}
 
@@ -472,33 +472,48 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 
 	inFile, err := os.OpenFile(
 		fn,
-		// os.O_RDWR|os.O_CREATE,
 		os.O_RDWR,
 		os.ModePerm,
 	)
+	if err != nil && !os.IsNotExist(err) {
+		log.Print(err)
+		return
+	}
 
-	conditionInit := os.IsNotExist(err)
-
+	conditionExist := !os.IsNotExist(err)
 	conditionStale := false
 
-	if !conditionInit {
+	if conditionExist {
 		// checking for stale - if file already exists
 		stat, err := inFile.Stat()
 		if err != nil {
 			log.Printf("inFile Stat error: %v", err)
 			return
 		}
-		stale := stat.ModTime().Add(tsk.URL.TTL * time.Second) // ModTime => last downloaded
+		ttl := time.Duration(0)
+		if tsk.URL != nil {
+			ttl = tsk.URL.TTL
+		}
+		stale := stat.ModTime().Add(ttl * time.Second) // ModTime => last downloaded
 		if time.Now().After(stale) {
-			log.Printf("      filename %v  is stale", fn)
+			hasWGet := "no wget URL"
+			if tsk.URL != nil && tsk.URL.URL != "" {
+				hasWGet = "trying wget"
+			}
+			log.Printf("      filename %v  is stale - %v", fn, hasWGet)
 			conditionStale = true
 		} else {
 			log.Printf("      filename %v  is fresh", fn)
 		}
+	} else {
+		log.Printf("      filename %v  not exists", fn)
+		if tsk.URL == nil || tsk.URL.URL == "" {
+			return
+		}
 	}
 
-	if conditionInit || conditionStale {
-		if tsk.URL != nil {
+	if !conditionExist || conditionStale {
+		if tsk.URL != nil && tsk.URL.URL != "" {
 			log.Printf("downloading from %v\n", tsk.URL.URL)
 			opts := WGetOpts{
 				URL:     tsk.URL.URL,
@@ -522,9 +537,6 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 				return
 			}
 		}
-	} else if err != nil {
-		log.Print(err)
-		return
 	}
 
 	defer inFile.Close()
@@ -534,7 +546,6 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		log.Printf("fileCopy error %v", err)
 		return
 	}
-
 	_, err = inFile.Seek(0, 0) // after the copy operation above
 	if err != nil {
 		log.Printf("seek back to start error %v", err)
