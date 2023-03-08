@@ -177,3 +177,17 @@ Content-Disposition: inline; filename="moz-screenshot.png"
 * Continue after 8 seconds or keyboard input:  
   can we get rid of the enter key?
 
+
+## Using MS word and Outlook
+
+This is a fallback in case of an utter emergency.
+
+<https://support.microsoft.com/de-de/office/f%C3%BCr-seriendrucke-verwendbare-datenquellen-9de322a6-f0f9-448d-a113-5fab317d9ef4>
+
+<https://support.microsoft.com/de-de/office/verwenden-des-seriendrucks-zum-senden-von-massen-e-mails-0f123521-20ce-4aa8-8b62-ac211dedefa4>
+
+
+Empfänger auswählen
+Vorhandene Liste auswählen
+
+c:\Users\pbu\Documents\zew_work\git\go\go-massmail\csv\fmt\report-b.csv

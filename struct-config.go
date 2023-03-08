@@ -162,12 +162,22 @@ func (rh RelayHorst) getAuth() (auth smtp.Auth) {
 		)
 	}
 
-	return smtp.PlainAuth(
-		"",
+	if false {
+		// this fails for exchange servers
+		return smtp.PlainAuth(
+			"",
+			rh.Username,
+			pw,
+			pureHost,
+		)
+
+	}
+
+	return Auth2(
 		rh.Username,
 		pw,
-		pureHost,
 	)
+
 }
 
 // AttachmentT represents a file attachment for an email
@@ -243,6 +253,10 @@ type configT struct {
 	RelayHorsts    map[string]RelayHorst `json:"relay_horsts,omitempty"`
 	DefaultHorst   string                `json:"default_horst,omitempty"` // one of relayhorsts
 
+	// An attempt to route different recipient domains via different smtp gateways.
+	// Because zimbra cannot send to internal recipient (zew.de).
+	// Because or testing of problematic recipients, such as metzler.com or lbswest.de.
+	// Not further pursued, since we dont use zimbra anymore.
 	DomainsToRelayHorsts map[string]string `json:"domains_to_relay_horsts,omitempty"`
 
 	// Projects, waves and tasks a related to each other via the map key; i.e. "fmt" or "pds"

@@ -3,8 +3,8 @@
     "attachment_root": "C:\\Users\\pbu\\Documents\\zew_work\\daten\\",
     "relay_horsts": {
       "email.zew.de": {
-        "HostNamePort": "email.zew.de:25",
-        "Username": ""
+        "HostNamePort": "email.zew.de:587",
+        "Username": "pbu"
       },
       "hermes.zew-private.de": {
         "HostNamePort": "hermes.zew-private.de:25",
@@ -19,18 +19,24 @@
         "Username": "fmt-relay"
       }
     },
-    "default_horst": "zimbra.zew.de",
-    "domains_to_relay_horsts": {
-      "@zew.de": "hermes.zew-private.de"
+    "default_horst-trash": "zimbra.zew.de",
+    "default_horst": "email.zew.de",
+    "XX-domains_to_relay_horsts": {
+      "@zew.de":      "email.zew.de",
+      "@web.de":      "email.zew.de",
+      "@metzler.com": "hermes.zew-private.de",
+      "@lbswest.de":  "hermes.zew-private.de"
     },
     "projects": {
       "fmt": {
         "from": {
-          "Name": "Finanzmarkttest",
-          "Address": "noreply1@zew.de"
+          "Name":       "Finanzmarkttest",
+          "Address":    "noreply@zew.de",
+          "XX-Address-not-allowed": "FINANZMARKTTEST@zew.de",
+          "XX-Address-not-desired": "peter.buchmann@zew.de"
         },
         "replyto": "finanzmarkttest@zew.de",
-        "bounce": "peter.buchmann.68@gmail.com",
+        "bounce":  "noreply@zew.de",
         "test_recipients": [
           "peter.buchmann@web.de",
           "peter.buchmann.68@gmail.com",
@@ -39,13 +45,11 @@
       },
       "pds": {
         "from": {
-          "Name": "Private Debt Survey",
-          "Address": "private-debt-survey@zew.de"
+          "Name":    "Private Debt Survey",
+          "Address": "noreply@zew.de"
         },
         "replyto": "private-debt-survey@zew.de",
-        "bounce": "peter.buchmann.68@gmail.com",
-        "xx-test_recipients": [
-        ],
+        "bounce":  "noreply@zew.de",
         "test_recipients": [
           "peter.buchmann@web.de",
           "peter.buchmann.68@gmail.com",
@@ -96,10 +100,8 @@
           "name": "invitation",
           "description": "Montag",
           "execution_time": "2023-02-13T10:15:00+02:00",
-          "xxexecution_time": "2023-02-20T10:15:00+02:00",
-          "xxrelay_host": "zimbra.zew.de",
-          "xxrelay_host": "hermes.zew-private.de",
-          "relay_host": "zimbra.zew.de",
+          "XX-1-relay_host": "zimbra.zew.de",
+          "XX-2-relay_host": "hermes.zew-private.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
             "TTL": 3600,
@@ -116,54 +118,8 @@
             "User": "pbu"
           }
         },
-        {
-          "name": "results-a",
-          "description": "Dienstags um 11 - 270 Teilnehmer",
-          "execution_time": "2023-02-21T11:00:00+02:00",
-          "template_name": "results",
-          "url": {
-            "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
-            "TTL": 3600,
-            "User": "pbu"
-          },
-          "attachments": [
-            {
-              "label": "ZEW-FMT-Datenblatt-%v-%02v.pdf",
-              "filename": "tabellen/tab.pdf",
-              "language": "de"
-            },
-            {
-              "label": "ZEW-FMT-Pressemitteilung-%v-%02v.pdf",
-              "filename": "pressemitteilungen/pressemitteilung_dt.pdf",
-              "language": "de"
-            },
-            {
-              "label": "ZEW-Index-Press-Release-%v-%02v.pdf",
-              "filename": "pressemitteilungen/pressemitteilung_en.pdf",
-              "language": "de"
-            },
-            {
-              "label": "ZEW-Index-Data-Table.pdf",
-              "filename": "tabellen/tab-engl.pdf",
-              "language": "en"
-            },
-            {
-              "label": "ZEW-Index-Press-Release-%v-%02v.pdf",
-              "filename": "pressemitteilungen/pressemitteilung_en.pdf",
-              "language": "en"
-            }
-          ]
-        },
-        {
-          "name": "results-b",
-          "description": "Dienstags um 11 - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
-          "template_name": "results",
-          "url": {
-            "TTL": 111113600,
-            "User": "url-not-empty"
-          },
-          "same_as": "results-a"
-        },
+
+
         {
           "name": "results-expectation-data",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 25 Interessenten",
@@ -235,11 +191,60 @@
           ],
           "comments": "do we need the proquote ??"
         },
+        {
+          "name": "results-a",
+          "description": "Dienstags um 11 - 270 Teilnehmer",
+          "execution_time": "2023-02-21T11:00:00+02:00",
+          "template_name": "results",
+          "url": {
+            "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
+            "TTL": 3600,
+            "User": "pbu"
+          },
+          "attachments": [
+            {
+              "label": "ZEW-FMT-Datenblatt-%v-%02v.pdf",
+              "filename": "tabellen/tab.pdf",
+              "language": "de"
+            },
+            {
+              "label": "ZEW-FMT-Pressemitteilung-%v-%02v.pdf",
+              "filename": "pressemitteilungen/pressemitteilung_dt.pdf",
+              "language": "de"
+            },
+            {
+              "label": "ZEW-Index-Press-Release-%v-%02v.pdf",
+              "filename": "pressemitteilungen/pressemitteilung_en.pdf",
+              "language": "de"
+            },
+            {
+              "label": "ZEW-Index-Data-Table.pdf",
+              "filename": "tabellen/tab-engl.pdf",
+              "language": "en"
+            },
+            {
+              "label": "ZEW-Index-Press-Release-%v-%02v.pdf",
+              "filename": "pressemitteilungen/pressemitteilung_en.pdf",
+              "language": "en"
+            }
+          ]
+        },
+        {
+          "name": "results-b",
+          "description": "Dienstags um 11 - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
+          "template_name": "results",
+          "url": {
+            "TTL": 111113600,
+            "User": "url-not-empty"
+          },
+          "same_as": "results-a"
+        },
+
 
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2023-01-24T10:15:00+02:00",
+          "execution_time": "2023-02-27T10:15:00+02:00",
           "attachments": [
             {
               "label": "ZEW-Finanzmarktreport.pdf",
@@ -251,7 +256,8 @@
         {
           "name": "report-b",
           "description": "Finanzmarkt Report am Freitag - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt und 118 x FMR Email",
-          "execution_time": "2023-01-24T10:15:00+02:00",
+          "ssexecution_time": "2023-02-27T10:15:00+02:00",
+          "execution_time": "2023-03-08T10:15:00+02:00",
           "attachments": [
             {
               "label": "ZEW-Finanzmarktreport.pdf",

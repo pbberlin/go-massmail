@@ -40,6 +40,7 @@ type Recipient struct {
 // IP addresses need to be configurable
 // map[string]bytes positive
 // map[string]bytes negative
+// 2023-03 - no longer used - see DomainsToRelayHorsts
 func isInternalGateway() bool {
 
 	ipGW, err := gateway.DiscoverGateway()
@@ -59,8 +60,17 @@ func isInternalGateway() bool {
 		return true
 	}
 
-	vpnGW := net.IPv4(192, 168, 26, 175)
-	if ipGW.Equal(vpnGW) {
+	vpnGW1 := net.IPv4(192, 168, 26, 175)
+	if ipGW.Equal(vpnGW1) {
+		return true
+	}
+	vpnGW2 := net.IPv4(192, 168, 199, 6)
+	if ipGW.Equal(vpnGW2) {
+		return true
+	}
+	// starbucks via VPN
+	vpnGW3 := net.IPv4(10, 128, 128, 128)
+	if ipGW.Equal(vpnGW3) {
 		return true
 	}
 
@@ -68,6 +78,9 @@ func isInternalGateway() bool {
 	if ipGW.Equal(internalGW) {
 		return true
 	}
+
+	log.Printf("cannot classify gateway %v", ipGW)
+	os.Exit(0)
 
 	return false
 }
@@ -342,11 +355,13 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	}
 	domain := "@" + nameDomain[1]
 
+	// no longer used - see DomainsToRelayHorsts
 	if key, ok := cfg.DomainsToRelayHorsts[domain]; ok {
 		if isInternalGateway() {
 			if _, ok := cfg.RelayHorsts[key]; ok {
 				log.Printf("\trecipient domain %v via internal SMTP host %v", domain, key)
 				rh = cfg.RelayHorsts[key]
+				relayHostKey = key
 			} else {
 				err := fmt.Errorf("email domain %v points to SMTP host %v, which does not exist", domain, key)
 				return err
@@ -355,8 +370,6 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 			log.Printf("\trecipient domain %v - we are not internal", domain)
 			// rh = cfg.RelayHorsts["hermes.zew.de"]
 		}
-		// } else {
-		// log.Printf("\trecipient domain %v has no SMTP host exception", domain)
 	}
 
 	log.Printf("  sending %q via %s... to %v with %v attach(s)",
@@ -681,6 +694,10 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 			err := singleEmail("prod", project, *rec, wv, tsk)
 			if err != nil {
 				log.Printf("error in prod run:\n\t%v", err)
+				// log.Printf("\t%v", project)
+				// log.Printf("\t%v", wv)
+				// log.Printf("\t%v", tsk)
+				// log.Printf("\t%v", *rec)
 				return
 			}
 		}
