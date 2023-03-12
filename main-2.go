@@ -701,7 +701,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 				return
 			}
 		}
-		time.Sleep(time.Second / 5)
+		time.Sleep(time.Millisecond * time.Duration(cfg.Delay))
 	}
 
 }

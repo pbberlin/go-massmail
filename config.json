@@ -27,6 +27,8 @@
       "@metzler.com": "hermes.zew-private.de",
       "@lbswest.de":  "hermes.zew-private.de"
     },
+    "ssdelay": 1200,
+    "delay": 15200,
     "projects": {
       "fmt": {
         "from": {
@@ -99,7 +101,7 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2023-02-13T10:15:00+02:00",
+          "execution_time": "2023-03-13T10:15:00+02:00",
           "XX-1-relay_host": "zimbra.zew.de",
           "XX-2-relay_host": "hermes.zew-private.de",
           "url": {
@@ -273,7 +275,7 @@
         {
           "name": "invitation",
           "description": "PDS invitation",
-          "execution_time": "2023-02-03T11:00:00+02:00",
+          "execution_time": "2023-03-13T11:01:00+02:00",
           "html": true,
           "attachments": [
             {

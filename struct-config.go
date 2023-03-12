@@ -259,6 +259,8 @@ type configT struct {
 	// Not further pursued, since we dont use zimbra anymore.
 	DomainsToRelayHorsts map[string]string `json:"domains_to_relay_horsts,omitempty"`
 
+	Delay int `json:"delay,omitempty"` // between messages
+
 	// Projects, waves and tasks a related to each other via the map key; i.e. "fmt" or "pds"
 	Projects map[string]ProjectT `json:"projects,omitempty"`
 	Waves    map[string][]WaveT  `json:"waves,omitempty"`
@@ -299,6 +301,8 @@ func writeExampleConfig() {
 		DomainsToRelayHorsts: map[string]string{
 			"@zew.de": "hermes.zew-private.de",
 		},
+
+		Delay: 200,
 
 		Projects: map[string]ProjectT{
 			"fmt": {
