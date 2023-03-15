@@ -22,8 +22,8 @@ type Recipient struct {
 	Sex         int    `csv:"sex"`
 	Title       string `csv:"title"`
 	Lastname    string `csv:"lastname"`
-	NoMail      string `csv:"!Mail !Call"`
-	SourceTable string `csv:"src_table"` // either emtpy string or 'mailadresse', serves to control computation of derived fields
+	NoMail      string `csv:"!Mail !Call"` // value noMail
+	SourceTable string `csv:"src_table"`   // either emtpy string or 'mailadresse', serves to control computation of derived fields
 
 	Link     template.HTML `csv:"link"` // avoid escaping
 	Language string        `csv:"lang"`
@@ -192,6 +192,9 @@ func (r *Recipient) SetDerived(wv WaveT) {
 			r.Anrede = "Dear " + r.Anrede + " " + r.Lastname
 		}
 		r.Language = "en"
+
+	} else if r.SourceTable == "pds-old" {
+		r.NoMail = "noMail"
 
 	}
 
@@ -378,6 +381,12 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	if mode != "prod" {
 		return nil
 	}
+
+	delayEff := rh.Delay
+	if rh.Delay == 0 {
+		rh.Delay = 200 // 200 milliseconds default
+	}
+	time.Sleep(time.Millisecond * time.Duration(delayEff))
 
 	err := gm.Send(
 		rh.HostNamePort,
@@ -680,6 +689,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 
 	log.Print("\n\t prod")
 	for idx1, rec := range recs {
+		// distinct from line 654
 		log.Printf("#%03v - %2v - %1v - %10v %-16v - %-32v ",
 			idx1+1,
 			rec.Language, rec.Sex,
@@ -701,7 +711,6 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 				return
 			}
 		}
-		time.Sleep(time.Millisecond * time.Duration(cfg.Delay))
 	}
 
 }

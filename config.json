@@ -3,39 +3,38 @@
     "attachment_root": "C:\\Users\\pbu\\Documents\\zew_work\\daten\\",
     "relay_horsts": {
       "email.zew.de": {
-        "HostNamePort": "email.zew.de:587",
-        "Username": "pbu"
-      },
-      "hermes.zew-private.de": {
-        "HostNamePort": "hermes.zew-private.de:25",
-        "Username": ""
-      },
-      "hermes.zew.de": {
-        "HostNamePort": "hermes.zew.de:25",
-        "Username": ""
+        "host_name_port": "email.zew.de:587",
+        "username": "pbu",
+        "delay": 15200
       },
       "zimbra.zew.de": {
-        "HostNamePort": "zimbra.zew.de:25",
-        "Username": "fmt-relay"
+        "host_name_port": "zimbra.zew.de:25",
+        "username": "fmt-relay"
+      },
+      "hermes.zew-private.de": {
+        "host_name_port": "hermes.zew-private.de:25",
+        "username": ""
+      },
+      "hermes.zew.de": {
+        "host_name_port": "hermes.zew.de:25",
+        "username": ""
       }
     },
     "default_horst-trash": "zimbra.zew.de",
     "default_horst": "email.zew.de",
-    "XX-domains_to_relay_horsts": {
+    "xx-domains_to_relay_horsts": {
       "@zew.de":      "email.zew.de",
       "@web.de":      "email.zew.de",
       "@metzler.com": "hermes.zew-private.de",
       "@lbswest.de":  "hermes.zew-private.de"
     },
-    "ssdelay": 1200,
-    "delay": 15200,
     "projects": {
       "fmt": {
         "from": {
           "Name":       "Finanzmarkttest",
           "Address":    "noreply@zew.de",
-          "XX-Address-not-allowed": "FINANZMARKTTEST@zew.de",
-          "XX-Address-not-desired": "peter.buchmann@zew.de"
+          "xx-Address-not-allowed": "FINANZMARKTTEST@zew.de",
+          "xx-Address-not-desired": "peter.buchmann@zew.de"
         },
         "replyto": "finanzmarkttest@zew.de",
         "bounce":  "noreply@zew.de",
@@ -66,7 +65,7 @@
           "year": 2023,
           "month": 1,
           "closing_date_preliminary": "0001-01-01T00:00:00Z",
-          "closing_date_last_due": "0001-01-01T00:00:00Z"
+          "closing_date_last_due":    "0001-01-01T00:00:00Z"
         }
       ],
       "fmt": [
@@ -93,17 +92,31 @@
           "month": 2,
           "closing_date_preliminary": "2023-02-17T17:00:00+02:00",
           "closing_date_last_due":    "2023-02-20T17:00:00+02:00"
+        },
+        {
+          "year": 2023,
+          "month": 3,
+          "closing_date_preliminary": "2023-03-17T17:00:00+02:00",
+          "closing_date_last_due":    "2023-03-20T17:00:00+02:00"
         }
       ]
     },
     "tasks": {
       "fmt": [
         {
+          "name": "mail-test",
+          "description": "checking with www.mail-tester.com ",
+          "execution_time": "2023-03-15T10:15:00+02:00",
+          "xx-1-relay_host": "zimbra.zew.de",
+          "xx-2-relay_host": "email.zew.de",
+          "relay_host": "email.zew.de"
+        },
+        {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2023-03-13T10:15:00+02:00",
-          "XX-1-relay_host": "zimbra.zew.de",
-          "XX-2-relay_host": "hermes.zew-private.de",
+          "execution_time": "2023-03-11T10:15:00+02:00",
+          "xx-1-relay_host": "zimbra.zew.de",
+          "xx-2-relay_host": "hermes.zew-private.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
             "TTL": 3600,

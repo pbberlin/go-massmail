@@ -129,9 +129,11 @@ func init() {
 }
 
 type RelayHorst struct {
-	HostNamePort string
-	Username     string // smtp auth
-	// password, see getenv
+	HostNamePort string `json:"host_name_port,omitempty"`
+	// smtp auth
+	Username string `json:"username,omitempty"`
+	// smtp password, see getenv
+	Delay int `json:"delay,omitempty"` // between messages, milliseconds
 }
 
 func (rh RelayHorst) PasswortEnv() string {
@@ -240,7 +242,7 @@ type ProjectT struct {
 	ReplyTo string `json:"replyto,omitempty"`
 
 	// email for errors due to unknown recipients or postbox full or rejection etc, defaults to from
-	// either <noreply1@zew.de> or email of admin or operator.
+	// either <noreply@zew.de> or email of admin or operator.
 	// Must be reachable from the SMTP gateway; i.e. bounce@zew.de is not reachable by zimbra.zew.de
 	Bounce string `json:"bounce,omitempty"`
 
@@ -259,8 +261,6 @@ type configT struct {
 	// Not further pursued, since we dont use zimbra anymore.
 	DomainsToRelayHorsts map[string]string `json:"domains_to_relay_horsts,omitempty"`
 
-	Delay int `json:"delay,omitempty"` // between messages
-
 	// Projects, waves and tasks a related to each other via the map key; i.e. "fmt" or "pds"
 	Projects map[string]ProjectT `json:"projects,omitempty"`
 	Waves    map[string][]WaveT  `json:"waves,omitempty"`
@@ -278,6 +278,11 @@ func writeExampleConfig() {
 		AttachmentRoot: `C:\Users\pbu\Documents\zew_work\daten\`,
 
 		RelayHorsts: map[string]RelayHorst{
+			"email.zew.de": {
+				HostNamePort: "email.zew.de:587",
+				Username:     "pbu",
+				Delay:        15200,
+			},
 			"zimbra.zew.de": {
 				HostNamePort: "zimbra.zew.de:25",
 				Username:     "fmt-relay",
@@ -291,30 +296,24 @@ func writeExampleConfig() {
 			"hermes.zew.de": {
 				HostNamePort: "hermes.zew.de:25",
 			},
-			"email.zew.de": {
-				HostNamePort: "email.zew.de:25",
-			},
 		},
 
 		DefaultHorst: "zimbra.zew.de",
 
 		DomainsToRelayHorsts: map[string]string{
-			"@zew.de": "hermes.zew-private.de",
+			"@zew.de": "email.zew.de",
 		},
-
-		Delay: 200,
 
 		Projects: map[string]ProjectT{
 			"fmt": {
 				//
 				From: &mail.Address{
 					Name:    "Finanzmarkttest",
-					Address: "noreply1@zew.de",
+					Address: "noreply@zew.de",
 				},
 				ReplyTo: "finanzmarkttest@zew.de",
 
-				// Bounce: "noreply1@zew.de",
-				Bounce: "peter.buchmann.68@gmail.com",
+				Bounce: "noreply@zew.de",
 
 				TestRecipients: []string{
 					"peter.buchmann@web.de",
@@ -327,13 +326,11 @@ func writeExampleConfig() {
 				//
 				From: &mail.Address{
 					Name:    "Private Debt Survey",
-					Address: "private-debt-survey@zew.de",
-					// Address: "noreply1@zew.de",
+					Address: "noreply@zew.de",
 				},
 				ReplyTo: "private-debt-survey@zew.de",
 
-				// Bounce: "noreply1@zew.de",
-				Bounce: "peter.buchmann.68@gmail.com",
+				Bounce: "noreply@zew.de",
 
 				TestRecipients: []string{
 					"peter.buchmann@web.de",

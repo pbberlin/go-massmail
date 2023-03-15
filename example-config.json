@@ -3,35 +3,33 @@
     "attachment_root": "C:\\Users\\pbu\\Documents\\zew_work\\daten\\",
     "relay_horsts": {
       "email.zew.de": {
-        "HostNamePort": "email.zew.de:25",
-        "Username": ""
+        "host_name_port": "email.zew.de:587",
+        "username": "pbu",
+        "delay": 15200
       },
       "hermes.zew-private.de": {
-        "HostNamePort": "hermes.zew-private.de:25",
-        "Username": ""
+        "host_name_port": "hermes.zew-private.de:25"
       },
       "hermes.zew.de": {
-        "HostNamePort": "hermes.zew.de:25",
-        "Username": ""
+        "host_name_port": "hermes.zew.de:25"
       },
       "zimbra.zew.de": {
-        "HostNamePort": "zimbra.zew.de:25",
-        "Username": "fmt-relay"
+        "host_name_port": "zimbra.zew.de:25",
+        "username": "fmt-relay"
       }
     },
     "default_horst": "zimbra.zew.de",
     "domains_to_relay_horsts": {
-      "@zew.de": "hermes.zew-private.de"
+      "@zew.de": "email.zew.de"
     },
-    "delay": 200,
     "projects": {
       "fmt": {
         "from": {
           "Name": "Finanzmarkttest",
-          "Address": "noreply1@zew.de"
+          "Address": "noreply@zew.de"
         },
         "replyto": "finanzmarkttest@zew.de",
-        "bounce": "peter.buchmann.68@gmail.com",
+        "bounce": "noreply@zew.de",
         "test_recipients": [
           "peter.buchmann@web.de",
           "peter.buchmann.68@gmail.com",
@@ -42,10 +40,10 @@
       "pds": {
         "from": {
           "Name": "Private Debt Survey",
-          "Address": "private-debt-survey@zew.de"
+          "Address": "noreply@zew.de"
         },
         "replyto": "private-debt-survey@zew.de",
-        "bounce": "peter.buchmann.68@gmail.com",
+        "bounce": "noreply@zew.de",
         "test_recipients": [
           "peter.buchmann@web.de",
           "peter.buchmann.68@gmail.com",
