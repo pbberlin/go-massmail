@@ -106,9 +106,10 @@
         {
           "name": "mail-test",
           "description": "checking with www.mail-tester.com ",
-          "execution_time": "3023-03-17T09:15:00+02:00",
+          "execution_time": "2023-03-17T09:15:00+02:00",
           "xx-1-relay_host": "zimbra.zew.de",
           "xx-2-relay_host": "email.zew.de",
+          "xx-url": "https://www.mail-tester.com/pbberlin-ZXTV",
           "relay_host": "email.zew.de"
         },
 
@@ -128,7 +129,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2023-03-17T09:00:00+02:00",
+          "execution_time": "3023-03-17T09:00:00+02:00",
           "relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder",
