@@ -689,13 +689,19 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 
 	log.Print("\n\t prod")
 	for idx1, rec := range recs {
-		// distinct from line 654
-		log.Printf("#%03v - %2v - %1v - %10v %-16v - %-32v ",
+		log.Printf(
+			"#%03v %-28v %v  %v %v%v %v",
+
 			idx1+1,
-			rec.Language, rec.Sex,
-			rec.Title, rec.Lastname,
+
 			rec.Email,
+			rec.Anrede,
+
+			rec.ClosingDatePreliminary,
+			rec.Language, rec.Sex,
+			rec.MonthYear,
 		)
+
 		if strings.Contains(rec.NoMail, "noMail") {
 			log.Printf("  skipping 'noMail'")
 			continue
