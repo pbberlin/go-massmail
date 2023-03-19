@@ -440,10 +440,17 @@ func dueTasks() (surveys []string, waves []WaveT, tasks []TaskT) {
 		wv := wvs[last]
 		for _, tsk := range cfg.Tasks[survey] {
 
-			if tsk.ExecutionTime.IsZero() {
-				log.Printf("\t%v-%-22v has no exec time; skipping", survey, tsk.Name)
+			if tsk.ExecutionTime.IsZero() && tsk.ExecutionInterval == "" {
+				log.Printf("\t%v-%-22v - neither exec time nor invertval; skipping", survey, tsk.Name)
 				// log.Print(util.IndentedDump(tsk))
 				continue
+			} else if tsk.ExecutionTime.IsZero() && tsk.ExecutionInterval != "" {
+				if tsk.ExecutionInterval == "daily" {
+					surveys = append(surveys, survey)
+					waves = append(waves, wv)
+					tasks = append(tasks, tsk)
+					continue
+				}
 			}
 
 			if inBetween("prod", now, tsk.ExecutionTime, tsk.ExecutionTime.AddDate(0, 0, 1)) {

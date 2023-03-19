@@ -218,8 +218,6 @@ type TaskT struct {
 	// 			by setting TemplateName for both
 	SameAs string `json:"same_as,omitempty"`
 
-	ExecutionTime time.Time `json:"execution_time,omitempty"` // when should the task be started - for cron jobs and parallel tasks
-
 	TemplateName string        `json:"template_name,omitempty"` // default is Name
 	Attachments  []AttachmentT `json:"attachments,omitempty"`
 	// distinct SMTP server for distinct tasks
@@ -229,6 +227,9 @@ type TaskT struct {
 	HTML bool `json:"html,omitempty"`
 
 	URL *UrlT `json:"url,omitempty"` // 'wget' URL for recipients CSV
+
+	ExecutionTime     time.Time `json:"execution_time,omitempty"`     // when should the task be started - for cron jobs and parallel tasks
+	ExecutionInterval string    `json:"execution_interval,omitempty"` // similar to cron, supersedes Execution time
 
 	testmode bool
 }

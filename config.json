@@ -106,11 +106,14 @@
         {
           "name": "mail-test",
           "description": "checking with www.mail-tester.com ",
-          "execution_time": "2023-03-17T09:15:00+02:00",
+          "xx-execution_time": "2023-03-17T09:15:00+02:00",
+          "execution_interval": "daily",
           "xx-1-relay_host": "zimbra.zew.de",
           "xx-2-relay_host": "email.zew.de",
-          "xx-url": "https://www.mail-tester.com/pbberlin-ZXTV",
-          "relay_host": "email.zew.de"
+          "xx-url-1": "https://www.mail-tester.com/pbberlin-ZXTV",
+          "xx-url-2": "https://delivery.mxtoolbox.com/ delivery test",
+          "xx-url-3": "http://email.mxtoolbox.com/c/eJxUyTtuwzAMANDTSJsDiqRJcdDQxffQz4gBpQpco016-s6dX0tWGcj3FEQNhCKLvydbiQJgKTEq4E5cGXYWsjVjKY38kRCQgIIGJkW5GdYmRCqyq5QQHcPjdc05ynzd6nz4ke7X9fxy9OFwc7j9U4db6-P47mcuxziut8MNNGSzlRZA5IWb1cWo6mIgPULWLAH9mT7n2Z_j7Rh--8-t9b8AAAD__2B2O9E delivery report",
+          "relay_host": "zimbra.zew.de"
         },
 
 
