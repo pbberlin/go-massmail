@@ -104,16 +104,22 @@
     "tasks": {
       "fmt": [
         {
-          "name": "mail-test",
-          "description": "checking with www.mail-tester.com ",
-          "xx-execution_time": "2023-03-17T09:15:00+02:00",
+          "name": "mail-test-exchange",
+          "description": "checking via mail-tester.com and mxtoolbox.com",
           "execution_interval": "daily",
-          "xx-1-relay_host": "zimbra.zew.de",
-          "xx-2-relay_host": "email.zew.de",
-          "xx-url-1": "https://www.mail-tester.com/pbberlin-ZXTV",
-          "xx-url-2": "https://delivery.mxtoolbox.com/ delivery test",
-          "xx-url-3": "http://email.mxtoolbox.com/c/eJxUyTtuwzAMANDTSJsDiqRJcdDQxffQz4gBpQpco016-s6dX0tWGcj3FEQNhCKLvydbiQJgKTEq4E5cGXYWsjVjKY38kRCQgIIGJkW5GdYmRCqyq5QQHcPjdc05ynzd6nz4ke7X9fxy9OFwc7j9U4db6-P47mcuxziut8MNNGSzlRZA5IWb1cWo6mIgPULWLAH9mT7n2Z_j7Rh--8-t9b8AAAD__2B2O9E delivery report",
-          "relay_host": "zimbra.zew.de"
+          "xx-url-1": "https://www.mail-tester.com/manager/latest-tests.html",
+          "xx-url-2a": "https://www.mail-tester.com/pbberlin-ZXTV",
+          "xx-url-2b": "https://www.mail-tester.com/pbberlin-KNLB",
+          "xx-url-3": "https://delivery.mxtoolbox.com/ delivery test",
+          "xx-url-4": "delivery report",
+          "xx-url-5a": "http://email.mxtoolbox.com/c/eJxUybFywyAMANCvgc0-IQkjBoYu_g8QysV3pORcX5v06zt3fr1kZSBvJWwpI2YR8feiVoVUQWJAI96CBqwRRSlJJSV_FAQkoJADMrOsnQ1Sqqit1xrRHMPjdc052nytOh9-lPt1Pb8cfTjcHe7_1OHebRzfdtZ2jON6O9zTdiOqOS5isS-85bg0AFsI1MDajVjBn-VznvYcb8fwaz9rt78AAAD__z41Pfo",
+          "xx-url-5b": "http://email.mxtoolbox.com/c/eJxUzbFuxCAMANCvgS2RMXYSDwxd8h8GjC4SV05p1N7166uON7_h1SSFIHpLYVkFUQTI35KSFiUMG3BZuDUKQZa2LisKbSTFHwkBI8QgAYmB5txKVANhUWYwdgT35zVGz-M5l3H3Pd2u6_Hl4ofD3eH-pg73av34tlPz0Y_r5XC3ao2z6vTfT5RXnrZobYLcqmapW6zkz_Q5Tnv0lyP4tZ-52l8AAAD__xvdPqU",
+          "relay_host": "email.zew.de"
+        },
+        {
+          "name": "mail-test-zimbra",
+          "relay_host": "zimbra.zew.de",
+          "same_as": "mail-test-exchange"
         },
 
 
@@ -311,7 +317,52 @@
               "inline": true
             }
           ]
+        },
+        {
+          "name": "reminder",
+          "description": "PDS reminder",
+          "execution_time": "2023-03-19T11:01:00+02:00",
+          "html": true,
+          "attachments": [
+            {
+              "label": "doktor-f-brueckbauer.jpg",
+              "filename": "tmp-brueckbauer.jpg",
+              "language": "en",
+              "inline": true
+            },
+            {
+              "label": "doktor-k-kirschenmann.jpg",
+              "filename": "tmp-kirschenmann.jpg",
+              "language": "en",
+              "inline": true
+            }
+          ],
+          "user_id_skip": {
+            "10005": "10005",
+            "10016": "10016",
+            "10037": "10037",
+            "10041": "10041",
+            "10054": "10054",
+            "10055": "10055",
+            "10056": "10056",
+            "10057": "10057",
+            "10058": "10058",
+            "10059": "10059",
+            "10065": "10065",
+            "10067": "10067",
+            "10068": "10068",
+            "10070": "10070",
+            "10071": "10071",
+            "10078": "10078",
+            "10079": "10079",
+            "10080": "10080",
+            "10082": "10082",
+            "10086": "10086",
+            "10087": "10087"
+          }
         }
+
+
       ]
     }
   }

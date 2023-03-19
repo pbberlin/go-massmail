@@ -95,7 +95,9 @@ func init() {
 						if candT.Name == t.SameAs {
 							log.Printf("%v-%v will use %v", project, t.Name, candT.Name)
 
-							// preserve original name, description, template name, recipient URL
+							// more info at t.SameAs
+							// ========================
+							//   preserve original settings
 							orig := t
 
 							// clobber everything else from 'sameAs'
@@ -104,9 +106,13 @@ func init() {
 							// restore some original values
 							t.Name = orig.Name // determines recipient list
 							t.Description = orig.Description
+							if orig.RelayHost != "" {
+								t.RelayHost = orig.RelayHost
+							}
 							if orig.URL != nil {
 								t.URL = orig.URL
 							}
+							// this is the tricky setting - more info at t.SameAs
 							if orig.TemplateName != "" {
 								t.TemplateName = orig.TemplateName
 							}
@@ -190,10 +196,11 @@ type AttachmentT struct {
 	Inline   bool   `json:"inline,omitempty"`
 }
 
+// UrlT to download the most recent CSVs from
 type UrlT struct {
 	URL  string
-	TTL  time.Duration
-	User string // http base64 auth, password from environ
+	TTL  time.Duration // local file is considered stale after TTL has passed
+	User string        // http base64 auth, password from environ
 }
 
 // WaveT - data that changes with each wave
@@ -224,14 +231,18 @@ type TaskT struct {
 	// if empty, then default horst will be chosen
 	RelayHost string `json:"relay_host,omitempty"`
 
-	HTML bool `json:"html,omitempty"`
+	HTML bool `json:"html,omitempty"` // is HTML or plain text
 
+	// CSV file name has not setting - it is always project-taskname-lang.csv
 	URL *UrlT `json:"url,omitempty"` // 'wget' URL for recipients CSV
+
+	// a quick fix for sending reminders
+	UserIDSkip map[string]string `json:"user_id_skip,omitempty"`
 
 	ExecutionTime     time.Time `json:"execution_time,omitempty"`     // when should the task be started - for cron jobs and parallel tasks
 	ExecutionInterval string    `json:"execution_interval,omitempty"` // similar to cron, supersedes Execution time
 
-	testmode bool
+	testmode bool `json:"-"`
 }
 
 // ProjectT is for data across all waves and tasks
@@ -370,6 +381,34 @@ func writeExampleConfig() {
 					Name:          "invitation",
 					Description:   "PDS invitation",
 					ExecutionTime: time.Date(2022, 12, 07, 11, 0, 0, 0, locPreliminary),
+				},
+				{
+					Name:          "reminder",
+					Description:   "PDS reminder",
+					ExecutionTime: time.Date(2022, 12, 07, 11, 0, 0, 0, locPreliminary),
+					UserIDSkip: map[string]string{
+						"10005": "10005",
+						"10016": "10016",
+						"10037": "10037",
+						"10041": "10041",
+						"10054": "10054",
+						"10055": "10055",
+						"10056": "10056",
+						"10057": "10057",
+						"10058": "10058",
+						"10059": "10059",
+						"10065": "10065",
+						"10067": "10067",
+						"10068": "10068",
+						"10070": "10070",
+						"10071": "10071",
+						"10078": "10078",
+						"10079": "10079",
+						"10080": "10080",
+						"10082": "10082",
+						"10086": "10086",
+						"10087": "10087",
+					},
 				},
 			},
 			"fmt": {

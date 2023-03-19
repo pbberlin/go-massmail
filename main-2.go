@@ -18,6 +18,7 @@ import (
 )
 
 type Recipient struct {
+	ID          string `csv:"id"`
 	Email       string `csv:"email"`
 	Sex         int    `csv:"sex"`
 	Title       string `csv:"title"`
@@ -27,6 +28,8 @@ type Recipient struct {
 
 	Link     template.HTML `csv:"link"` // avoid escaping
 	Language string        `csv:"lang"`
+
+	SMTP string `json:"smtp,omitempty"` // effective smtp server sending
 
 	Anrede    string `csv:"anrede"`
 	MonthYear string `csv:"-"` // Oktober 2022, October 2022
@@ -146,7 +149,7 @@ func fileCopy(in io.Reader, dst string) (err error) {
 }
 
 // SetDerived computes helper fields from base columns
-func (r *Recipient) SetDerived(wv WaveT) {
+func (r *Recipient) SetDerived(wv *WaveT, tsk *TaskT) {
 
 	if r.SourceTable == "" {
 
@@ -196,6 +199,13 @@ func (r *Recipient) SetDerived(wv WaveT) {
 	} else if r.SourceTable == "pds-old" {
 		r.NoMail = "noMail"
 
+	}
+
+	if r.ID != "" {
+		if _, ok := tsk.UserIDSkip[r.ID]; ok {
+			r.NoMail = "noMail"
+
+		}
 	}
 
 	// survey identifier
@@ -269,15 +279,10 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		return fmt.Errorf("singleEmail mode must be 'prod' or 'test'; is %v", mode)
 	}
 
-	m := gm.NewMessagePlain(getText(rec, project, tsk, rec.Language))
+	m := gm.NewMessagePlain("default subject", "default body")
 	if tsk.HTML {
 		m.ContentType = "text/html"
 	}
-
-	// log.Printf("  recipient: %v", rec.Email)
-	log.Printf("  subject:   %v", m.Subject)
-	// log.Print(m.Body)
-	// return
 
 	m.From = *cfg.Projects[project].From
 	if m.From.Address == "" {
@@ -343,7 +348,7 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		}
 	}
 
-	m.AddCustomHeader("X-Mailer", "go-mail")
+	m.AddCustomHeader("X-Mailer", "go-massmail")
 
 	relayHostKey := cfg.DefaultHorst
 	if tsk.RelayHost != "" {
@@ -375,9 +380,20 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		}
 	}
 
+	rec.SMTP = rh.HostNamePort
+	m.Subject, m.Body = getText(rec, project, tsk, rec.Language)
+	log.Printf("  subject:   %v", m.Subject)
+	// log.Print(m.Body)
+
 	log.Printf("  sending %q via %s... to %v with %v attach(s)",
 		mode, rh.HostNamePort, rec.Lastname, len(m.Attachments),
 	)
+
+	if strings.Contains(rec.NoMail, "noMail") {
+		log.Printf("    skipping 'noMail'")
+		return nil
+	}
+
 	if mode != "prod" {
 		return nil
 	}
@@ -494,9 +510,9 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 
 	log.Printf("\n\n\t%v-%-22v   %v - %v att(s)\n\t==================", project, tsk.Name, tsk.Description, len(tsk.Attachments))
 
-	participantFile := tsk.Name
-	fn := fmt.Sprintf("./csv/%v/%v.csv", project, participantFile)
-	fnCopy := fmt.Sprintf("./csv/%v/%v-%d-%02d.csv", project, participantFile, wv.Year, wv.Month)
+	// CSV file containing participants
+	fn := fmt.Sprintf("./csv/%v/%v.csv", project, tsk.Name)
+	fnCopy := fmt.Sprintf("./csv/%v/%v-%d-%02d.csv", project, tsk.Name, wv.Year, wv.Month)
 	log.Printf("using filename %v\n", fn)
 
 	inFile, err := os.OpenFile(
@@ -509,6 +525,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		return
 	}
 
+	// update of CSV required?
 	conditionExist := !os.IsNotExist(err)
 	conditionStale := false
 
@@ -654,10 +671,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 
 	log.Print("\n\t preflight")
 	for idx1, rec := range recs {
-		rec.SetDerived(wv)
-		// if idx1 > 5 || idx1 < len(recipients)-5 {
-		// 	continue
-		// }
+		rec.SetDerived(&wv, &tsk)
 		log.Printf(
 			"#%03v %-28v %-28v - %v",
 			idx1+1,
@@ -708,22 +722,16 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 			rec.Language, rec.Sex,
 			rec.MonthYear,
 		)
+		err := singleEmail("prod", project, *rec, wv, tsk)
+		if err != nil {
+			log.Printf("error in prod run:\n\t%v", err)
+			// log.Printf("\t%v", project)
+			// log.Printf("\t%v", wv)
+			// log.Printf("\t%v", tsk)
+			// log.Printf("\t%v", *rec)
+			return
+		}
 
-		if strings.Contains(rec.NoMail, "noMail") {
-			log.Printf("  skipping 'noMail'")
-			continue
-		}
-		if true {
-			err := singleEmail("prod", project, *rec, wv, tsk)
-			if err != nil {
-				log.Printf("error in prod run:\n\t%v", err)
-				// log.Printf("\t%v", project)
-				// log.Printf("\t%v", wv)
-				// log.Printf("\t%v", tsk)
-				// log.Printf("\t%v", *rec)
-				return
-			}
-		}
 	}
 
 }

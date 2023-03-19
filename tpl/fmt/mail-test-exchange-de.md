@@ -1,5 +1,7 @@
-mail test subject
+test subject - {{.SMTP}}
 {{.Anrede}},
+
+sent via {{.SMTP}}
 
 mail test body line 1
 mail test body line 2
