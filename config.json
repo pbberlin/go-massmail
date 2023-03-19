@@ -22,11 +22,11 @@
     },
     "default_horst-trash": "zimbra.zew.de",
     "default_horst": "email.zew.de",
-    "xx-domains_to_relay_horsts": {
-      "@zew.de":      "email.zew.de",
-      "@web.de":      "email.zew.de",
-      "@metzler.com": "hermes.zew-private.de",
-      "@lbswest.de":  "hermes.zew-private.de"
+    "domains_to_relay_horsts": {
+      "@zew.de":          "email.zew.de",
+      "@xxx-web.de":      "email.zew.de",
+      "@xxx-metzler.com": "hermes.zew-private.de",
+      "@xxx-lbswest.de":  "hermes.zew-private.de"
     },
     "projects": {
       "fmt": {

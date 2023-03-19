@@ -54,16 +54,20 @@ Each `task` may have additional data points, for example text elements or attach
 
 * There is a global default setting for the SMTP relay host.
 
-* Each task can have a specific SMTP relay host, if desired
+* Pause between emails distinct for each host.
 
-* `DomainsToRelayHorsts` specifies exceptions for certain recipient.  
-  For example, internal recipient can be configured to be messaged via the internal SMTP host
-
-* InternalGateway() sniffs, which gateway the sender is connected to.  
-  Additional logic can be applied based on the gateway (still work in progress).
+* Each task can have a specific SMTP relay host, if desired.
 
 * Passwords for relay host auth must be supplied via environment variable.  
   For instance `zimbra.zew.de` would require an advance `export PW_ZIMBRAZEWDE=secret`.
+
+* `DomainsToRelayHorsts` specifies exceptions for certain recipients.  
+  For example, if internal recipients can only be reached through the internal SMTP host
+
+#### Sunsetted/frozen feature
+
+* InternalGateway() sniffs, which gateway the sender is connected to.  
+  Additional logic for relay host selection could be applied based on the gateway.  
 
 ### DRY - dont repeat tasks configurations
 
@@ -81,9 +85,12 @@ If the regular recipient list and `TestRecipients` _overlap_, then these records
 
 ### Time control
 
-Each task has an execution time.
+Each task has an `execution time` or an `execution interval`.
 
-If program _runtime_ is greater than task execution time,  
+1. `execution interval` currently only supports `daily`,  
+in effect running the task _every_ time.
+
+2. If program _runtime_ is greater than task `execution time`,  
 but lighter than execution time plus 24h,  
 then the task is executed.
 
@@ -94,7 +101,7 @@ The software is thus intended to be started every day around 10:30 am by cron jo
 ### URL for CSV files
 
 The CSV files containing the recipient emails and meta data  
-can be downloaded via HTTP before the task execution.  
+can be downloaded via HTTP before task execution.  
 
 Configurable TTL to enforce ultra fresh recipient lists if need be.
 
@@ -107,9 +114,30 @@ Example URLs
 * [FMT reminders](http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder)  
 
 
+`UserIDSkip` is a map of user IDs that should be omitted from the CSV.  
+This is a quick and dirty way to send reminders to those recipients,  
+who have not yet answered.
+
 ## Todo
 
-* isInternalGateway():  
+* ReplyTo and Bounce (via header `"Return-Path"`) are still unclear.      
+  Exchange server bounces are sent to ReplyTo;  
+  not to Bounce.
+
+* XML example for windows cron
+
+* Batch file setting up logging to file
+
+* Repeating text blocks (i.e. footer) for inclusion into templates
+
+* Make functions computing dynamic template fields configurable;  
+  at the moment `SetDerived` switches depending on `r.SourceTable` etc. 
+
+* Continue after 8 seconds or keyboard input:  
+  can we get rid of the enter key?
+
+* Prio C:  
+   isInternalGateway():  
    IP addresses need to be configurable  
      map[string]bytes positive  
      map[string]bytes negative  
@@ -118,24 +146,16 @@ Example URLs
   Thus relay hosts could be selected depending on sender and recipient domain.  
   I need to simplify this.
   
-* ReplyTo and Bounce are still unclear.  
-  Exchange server bounces are sent to ReplyTo;  
-  not to Bounce
 
-* XML example for windows cron
 
-* Batch file setting up logging to file
+## Todo HTML email
 
-* Includes of repeating text blocks (i.e. footer)
-
-* Make functions computing dynamic template fields configurable;  
-  at the moment `SetDerived` switches depending on `r.SourceTable` 
-
-* HTML email
-  * Outlook is stripping CSS block formatting (float:left etc.)
+* Outlook is stripping CSS block formatting (float:left etc.)
 
 * HTML inline pictures
   * Inline pictures are not shown by gmail.com
+  * Should we use the golang packages for multipart email?  
+    This would erase all trust into the current encoding.  
   * [Content type - nested](stackoverflow.com/questions/6706891/)
 
 ```log
@@ -169,25 +189,20 @@ Content-Disposition: inline; filename="moz-screenshot.png"
 
 ```
 
-  * Or embedding `<img src="data:image/jpg;base64,{{base64-data-string here}}" />`  
-    but "data URIs in emails aren't supported"
-
-
-
-* Continue after 8 seconds or keyboard input:  
-  can we get rid of the enter key?
+* Or embedding `<img src="data:image/jpg;base64,{{base64-data-string here}}" />`  
+  but "data URIs in emails aren't supported"
 
 
 ## Using MS word and Outlook
 
-This is a fallback in case of an utter emergency.
+A fallback in case of an extreme emergency.
 
 <https://support.microsoft.com/de-de/office/f%C3%BCr-seriendrucke-verwendbare-datenquellen-9de322a6-f0f9-448d-a113-5fab317d9ef4>
 
 <https://support.microsoft.com/de-de/office/verwenden-des-seriendrucks-zum-senden-von-massen-e-mails-0f123521-20ce-4aa8-8b62-ac211dedefa4>
 
-
-Empfänger auswählen
-Vorhandene Liste auswählen
-
-c:\Users\pbu\Documents\zew_work\git\go\go-massmail\csv\fmt\report-b.csv
+German menu items
+* `Empfänger auswählen`
+* `Vorhandene Liste auswählen`
+* Choose file  
+   c:\Users\pbu\Documents\zew_work\git\go\go-massmail\csv\fmt\report-b.csv

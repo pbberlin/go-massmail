@@ -377,7 +377,7 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 
 	// no longer used - see DomainsToRelayHorsts
 	if key, ok := cfg.DomainsToRelayHorsts[domain]; ok {
-		if isInternalGateway() {
+		if true || isInternalGateway() {
 			if _, ok := cfg.RelayHorsts[key]; ok {
 				log.Printf("\trecipient domain %v via internal SMTP host %v", domain, key)
 				rh = cfg.RelayHorsts[key]
@@ -388,7 +388,6 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 			}
 		} else {
 			log.Printf("\trecipient domain %v - we are not internal", domain)
-			// rh = cfg.RelayHorsts["hermes.zew.de"]
 		}
 	}
 
