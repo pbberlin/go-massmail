@@ -31,9 +31,9 @@ type Recipient struct {
 
 	SMTP string `json:"smtp,omitempty"` // effective smtp server sending
 
-	Anrede    string `csv:"anrede"`
-	MonthYear string `csv:"-"` // Oktober 2022, October 2022
-
+	Anrede                 string `csv:"anrede"`
+	MonthYear              string `csv:"-"` // Oktober 2022, October 2022
+	QuarterYear            string `csv:"-"` // Q1 2023
 	ClosingDatePreliminary string `csv:"-"` // Friday, 11th November 2022   Freitag, den 11. November 2022,
 	// two days later
 	ClosingDateLastDue string `csv:"-"` // Monday, 14th November 2022   Freitag, den 14. November 2022,
@@ -90,9 +90,14 @@ func isInternalGateway() bool {
 
 func formatDate(dt time.Time, lang string) string {
 
-	ret := dt.Format("Monday, 2. January 2006")
+	if lang == "en" {
+		ret := dt.Format("Monday, 2th January 2006")
+		return ret
+	}
 
 	if lang == "de" {
+
+		ret := dt.Format("Monday, 2. January 2006")
 
 		m := dt.Month()
 		w := dt.Weekday()
@@ -113,9 +118,13 @@ func formatDate(dt time.Time, lang string) string {
 			)
 
 		ret += "," // add apposition comma
+		return ret
 	}
 
+	// any other
+	ret := dt.Format("Monday, 2th January 2006")
 	return ret
+
 }
 
 // stackoverflow.com/questions/30376921
@@ -212,6 +221,9 @@ func (r *Recipient) SetDerived(wv *WaveT, tsk *TaskT) {
 	y := wv.Year
 	m := wv.Month
 	r.MonthYear = fmt.Sprintf("%v %v", MonthByInt(int(m), r.Language), y)
+
+	quarter := int(m-1)/3 + 1
+	r.QuarterYear = fmt.Sprintf("Q%v %v", quarter, y)
 
 	// due dates
 	prelimi := wv.ClosingDatePreliminary
@@ -465,6 +477,7 @@ func dueTasks() (surveys []string, waves []WaveT, tasks []TaskT) {
 					surveys = append(surveys, survey)
 					waves = append(waves, wv)
 					tasks = append(tasks, tsk)
+					fmt.Fprintf(msg, "\t%v-%-22v   %v\n", survey, tsk.Name, tsk.Description)
 					continue
 				}
 			}

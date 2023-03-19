@@ -1,4 +1,4 @@
-ZEW Private Debt Survey - {{.MonthYear}}
+ZEW Private Debt Survey - {{.QuarterYear}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +13,10 @@ ZEW Private Debt Survey - {{.MonthYear}}
 <style>
 .sc {
     font-variant: small-caps;
+}
+
+.bigger {
+    font-size: 115%;
 }
 
 * {
@@ -49,18 +53,20 @@ p, .cell1{
 </style>
 
 <p>
-as already announced by our cooperation partner <span class="sc">Prime Capital AG</span>, we - the <span class="sc">ZEW</span> – Leibniz Centre for European Economic
-Research - are happy to invite you to our new <a href="{{.Link}}">ZEW Private Debt Survey</a>. The survey will be conducted four times a
-year.
+this is a friendly reminder for the current wave of the ZEW Private Debt Survey. We would appreciate your participation
+in this survey. With your answers, you contribute to the collection of richer data about private credit investments that
+will support investors to make qualified investment decisions.
 </p>
 
 <p>
-The <span class="sc">ZEW</span> – Leibniz Centre for European Economic Research in Mannheim is a non-profit and independent institute with the
-legal form of a limited liability company (GmbH). ZEW is a member of the Leibniz Association. We are one of Germany's
-leading economic research institutes and enjoy a strong reputation throughout Europe. Our  <a  style="text-decoration:none; color: #888;" href="https://de.wikipedia.org/wiki/ZEW-Index">ZEW Indicator</a> of Economic Sentiment
- is one of the closest followed indicators of investor sentiment for the German economy.
+We would like to kindly remind you to submit your questionnaire until next
+{{.ClosingDateLastDue}} (5 PM CET)
+at the latest.
 </p>
 
+<p class="bigger">Here is your <a href="{{.Link}}">personal link</a> for the ZEW Private Debt Survey {{.QuarterYear}}.</p>
+
+<h3>About the survey</h3>
 <p>
 The main objective of the <a href="{{.Link}}">ZEW Private Debt Survey</a> is to enhance the knowledge of market participants about the European
 private debt market. The survey refers to your Corporate Direct Lending, Real Estate Debt, and Infrastructure Debt
@@ -68,21 +74,16 @@ investments and addresses quantitative and qualitative aspects of your investmen
 strategy. It also contains questions about the overall market environment.
 </p>
 
-<p>We would appreciate your participation in this survey. With your answers, you contribute to the collection of
-richer data about private credit investments that will support investors to make qualified investment decisions. As a
-participant, you will receive a detailed report with aggregated and anonymous survey results after each survey has been
-conducted.</p>
 
-<p>Of course, we will treat all responses to this survey as strictly confidential and in compliance with the GDPR. We will
+<h3>Data protection</h3>
+<p>
+Of course, we will treat all responses to this survey as strictly confidential and in compliance with the GDPR. We will
 only pass on aggregated, anonymized responses to our cooperation partner Prime Capital AG, who will write the report.
 Only if you give your explicit consent, we will also pass on your individual answers to Prime Capital AG in a
 non-anonymized form. In this case, no personal data is passed on to Prime Capital AG, only the company name and the
-answers given in the survey.</p>
-
-
-<p>
-    Here is your <a href="{{.Link}}">personal link</a> for the ZEW Private Debt Survey {{.MonthYear}}.
+answers given in the survey.
 </p>
+
 
 <p>If you have questions, do not hesitate to 
     <a href="mailto:private-debt-survey@zew.de">contact us</a>.
