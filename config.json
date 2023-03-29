@@ -9,7 +9,8 @@
       },
       "zimbra.zew.de": {
         "host_name_port": "zimbra.zew.de:25",
-        "username": "fmt-relay"
+        "username":       "fmt-relay@zimbra.zew.de",
+        "xx-username":    "fmt-relay"
       },
       "hermes.zew-private.de": {
         "host_name_port": "hermes.zew-private.de:25",
@@ -24,7 +25,7 @@
     "xx-2-default_horst": "email.zew.de",
     "default_horst":     "zimbra.zew.de",
     "domains_to_relay_horsts": {
-      "@zew.de":          "email.zew.de",
+      "@xx-zew.de":          "email.zew.de",
       "@xx-web.de":      "email.zew.de",
       "@xx-metzler.com": "hermes.zew-private.de",
       "@xx-lbswest.de":  "hermes.zew-private.de"
@@ -33,9 +34,9 @@
       "fmt": {
         "from": {
           "Name":       "Finanzmarkttest",
-          "Address":    "noreply@zew.de",
-          "xx-Address-not-allowed": "FINANZMARKTTEST@zew.de",
-          "xx-Address-not-desired": "peter.buchmann@zew.de"
+          "Address":    "finanzmarkttest@zimbra.zew.de",
+          "xx-Address":    "noreply@zew.de",
+          "xx-Address-not-allowed": "FINANZMARKTTEST@zew.de"
         },
         "replyto": "finanzmarkttest@zew.de",
         "bounce":  "noreply@zew.de",
@@ -107,7 +108,9 @@
         {
           "name": "mail-test-exchange",
           "description": "checking exchange - via mail-tester.com and mxtoolbox.com",
-          "execution_interval": "xx-daily",
+          "html": true,
+          "template_name": "mail-test",
+          "execution_interval": "daily",
           "xx-url-1":  "https://www.mail-tester.com/manager/latest-tests.html",
           "xx-url-2a": "https://www.mail-tester.com/pbberlin-ZXTV",
           "xx-url-2b": "https://www.mail-tester.com/pbberlin-KNLB",
@@ -115,7 +118,39 @@
           "xx-url-4":  "delivery report",
           "xx-url-5a": "http://email.mxtoolbox.com/c/eJxUybFywyAMANCvgc0-IQkjBoYu_g8QysV3pORcX5v06zt3fr1kZSBvJWwpI2YR8feiVoVUQWJAI96CBqwRRSlJJSV_FAQkoJADMrOsnQ1Sqqit1xrRHMPjdc052nytOh9-lPt1Pb8cfTjcHe7_1OHebRzfdtZ2jON6O9zTdiOqOS5isS-85bg0AFsI1MDajVjBn-VznvYcb8fwaz9rt78AAAD__z41Pfo",
           "xx-url-5b": "http://email.mxtoolbox.com/c/eJxUzbFuxCAMANCvgS2RMXYSDwxd8h8GjC4SV05p1N7166uON7_h1SSFIHpLYVkFUQTI35KSFiUMG3BZuDUKQZa2LisKbSTFHwkBI8QgAYmB5txKVANhUWYwdgT35zVGz-M5l3H3Pd2u6_Hl4ofD3eH-pg73av34tlPz0Y_r5XC3ao2z6vTfT5RXnrZobYLcqmapW6zkz_Q5Tnv0lyP4tZ-52l8AAAD__xvdPqU",
-          "relay_host": "email.zew.de"
+          "relay_host": "email.zew.de",
+          "attachments": [
+            {
+              "label": "img1.gif",
+              "filename": "./test/img1-de.gif",
+              "language": "de",
+              "inline": true
+            },
+            {
+              "label": "img2.gif",
+              "filename": "./test/img2-de.gif",
+              "language": "de",
+              "inline": true
+            },
+            {
+              "label": "img3-de.gif",
+              "filename": "./test/img3-de.gif",
+              "language": "de",
+              "inline": true
+            },
+            {
+              "label": "Pressemitteilung.pdf",
+              "filename": "./test/1-de.pdf",
+              "language": "de",
+              "inline": true
+            },
+            {
+              "label": "Pressemitteilung-2.pdf",
+              "filename": "./test/2-de.pdf",
+              "language": "de",
+              "inline": true
+            }
+          ]
         },
         {
           "name": "mail-test-zimbra",

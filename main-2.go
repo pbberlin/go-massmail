@@ -12,9 +12,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/domodwyer/mailyak"
 	"github.com/gocarina/gocsv"
 	"github.com/jackpal/gateway"
-	gm "github.com/zew/go-mail"
 )
 
 type Recipient struct {
@@ -291,32 +291,64 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		return fmt.Errorf("singleEmail mode must be 'prod' or 'test'; is %v", mode)
 	}
 
-	m := gm.NewMessagePlain("default subject", "default body")
-	if tsk.HTML {
-		m.ContentType = "text/html"
+	relayHostKey := cfg.DefaultHorst
+	if tsk.RelayHost != "" {
+		relayHostKey = tsk.RelayHost
+	}
+	rh := cfg.RelayHorsts[relayHostKey]
+
+	nameDomain := strings.Split(rec.Email, "@")
+	if len(nameDomain) != 2 {
+		err := fmt.Errorf("rec.Email seems malformed %v", rec.Email)
+		return err
+	}
+	domain := "@" + nameDomain[1]
+
+	// no longer used - see DomainsToRelayHorsts
+	if key, ok := cfg.DomainsToRelayHorsts[domain]; ok {
+		if true || isInternalGateway() {
+			if _, ok := cfg.RelayHorsts[key]; ok {
+				log.Printf("\trecipient domain %v via internal SMTP host %v", domain, key)
+				rh = cfg.RelayHorsts[key]
+				relayHostKey = key
+			} else {
+				err := fmt.Errorf("email domain %v points to SMTP host %v, which does not exist", domain, key)
+				return err
+			}
+		} else {
+			log.Printf("\trecipient domain %v - we are not internal", domain)
+		}
 	}
 
-	m.From = *cfg.Projects[project].From
-	if m.From.Address == "" {
+	m := mailyak.New(
+		rh.HostNamePort, // "email.zew.de:587",
+		rh.getAuth(),
+	)
+
+	if cfg.Projects[project].From.Address == "" {
 		return fmt.Errorf("Task.From or Config.DefaultFrom email must be set")
 	}
-	m.ReplyTo = m.From.Address
+	m.From(cfg.Projects[project].From.Address)
+
+	// m.ReplyTo = m.From.Address
 	if cfg.Projects[project].ReplyTo != "" {
-		m.ReplyTo = cfg.Projects[project].ReplyTo
+		m.FromName(cfg.Projects[project].From.Name)
 	}
 	if cfg.Projects[project].Bounce != "" {
 		// return-path is a hidden email header
 		// indicating where bounced emails will be processed.
-		m.AddCustomHeader("Return-Path", cfg.Projects[project].Bounce)
+		// m.AddCustomHeader("Return-Path", cfg.Projects[project].Bounce)
+		m.AddHeader("Return-Path", cfg.Projects[project].Bounce)
 	}
 
 	if rec.Email == "" || !strings.Contains(rec.Email, "@") {
 		return fmt.Errorf("email field %q is suspect \n\t%+v", rec.Email, rec)
 	}
-	m.To = []string{rec.Email}
+	m.To(rec.Email)
 
 	//
 	// attachments
+	attCtr := 0
 	for _, att := range tsk.Attachments {
 
 		if att.Language != rec.Language {
@@ -354,50 +386,32 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 			return err
 		}
 
-		if err := m.Attach(lbl, pth, att.Inline); err != nil {
+		f, err := os.OpenFile(pth, os.O_RDONLY, 0x777)
+		if err != nil {
 			log.Printf("error doing attachment %+v\n\t%v", att, err)
 			return err
 		}
+		m.Attach(lbl, f)
+		attCtr++
 	}
 
-	m.AddCustomHeader("X-Mailer", "go-massmail")
-
-	relayHostKey := cfg.DefaultHorst
-	if tsk.RelayHost != "" {
-		relayHostKey = tsk.RelayHost
-	}
-	rh := cfg.RelayHorsts[relayHostKey]
-
-	nameDomain := strings.Split(rec.Email, "@")
-	if len(nameDomain) != 2 {
-		err := fmt.Errorf("rec.Email seems malformed %v", rec.Email)
-		return err
-	}
-	domain := "@" + nameDomain[1]
-
-	// no longer used - see DomainsToRelayHorsts
-	if key, ok := cfg.DomainsToRelayHorsts[domain]; ok {
-		if true || isInternalGateway() {
-			if _, ok := cfg.RelayHorsts[key]; ok {
-				log.Printf("\trecipient domain %v via internal SMTP host %v", domain, key)
-				rh = cfg.RelayHorsts[key]
-				relayHostKey = key
-			} else {
-				err := fmt.Errorf("email domain %v points to SMTP host %v, which does not exist", domain, key)
-				return err
-			}
-		} else {
-			log.Printf("\trecipient domain %v - we are not internal", domain)
-		}
-	}
+	m.AddHeader("X-Mailer", "go-massmail")
 
 	rec.SMTP = rh.HostNamePort
-	m.Subject, m.Body = getText(rec, project, tsk, rec.Language)
-	log.Printf("  subject:   %v", m.Subject)
-	// log.Print(m.Body)
+
+	subj, bod := getText(rec, project, tsk, rec.Language)
+	log.Printf("  subject:   %v", subj)
+	m.Subject(subj)
+	if tsk.HTML {
+		// m.Plain().Set("Get a real email client")
+		m.Plain().Set(bod)
+		m.HTML().Set(bod)
+	} else {
+		m.Plain().Set(bod)
+	}
 
 	log.Printf("  sending %q via %s... to %v with %v attach(s)",
-		mode, rh.HostNamePort, rec.Lastname, len(m.Attachments),
+		mode, rh.HostNamePort, rec.Lastname, attCtr,
 	)
 
 	if strings.Contains(rec.NoMail, "noMail") {
@@ -415,11 +429,12 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	}
 	time.Sleep(time.Millisecond * time.Duration(delayEff))
 
-	err := gm.Send(
-		rh.HostNamePort,
-		rh.getAuth(),
-		m,
-	)
+	// err := gm.Send(
+	// 	rh.HostNamePort,
+	// 	rh.getAuth(),
+	// 	m,
+	// )
+	err := m.Send()
 	if err != nil {
 		return fmt.Errorf(" error sending lib-email  %v:\n\t%w", relayHostKey, err)
 	} else {

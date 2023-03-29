@@ -7,7 +7,10 @@
 *.exe
 *.exe~
 
-attachments/fmt/**
+attachments/**
+!attachments/test/fmt/**
+!attachments/fmt/rename.sh
+
 
 tmp/*
 tmp*

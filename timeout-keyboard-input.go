@@ -89,7 +89,7 @@ func loopAsync(waitSeconds int) byte {
 
 	// channel 2
 	deadline := time.Now().Add(time.Duration(waitSeconds * int(time.Second)))
-	ticker := time.NewTicker(time.Second / 5)
+	ticker := time.NewTicker(2 * time.Second) // make it slow - so the printing of "." does not conflict with human input
 
 	//
 	// combining channel 1 and 2

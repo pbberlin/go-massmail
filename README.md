@@ -128,16 +128,25 @@ who have not yet answered.
 
 * Batch file setting up logging to file
 
+### Todo templates
+
 * Repeating text blocks (i.e. footer) for inclusion into templates
+
+* HTML emails should get a plain text version.  
+  At the moment, we just add the HTML file again as plain text.
 
 * Make functions computing dynamic template fields configurable;  
   at the moment `SetDerived` switches depending on `r.SourceTable` etc. 
 
+* Outlook is stripping CSS block formatting (float:left etc.)
+
+
+### Todo Prio C
+
 * Continue after 8 seconds or keyboard input:  
   can we get rid of the enter key?
 
-* Prio C:  
-   isInternalGateway():  
+* isInternalGateway():  
    IP addresses need to be configurable  
      map[string]bytes positive  
      map[string]bytes negative  
@@ -147,16 +156,13 @@ who have not yet answered.
   I need to simplify this.
   
 
+### Todo - HTML email
 
-## Todo HTML email
+* HTML inline pictures issue  
+  was solved by switching to `github.com/domodwyer/mailyak`.  
 
-* Outlook is stripping CSS block formatting (float:left etc.)
-
-* HTML inline pictures
-  * Inline pictures are not shown by gmail.com
-  * Should we use the golang packages for multipart email?  
-    This would erase all trust into the current encoding.  
-  * [Content type - nested](stackoverflow.com/questions/6706891/)
+* We could extend go-mail  
+  [Content type - nested](stackoverflow.com/questions/6706891/)
 
 ```log
   Content-Type: multipart/related; boundary="a1b2c3d4e3f2g1"
@@ -191,6 +197,9 @@ Content-Disposition: inline; filename="moz-screenshot.png"
 
 * Or embedding `<img src="data:image/jpg;base64,{{base64-data-string here}}" />`  
   but "data URIs in emails aren't supported"
+
+
+
 
 
 ## Using MS word and Outlook

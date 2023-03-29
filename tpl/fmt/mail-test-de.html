@@ -1,0 +1,90 @@
+ZEW Private Debt Survey - {{.SMTP}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>{{.Anrede}},</p>
+
+<style>
+.sc {
+    font-variant: small-caps;
+}
+
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body, root {
+    max-width: 700px;
+}
+
+p, .cell1{
+    text-align: justify;
+    margin: 0.8rem 0.4rem;
+}
+
+.cell1 {
+    float: left;
+    width: 40%; 
+    max-width: 195px; 
+    max-width: 205px; 
+    font-size: 80%;
+    line-height: 110%;
+}
+.cell2 {
+    width: 90%; 
+    max-width:  190px; 
+    max-height: 190px;
+    
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+</style>
+
+<p>
+as bla bla <span class="sc">ZEW</span> – Leibniz Centre for European Economic Research<br>
+ - are happy to invite you to our new 
+ <a href="{{.Link}}">ZEW Private Debt Survey</a>. <br>
+ The survey will be conducted.
+</p>
+
+
+<p>If you have questions, do not hesitate to 
+    <a href="mailto:private-debt-survey@zew.de">contact us</a>.
+</p>
+
+<br>
+<table style="margin:0;padding:0;border:none;">
+    <tr style="margin:0;padding:0;border:none;">
+        <td style="margin:0;padding:0;border:none;">
+            <img src="cid:img1.gif" alt="Karolin Kirschenmann" class="cell2" /><br>
+            Karolin Kirschenmann<br>
+            Phone +49 (0) 621 1235 351<br>
+            Karolin.Kirschenmann@zew.de&nbsp;&nbsp;<br>
+        </td>
+        <td style="margin:0;padding:0;border:none;">
+            <img src="cid:img2.gif" alt="Frank Brückbauer" class="cell2" /><br>
+            Frank Brückbauer<br>
+            Phone +49 (0) 621 1235 148<br>
+            Frank.Brueckbauer@zew.de<br>
+        </td>
+    </tr>
+</table>
+
+
+<p style="clear: both;">
+    <br>
+    Kind regards, <br>
+    the ZEW Private Debt Survey team
+</p>
+
+</body>
+
+</html>
