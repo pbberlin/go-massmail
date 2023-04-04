@@ -235,6 +235,13 @@ func (r *Recipient) SetDerived(wv *WaveT, tsk *TaskT) {
 	r.ClosingDatePreliminary = formatDate(prelimi, r.Language)
 	r.ClosingDateLastDue = formatDate(lastDue, r.Language)
 
+	tenDaysPast := time.Now().Add(-10 * 24 * 3600 * time.Second)
+	for _, t := range []time.Time{prelimi, lastDue} {
+		if !t.IsZero() && tenDaysPast.After(t) {
+			log.Fatalf("%v: ClosingDate* %v is older than %v", tsk.Name, formatDate(t, r.Language), formatDate(tenDaysPast, r.Language))
+		}
+	}
+
 	publication := lastDue.AddDate(0, 0, 1)
 
 	r.ExcelLink = fmt.Sprintf(
@@ -329,10 +336,11 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		return fmt.Errorf("Task.From or Config.DefaultFrom email must be set")
 	}
 	m.From(cfg.Projects[project].From.Address)
+	m.FromName(cfg.Projects[project].From.Name)
 
 	// m.ReplyTo = m.From.Address
 	if cfg.Projects[project].ReplyTo != "" {
-		m.FromName(cfg.Projects[project].From.Name)
+		m.ReplyTo(cfg.Projects[project].ReplyTo)
 	}
 	if cfg.Projects[project].Bounce != "" {
 		// return-path is a hidden email header
@@ -340,6 +348,7 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		// m.AddCustomHeader("Return-Path", cfg.Projects[project].Bounce)
 		m.AddHeader("Return-Path", cfg.Projects[project].Bounce)
 	}
+	m.AddHeader("List-Unsubscribe", fmt.Sprintf("<maito:%v>", cfg.Projects[project].ReplyTo))
 
 	if rec.Email == "" || !strings.Contains(rec.Email, "@") {
 		return fmt.Errorf("email field %q is suspect \n\t%+v", rec.Email, rec)

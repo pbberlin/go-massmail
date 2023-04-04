@@ -287,7 +287,8 @@ func writeExampleConfig() {
 	var example = configT{
 
 		Location:       "Europe/Berlin",
-		AttachmentRoot: `C:\Users\pbu\Documents\zew_work\daten\`,
+		AttachmentRoot: `.\attachments\`,
+		// AttachmentRoot: `C:\Users\pbu\Documents\zew_work\daten\`,
 
 		RelayHorsts: map[string]RelayHorst{
 			"email.zew.de": {

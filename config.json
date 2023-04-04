@@ -1,6 +1,7 @@
 {
     "loc": "Europe/Berlin",
-    "attachment_root": "C:\\Users\\pbu\\Documents\\zew_work\\daten\\",
+    "xx-attachment_root": "C:\\Users\\pbu\\Documents\\zew_work\\daten\\",
+    "attachment_root": ".\\attachments\\",
     "relay_horsts": {
       "email.zew.de": {
         "host_name_port": "email.zew.de:587",
@@ -9,6 +10,7 @@
       },
       "zimbra.zew.de": {
         "host_name_port": "zimbra.zew.de:25",
+        "xx-host_name_port": "zimbra.zew.de:465",
         "username":       "fmt-relay@zimbra.zew.de",
         "xx-username":    "fmt-relay"
       },
@@ -34,6 +36,8 @@
       "fmt": {
         "from": {
           "Name":       "Finanzmarkttest",
+
+          "xx-Address1":    "finanzmarkttest@zew.de",
           "Address":    "finanzmarkttest@zimbra.zew.de",
           "xx-Address":    "noreply@zew.de",
           "xx-Address-not-allowed": "FINANZMARKTTEST@zew.de"
@@ -99,7 +103,13 @@
           "year": 2023,
           "month": 3,
           "closing_date_preliminary": "2023-03-17T17:00:00+02:00",
-          "closing_date_last_due":    "2023-03-20T17:00:00+02:00"
+          "closing_date_last_due": "2023-03-20T17:00:00+02:00"
+        },
+        {
+          "year": 2023,
+          "month": 4,
+          "closing_date_preliminary": "2023-04-14T17:00:00+02:00",
+          "closing_date_last_due": "2023-04-17T17:00:00+02:00"
         }
       ]
     },
@@ -164,7 +174,7 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2023-03-11T10:15:00+02:00",
+          "execution_time": "2023-04-06T10:15:00+02:00",
           "xx-1-relay_host": "zimbra.zew.de",
           "xx-2-relay_host": "hermes.zew-private.de",
           "url": {
@@ -176,7 +186,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2023-03-17T09:00:00+02:00",
+          "execution_time": "2023-04-14T09:00:00+02:00",
           "relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder",

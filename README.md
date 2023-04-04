@@ -4,9 +4,15 @@
 
 * Everything configured in `config.json`
 
-* Email templates and attachments from file system
+* Email templates from file system
 
-* Recipient lists in CSV files
+* Attachments from file system  
+  * TTL to prevent mistakes
+
+* Recipient lists in CSV files    
+  * updated via `wget` with TTL
+
+* Dynamic string computation for reminder dates, salutations, etc.
 
 * Everything multi-language
 
@@ -19,7 +25,7 @@
 * Compose dynamic messages using templates
   * dynamic field contents
   * file attachments
-  * email composition and submission using [go-mail](https://github.com/pbberlin/go-mail)
+  * email composition and submission using [mailyak](https://github.com/domodwyer/mailyak)
 
 * Each `project/survey` can have multiple `waves`,  
   representing monthly or quarterly repetitions
@@ -31,10 +37,11 @@
   and distinct attachments
 
 * Each task can be routed to a different SMTP server;  
-  for internal or external recipients. 
+  different SMTP server, based on recipient' domain. 
 
 * Command line flag `mode=[test|prod]`  
-  for test and production runs
+  for test and production runs  
+  integration of DKIM testers i.e. `mail-tester.com` or `mxtoolbox.com`
 
 * Due tasks are executed in test mode 24 hours in advance
 
@@ -71,17 +78,14 @@ Each `task` may have additional data points, for example text elements or attach
 
 ### DRY - dont repeat tasks configurations
 
-* We have tasks with distinct recipients list, while everything else is equal. We could just repeat the config settings, instead we write `SameAs=[otherTask]`.
+* We may have tasks with distinct recipients list, while everything else is equal.  
+  We could just repeat the config settings, instead we write `SameAs=[otherTask]`.
 
-* If we also wish the same template, we can set `TemplateName=[sourceTask]`.
+* CSV file name is always derived from the task name.
 
-### Test mode
+* Template name derives automatically from the task name.  
+  We can set a different template via `TemplateName=[sourceTask]`.
 
-`-mode=test` will only send one email for each entry in config `TestRecipients`.
-
-If the email has more than one language version, test emails are sent for each language and TestRecipient.
-
-If the regular recipient list and `TestRecipients` _overlap_, then these records are used for the test run.
 
 ### Time control
 
@@ -98,6 +102,16 @@ then the task is executed.
 
 The software is thus intended to be started every day around 10:30 am by cron job.
 
+### Test mode
+
+`-mode=test` will only send one email for each entry in config `TestRecipients`.
+
+If the email has more than one language version, test emails are sent for each language and TestRecipient.
+
+If the regular recipient list and `TestRecipients` _overlap_, then these records are used for the test run.
+
+There is still conceptual overlap between explicit test tasks with `ExecutionInterval=daily`.
+
 ### URL for CSV files
 
 The CSV files containing the recipient emails and meta data  
@@ -108,7 +122,7 @@ Configurable TTL to enforce ultra fresh recipient lists if need be.
 HTTP base64 auth via User setting.  
 Password is taken from ENV.
 
-Example URLs
+Example URLs (internal from ZEW institute)
 
 * [FMT invitations](http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation)  
 * [FMT reminders](http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder)  
@@ -124,21 +138,34 @@ who have not yet answered.
   Exchange server bounces are sent to ReplyTo;  
   not to Bounce.
 
-* XML example for windows cron
+* XML example file for windows cron
 
-* Batch file setting up logging to file
+* Batch file, setting up logging to file
 
 ### Todo templates
 
 * Repeating text blocks (i.e. footer) for inclusion into templates
 
-* HTML emails should get a plain text version.  
+* HTML emails should get a distinct plain text version.  
   At the moment, we just add the HTML file again as plain text.
 
 * Make functions computing dynamic template fields configurable;  
   at the moment `SetDerived` switches depending on `r.SourceTable` etc. 
 
-* Outlook is stripping CSS block formatting (float:left etc.)
+* Outlook is stripping CSS block formatting (float:left etc.).  
+  We want a max-width.  
+  This can only be done using a table: <stackoverflow.com/questions/2426072/>
+
+```html
+<table border="0" cellspacing="0" width="100%">
+    <tr>
+        <td></td>
+        <td width="350">350 pixels max, but shrink if less.
+        </td>
+        <td></td>
+     </tr>
+</table> 
+```
 
 
 ### Todo Prio C
