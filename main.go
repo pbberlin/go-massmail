@@ -158,7 +158,7 @@ func fileCopy(in io.Reader, dst string) (err error) {
 }
 
 // SetDerived computes helper fields from base columns
-func (r *Recipient) SetDerived(wv *WaveT, tsk *TaskT) {
+func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 
 	if r.SourceTable == "" {
 
@@ -244,12 +244,22 @@ func (r *Recipient) SetDerived(wv *WaveT, tsk *TaskT) {
 
 	publication := lastDue.AddDate(0, 0, 1)
 
+	//
+	//
+	// fmt
 	r.ExcelLink = fmt.Sprintf(
 		`https://fmtdownload.zew.de/fdl/download/public/%v-%02d-%02d_1100/tab.xlsx`,
 		publication.Year(),
 		int(publication.Month()),
 		int(publication.Day()),
 	)
+
+	if project == "fmt" && r.Language == "en" {
+		if r.Link != "" && !strings.Contains(string(r.Link), "&lang_code=en") {
+			// log.Printf("langcode added 3")
+			r.Link += "&lang_code=en"
+		}
+	}
 
 }
 
@@ -707,7 +717,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 
 	log.Print("\n\t preflight")
 	for idx1, rec := range recs {
-		rec.SetDerived(&wv, &tsk)
+		rec.SetDerived(project, &wv, &tsk)
 		log.Printf(
 			"#%03v %-28v %-28v - %v",
 			idx1+1,
