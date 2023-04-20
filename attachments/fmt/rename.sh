@@ -7,10 +7,10 @@ curmonth=$( date +%m )
 
 
 src="/c/Users/pbu/Documents/zew_work/git/other/fmtx-ap/"
-wave1="202304"
-wave2="2023-04"
-wave2="2023-04"
-wave3="04_2023"
+wave1="2023${curmonth}"
+wave2="2023-${curmonth}"
+wave2="2023-${curmonth}"
+wave3="${curmonth}_2023"
 
 echo "  source dir $src"
 echo "  wave       $wave1"
@@ -75,9 +75,9 @@ for file in ./ftp/tab*.*; do
 done
 for file in ./ftp/tab-engl*.*; do 
     if [ -f "$file" ]; then 
-        echo "    replacing tab-engl with e_*_table.pdf in $file"
+        echo "    replacing tab-engl with e_*_Tabelle.pdf in $file"
         file1=${file//tab-engl-/e_}
-        file2=${file1//.pdf/_table.pdf}
+        file2=${file1//.pdf/_Tabelle.pdf}
         mv $file $file2
     fi 
 done

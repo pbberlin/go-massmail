@@ -522,14 +522,19 @@ func dueTasks() (surveys []string, waves []WaveT, tasks []TaskT) {
 				fmt.Fprintf(msg, "\t%v-%-22v   %v\n", survey, tsk.Name, tsk.Description)
 			}
 
-			dayBefore := tsk.ExecutionTime.AddDate(0, 0, -1) //  advance for testing
-			if inBetween("advance", now, dayBefore, dayBefore.AddDate(0, 0, 1)) {
-				surveys = append(surveys, survey)
-				waves = append(waves, wv)
-				tsk.testmode = true
-				tasks = append(tasks, tsk)
-				fmt.Fprintf(msg, "\t%v-%-26v   %v\n", survey, tsk.Name, tsk.Description)
+			//
+			// one day advance - for testing
+			if operationMode == "test" {
+				dayBefore := tsk.ExecutionTime.AddDate(0, 0, -1)
+				if inBetween("advance", now, dayBefore, dayBefore.AddDate(0, 0, 1)) {
+					surveys = append(surveys, survey)
+					waves = append(waves, wv)
+					tsk.testmode = true
+					tasks = append(tasks, tsk)
+					fmt.Fprintf(msg, "\t%v-%-26v   %v\n", survey, tsk.Name, tsk.Description)
+				}
 			}
+
 		}
 
 	}

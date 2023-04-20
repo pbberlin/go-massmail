@@ -112,6 +112,9 @@ func init() {
 							if orig.URL != nil {
 								t.URL = orig.URL
 							}
+							if orig.ExecutionInterval != "" {
+								t.ExecutionInterval = orig.ExecutionInterval
+							}
 							// this is the tricky setting - more info at t.SameAs
 							if orig.TemplateName != "" {
 								t.TemplateName = orig.TemplateName
