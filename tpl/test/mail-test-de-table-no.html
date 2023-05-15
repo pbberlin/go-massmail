@@ -8,6 +8,8 @@ ZEW Private Debt Survey - {{.SMTP}}
     <title>Document</title>
 </head>
 <body>
+    <p>{{.Anrede}},</p>
+
 <style>
 .sc {
     font-variant: small-caps;
@@ -46,24 +48,14 @@ p, .cell1{
 
 </style>
 
-<table border="0" cellspacing="0" width="100%">
-    <tr>
-        <td></td>
-        <td width="560">
-        <!-- 560 pixels max, but shrink if less. -->
-        <!-- content start -->
-
-
-<p>{{.Anrede}},</p>
-
 <p>
-    The <span class="sc">ZEW</span> – Leibniz Centre for European Economic Research<br>
-    - are happy to invite you to our new
-    <a href="{{.Link}}">ZEW Private Debt Survey</a>. <br>
+The <span class="sc">ZEW</span> – Leibniz Centre for European Economic Research<br>
+ - are happy to invite you to our new 
+ <a href="{{.Link}}">ZEW Private Debt Survey</a>. <br>
 </p>
 
 
-<p>If you have questions, do not hesitate to
+<p>If you have questions, do not hesitate to 
     <a href="mailto:private-debt-survey@zew.de">contact us</a>.
 </p>
 
@@ -118,15 +110,6 @@ p, .cell1{
     Kind regards, <br>
     the ZEW Private Debt Survey team
 </p>
-
-
-        <!-- content stop -->
-        </td>
-        <td></td>
-    </tr>
-</table>
-
-
 
 </body>
 

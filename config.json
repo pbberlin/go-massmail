@@ -25,7 +25,7 @@
     },
     "xx-1-default_horst": "zimbra.zew.de",
     "xx-2-default_horst": "email.zew.de",
-    "default_horst":     "email.zew.de",
+    "default_horst":     "zimbra.zew.de",
     "domains_to_relay_horsts": {
       "@xx-zew.de":          "email.zew.de",
       "@xx-web.de":      "email.zew.de",
@@ -130,7 +130,13 @@
           "year": 2023,
           "month": 4,
           "closing_date_preliminary": "2023-04-14T17:00:00+02:00",
-          "closing_date_last_due": "2023-04-17T17:00:00+02:00"
+          "closing_date_last_due":    "2023-04-17T17:00:00+02:00"
+        },
+        {
+          "year": 2023,
+          "month": 5,
+          "closing_date_preliminary": "2023-05-12T17:00:00+02:00",
+          "closing_date_last_due":    "2023-05-15T17:00:00+02:00"
         }
       ]
     },
@@ -270,7 +276,7 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2023-04-06T08:15:00+02:00",
+          "execution_time": "2023-05-05T08:15:00+02:00",
           "relay_host":      "email.zew.de",
           "xx-1-relay_host": "zimbra.zew.de",
           "url": {
@@ -282,7 +288,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2023-04-14T09:00:00+02:00",
+          "execution_time": "2023-05-12T09:00:00+02:00",
           "relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder",
@@ -295,7 +301,7 @@
         {
           "name": "results-expectation-data",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 25 Interessenten",
-          "execution_time": "2023-04-18T11:00:00+02:00",
+          "execution_time": "2023-05-16T11:00:00+02:00",
           "attachments": [
             {
               "label": "ZEW_FMT_Expectation_Data.xlsx",
@@ -312,7 +318,7 @@
         {
           "name": "results-gmind",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 12 Interessenten",
-          "execution_time": "2023-04-18T11:00:00+02:00",
+          "execution_time": "2023-05-16T11:00:00+02:00",
           "attachments": [
             {
               "label": "G-Mind_werte.xlsx",
@@ -329,7 +335,7 @@
         {
           "name": "results-economy",
           "description": "Dienstags um 11 - Ergebnisverteiler - 1 Interessenten",
-          "execution_time": "2023-04-18T11:00:00+02:00",
+          "execution_time": "2023-05-16T11:00:00+02:00",
           "attachments": [
             {
               "label": "Economy.xlsx",
@@ -341,7 +347,7 @@
         {
           "name": "results-haver",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 2 Interessenten",
-          "execution_time": "2023-04-18T11:00:00+02:00",
+          "execution_time": "2023-05-16T11:00:00+02:00",
           "attachments": [
             {
               "label": "haver.xlsx",
@@ -353,7 +359,7 @@
         {
           "name": "results-ndr",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 2 Interessenten",
-          "execution_time": "2023-04-18T11:00:00+02:00",
+          "execution_time": "2023-05-16T11:00:00+02:00",
           "attachments": [
             {
               "label": "NDR.xlsx",
@@ -366,7 +372,7 @@
         {
           "name": "results-a",
           "description": "Dienstags um 11 - 270 Teilnehmer",
-          "execution_time": "2023-04-18T11:00:00+02:00",
+          "execution_time": "2023-05-16T11:00:00+02:00",
           "template_name": "results",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
