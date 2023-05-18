@@ -280,10 +280,40 @@ func getText(rec Recipient, project string, tsk TaskT, language string) (subject
 	pth := filepath.Join(".", "tpl", project, fn)
 	t, err := template.ParseFiles(pth)
 	if err != nil {
-		log.Fatalf("could not parse template %v\n\t%v", fn, err)
+		log.Fatalf("could not parse main template %v\n\t%v", fn, err)
 	}
 
-	// log.Printf("template parse success %v", t.Name())
+	// adding partials to template tree
+	fnPt := fmt.Sprintf("partial-%v-*.%v", rec.Language, ext)
+	pthPt := filepath.Join(".", "tpl", project, fnPt)
+
+	partials, err := filepath.Glob(pthPt)
+	if err != nil {
+		if strings.Contains(err.Error(), "html/template: pattern matches no files") {
+			// no partials
+		} else {
+			log.Fatalf("could not glob  %v\n\t%v", pthPt, err)
+		}
+	} else if len(partials) > 0 {
+		log.Printf("\tpartials:  %v", strings.Join(partials, ", "))
+		t, err = t.ParseFiles(partials...)
+		if err != nil {
+			log.Fatalf("could not parse partial template %v\n\t%v\n\t%v", fnPt, partials, err)
+		}
+	} else {
+		// log.Printf("\tno partials in:  %v", pthPt)
+	}
+
+	if false {
+		// log.Printf("template parse success %v", t.Name())
+		// log.Print(util.IndentedDump(t.Tree))
+		// t.Tree.Root.Copy()
+		tNames := make([]string, 0, len(t.Templates()))
+		for _, tx := range t.Templates() {
+			tNames = append(tNames, tx.Name())
+		}
+		log.Printf("\ttpls are:  %v", strings.Join(tNames, ", "))
+	}
 
 	sb := &strings.Builder{}
 	err = t.ExecuteTemplate(sb, fn, rec)
@@ -531,7 +561,7 @@ func dueTasks() (surveys []string, waves []WaveT, tasks []TaskT) {
 					waves = append(waves, wv)
 					tsk.testmode = true
 					tasks = append(tasks, tsk)
-					fmt.Fprintf(msg, "\t%v-%-26v   %v\n", survey, tsk.Name, tsk.Description)
+					fmt.Fprintf(msg, "\t%-24v   %v\n", survey+"-"+tsk.Name, tsk.Description)
 				}
 			}
 

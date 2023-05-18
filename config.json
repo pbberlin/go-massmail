@@ -422,7 +422,8 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2023-04-20T10:15:00+02:00",
+          "execution_time": "2023-05-19T10:15:00+02:00",
+          "relay_host": "email.zew.de",
           "attachments": [
             {
               "label": "ZEW-Finanzmarktreport.pdf",
@@ -434,7 +435,8 @@
         {
           "name": "report-b",
           "description": "Finanzmarkt Report am Freitag - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt und 118 x FMR Email",
-          "execution_time": "2023-04-20T10:15:00+02:00",
+          "execution_time": "2023-05-19T10:15:00+02:00",
+          "relay_host": "email.zew.de",
           "attachments": [
             {
               "label": "ZEW-Finanzmarktreport.pdf",

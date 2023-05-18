@@ -93,7 +93,7 @@ func init() {
 					}
 					for _, candT := range candTasks {
 						if candT.Name == t.SameAs {
-							log.Printf("%v-%-20v will use %v", project, t.Name, candT.Name)
+							log.Printf("%v-%-22v will use %v", project, t.Name, candT.Name)
 
 							// more info at t.SameAs
 							// ========================
