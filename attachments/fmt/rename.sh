@@ -77,8 +77,11 @@ for file in ./ftp/tab-engl*.*; do
     if [ -f "$file" ]; then 
         echo "    replacing tab-engl with e_*_Tabelle.pdf in $file"
         file1=${file//tab-engl-/e_}
-        file2=${file1//.pdf/_Tabelle.pdf}
+        file2=${file1//.pdf/_table.pdf}
         mv $file $file2
+        file3=${file2//_table/_Tabelle}
+        echo "      copy _table to _Tabelle"
+        cp $file2 $file3
     fi 
 done
 for file in ./ftp/tab-*.*; do 

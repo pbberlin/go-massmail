@@ -295,7 +295,7 @@ func getText(rec Recipient, project string, tsk TaskT, language string) (subject
 			log.Fatalf("could not glob  %v\n\t%v", pthPt, err)
 		}
 	} else if len(partials) > 0 {
-		log.Printf("\tpartials:  %v", strings.Join(partials, ", "))
+		// log.Printf("\tpartials:  %v", strings.Join(partials, ", "))
 		t, err = t.ParseFiles(partials...)
 		if err != nil {
 			log.Fatalf("could not parse partial template %v\n\t%v\n\t%v", fnPt, partials, err)

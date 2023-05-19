@@ -86,6 +86,10 @@ Each `task` may have additional data points, for example text elements or attach
 * Template name derives automatically from the task name.  
   We can set a different template via `TemplateName=[sourceTask]`.
 
+* Partial templates must beging with _partial-[langcode]-_  
+  These templates can be embedded into the main template via    
+  `{{template "partial-de-footer.html" .}}`  
+  Dont create more than a dozen, as each is parsed with every main template.
 
 ### Time control
 
@@ -127,7 +131,6 @@ Example URLs (internal from ZEW institute)
 * [FMT invitations](http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation)  
 * [FMT reminders](http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder)  
 
-
 `UserIDSkip` is a map of user IDs that should be omitted from the CSV.  
 This is a quick and dirty way to send reminders to those recipients,  
 who have not yet answered.
@@ -143,8 +146,6 @@ who have not yet answered.
 * Batch file, setting up logging to file
 
 ### Todo templates
-
-* Repeating text blocks (i.e. footer) for inclusion into templates
 
 * HTML emails should get a distinct plain text version.  
   At the moment, we just add the HTML file again as plain text.
