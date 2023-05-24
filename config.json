@@ -93,7 +93,7 @@
       "pds": [
         {
           "year": 2023,
-          "month": 1
+          "month": 4
         }
       ],
       "fmt": [
@@ -205,7 +205,8 @@
         {
           "name": "invitation",
           "description": "PDS invitation",
-          "execution_time": "2023-03-13T11:01:00+02:00",
+          "relay_host": "email.zew.de",
+          "execution_time": "2023-05-24T11:01:00+02:00",
           "html": true,
           "attachments": [
             {
@@ -225,6 +226,7 @@
         {
           "name": "reminder",
           "description": "PDS reminder",
+          "relay_host": "email.zew.de",
           "execution_time": "2023-03-24T10:15:00+02:00",
           "html": true,
           "attachments": [
@@ -424,7 +426,7 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2023-05-19T10:15:00+02:00",
+          "execution_time": "3023-05-24T10:15:00+02:00",
           "relay_host": "email.zew.de",
           "attachments": [
             {
@@ -437,7 +439,7 @@
         {
           "name": "report-b",
           "description": "Finanzmarkt Report am Freitag - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt und 118 x FMR Email",
-          "execution_time": "2023-05-19T10:15:00+02:00",
+          "execution_time": "3023-05-24T10:15:00+02:00",
           "relay_host": "email.zew.de",
           "attachments": [
             {

@@ -207,7 +207,7 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 
 	} else if r.SourceTable == "pds-old" {
 		r.NoMail = "noMail"
-
+		r.Language = "en"
 	}
 
 	if r.ID != "" {

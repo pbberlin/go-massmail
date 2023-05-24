@@ -37,7 +37,7 @@
   and distinct attachments
 
 * Each task can be routed to a different SMTP server;  
-  different SMTP server, based on recipient' domain. 
+  different SMTP server, based on recipients' domain. 
 
 * Command line flag `mode=[test|prod]`  
   for test and production runs  
@@ -53,7 +53,7 @@
 
 A `project/survey` contains a set of emails.
 
-`Sets` of emails can be sent in recurrent `waves`. A `wave` belongs to a project. It usually has a characteristic month or quarter or season. And a wave has common data points, to which multiple email task can refer.
+`Sets` of emails can be sent in recurrent `waves`. A `wave` belongs to a project. It usually has a characteristic month or quarter or season. And a wave has common data points, to which multiple email tasks can refer.
 
 Each `task` may have additional data points, for example text elements or attachments.
 
@@ -76,7 +76,7 @@ Each `task` may have additional data points, for example text elements or attach
 * InternalGateway() sniffs, which gateway the sender is connected to.  
   Additional logic for relay host selection could be applied based on the gateway.  
 
-### DRY - dont repeat tasks configurations
+### DRY - dont repeat yourself - tasks configurations
 
 * We may have tasks with distinct recipients list, while everything else is equal.  
   We could just repeat the config settings, instead we write `SameAs=[otherTask]`.
