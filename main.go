@@ -22,6 +22,7 @@ type Recipient struct {
 	Email       string `csv:"email"`
 	Sex         int    `csv:"sex"`
 	Title       string `csv:"title"`
+	Firstname   string `csv:"firstname"`
 	Lastname    string `csv:"lastname"`
 	NoMail      string `csv:"!Mail !Call"` // value noMail
 	SourceTable string `csv:"src_table"`   // either emtpy string or 'mailadresse', serves to control computation of derived fields
@@ -198,9 +199,17 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 
 	} else if r.SourceTable == "pds" {
 
-		if !strings.Contains(r.Anrede, "Dear Sir or Madam") {
-			r.Anrede = strings.TrimSpace(r.Anrede)
-			r.Lastname = strings.TrimSpace(r.Lastname)
+		r.Anrede = strings.TrimSpace(r.Anrede)
+		r.Firstname = strings.TrimSpace(r.Firstname)
+		r.Lastname = strings.TrimSpace(r.Lastname)
+
+		if r.Anrede != "Mr." && r.Anrede != "Mrs." {
+			if r.Firstname != "" && r.Lastname != "" {
+				r.Anrede = "Dear " + r.Firstname + " " + r.Lastname
+			} else {
+				r.Anrede = "Dear Sir or Madam"
+			}
+		} else {
 			r.Anrede = "Dear " + r.Anrede + " " + r.Lastname
 		}
 		r.Language = "en"

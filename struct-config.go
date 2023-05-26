@@ -112,6 +112,9 @@ func init() {
 							if orig.URL != nil {
 								t.URL = orig.URL
 							}
+							if orig.Attachments != nil {
+								t.Attachments = orig.Attachments
+							}
 							if orig.ExecutionInterval != "" {
 								t.ExecutionInterval = orig.ExecutionInterval
 							}
