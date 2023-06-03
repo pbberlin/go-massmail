@@ -92,7 +92,18 @@ func isInternalGateway() bool {
 func formatDate(dt time.Time, lang string) string {
 
 	if lang == "en" {
-		ret := dt.Format("Monday, 2th January 2006")
+		d := dt.Day()
+		// https://www.business-spotlight.de/sprachratgeber-business-englisch-lernen/englische-datums-und-zeitangaben
+		format := "Monday, 2th January 2006"
+		if d%10 == 1 {
+			format = "Monday, 2st January 2006"
+		} else if d%10 == 2 {
+			format = "Monday, 2nd January 2006"
+		} else if d%10 == 3 {
+			format = "Monday, 2rd January 2006"
+		}
+		ret := dt.Format(format)
+
 		return ret
 	}
 
