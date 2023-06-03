@@ -139,6 +139,12 @@
           "month": 5,
           "closing_date_preliminary": "2023-05-12T17:00:00+02:00",
           "closing_date_last_due":    "2023-05-15T17:00:00+02:00"
+        },
+        {
+          "year": 2023,
+          "month": 6,
+          "closing_date_preliminary": "2023-06-09T17:00:00+02:00",
+          "closing_date_last_due":    "2023-06-12T17:00:00+02:00"
         }
       ]
     },
@@ -207,7 +213,7 @@
           "name": "invitation-new-participants",
           "description": "PDS invitation new participants",
           "relay_host": "email.zew.de",
-          "execution_time": "2023-05-26T11:01:00+02:00",
+          "execution_time": "2023-06-05T11:01:00+02:00",
           "html": true,
           "attachments": [
             {
@@ -287,7 +293,7 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2023-05-05T08:15:00+02:00",
+          "execution_time": "2023-06-05T08:15:00+02:00",
           "relay_host":      "email.zew.de",
           "xx-1-relay_host": "zimbra.zew.de",
           "url": {
@@ -434,7 +440,7 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "3023-05-24T10:15:00+02:00",
+          "execution_time": "2023-05-24T10:15:00+02:00",
           "relay_host": "email.zew.de",
           "attachments": [
             {
@@ -447,7 +453,7 @@
         {
           "name": "report-b",
           "description": "Finanzmarkt Report am Freitag - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt und 118 x FMR Email",
-          "execution_time": "3023-05-24T10:15:00+02:00",
+          "execution_time": "2023-05-24T10:15:00+02:00",
           "relay_host": "email.zew.de",
           "attachments": [
             {
