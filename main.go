@@ -41,6 +41,10 @@ type Recipient struct {
 	ExcelLink          string `csv:"-"`
 }
 
+func (rec Recipient) String() string {
+	return fmt.Sprintf("%05v %v %v - %v", rec.ID, rec.Firstname, rec.Lastname, rec.Email)
+}
+
 // IP addresses need to be configurable
 // map[string]bytes positive
 // map[string]bytes negative
@@ -226,13 +230,13 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 		r.Language = "en"
 
 	} else if r.SourceTable == "pds-old" {
-		r.NoMail = "noMail"
+		r.NoMail += " noMail"
 		r.Language = "en"
 	}
 
 	if r.ID != "" {
 		if _, ok := tsk.UserIDSkip[r.ID]; ok {
-			r.NoMail = "noMail"
+			r.NoMail += " noMail"
 
 		}
 	}
@@ -358,6 +362,11 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		return fmt.Errorf("singleEmail mode must be 'prod' or 'test'; is %v", mode)
 	}
 
+	if strings.Contains(rec.NoMail, "noMail") {
+		log.Printf("    skipping 'noMail' for %s", rec)
+		return nil
+	}
+
 	relayHostKey := cfg.DefaultHorst
 	if tsk.RelayHost != "" {
 		relayHostKey = tsk.RelayHost
@@ -366,7 +375,7 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 
 	nameDomain := strings.Split(rec.Email, "@")
 	if len(nameDomain) != 2 {
-		err := fmt.Errorf("rec.Email seems malformed %v", rec.Email)
+		err := fmt.Errorf("rec.Email seems malformed %v\n\t%s", rec.Email, rec)
 		return err
 	}
 	domain := "@" + nameDomain[1]
@@ -482,11 +491,6 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	log.Printf("  sending %q via %s... to %v with %v attach(s)",
 		mode, rh.HostNamePort, rec.Lastname, attCtr,
 	)
-
-	if strings.Contains(rec.NoMail, "noMail") {
-		log.Printf("    skipping 'noMail'")
-		return nil
-	}
 
 	if mode != "prod" {
 		return nil
@@ -783,7 +787,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		)
 		err := singleEmail("test", project, *rec, wv, tsk)
 		if err != nil {
-			log.Printf("error in preflight run:\n\t%v", err)
+			log.Printf("error in preflight run:\n\t%v\n\t%s", err, rec)
 			return
 		}
 	}
@@ -826,6 +830,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		err := singleEmail("prod", project, *rec, wv, tsk)
 		if err != nil {
 			log.Printf("error in prod run:\n\t%v", err)
+			log.Printf("error in prod run:\n\t%v\n\t%s", err, rec)
 			// log.Printf("\t%v", project)
 			// log.Printf("\t%v", wv)
 			// log.Printf("\t%v", tsk)
