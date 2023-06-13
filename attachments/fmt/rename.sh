@@ -55,7 +55,7 @@ src4="${src}konjunktur.xls"
 \cp -p  $src4   ./ftp/
 
 
-echo "tabellen-1"
+echo "tabellen-directory"
 src5="${src}tab*.*"
 \cp -p  $src5   ./tabellen/
 for file in ./tabellen/*; do 
@@ -80,8 +80,10 @@ for file in ./ftp/tab-engl*.*; do
         file2=${file1//.pdf/_table.pdf}
         mv $file $file2
         file3=${file2//_table/_Tabelle}
-        echo "      copy _table to _Tabelle"
+        echo "      copy _table to $file3"
         cp $file2 $file3
+        echo "      copy to e_current_table.pdf"
+        cp $file2 "./ftp/e_current_table.pdf"
     fi 
 done
 for file in ./ftp/tab-*.*; do 
@@ -90,6 +92,8 @@ for file in ./ftp/tab-*.*; do
         file1=${file//tab-/}
         file2=${file1//.pdf/_Tabelle.pdf}
         mv $file $file2
+        echo "      copy to aktuelle_Tabelle.pdf"
+        cp $file2 "./ftp/aktuelle_Tabelle.pdf"
     fi 
 done
 

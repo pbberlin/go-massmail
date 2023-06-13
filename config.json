@@ -156,7 +156,7 @@
           "description": "checking exchange - via mail-tester.com and mxtoolbox.com",
           "html": true,
           "template_name": "mail-test",
-          "execution_interval": "xxdaily",
+          "execution_interval": "xx-daily",
           "xx-url-1": "https://www.mail-tester.com/manager/latest-tests.html",
           "xx-url-2a": "https://www.mail-tester.com/pbberlin-ZXTV",
           "xx-url-2b": "https://www.mail-tester.com/pbberlin-KNLB",
@@ -201,7 +201,7 @@
         {
           "name": "mail-test-zimbra",
           "description": "checking zimbra -   via mail-tester.com and mxtoolbox.com",
-          "xx-execution_interval": "daily",
+          "execution_interval": "xx-daily",
           "relay_host": "zimbra.zew.de",
           "same_as": "mail-test-exchange"
         }
@@ -304,7 +304,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2023-05-12T09:00:00+02:00",
+          "execution_time": "2023-06-09T09:00:00+02:00",
           "relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder",
@@ -317,8 +317,7 @@
         {
           "name": "results-expectation-data",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 25 Interessenten",
-          "execution_time2": "2023-05-16T11:00:00+02:00",
-          "execution_time": "2023-05-19T11:00:00+02:00",
+          "execution_time": "2023-06-13T11:00:00+02:00",
           "attachments": [
             {
               "label": "ZEW_FMT_Expectation_Data.xlsx",
@@ -335,7 +334,7 @@
         {
           "name": "results-gmind",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 12 Interessenten",
-          "execution_time": "2023-05-16T11:00:00+02:00",
+          "execution_time": "2023-06-13T11:00:00+02:00",
           "attachments": [
             {
               "label": "G-Mind_werte.xlsx",
@@ -352,7 +351,7 @@
         {
           "name": "results-economy",
           "description": "Dienstags um 11 - Ergebnisverteiler - 1 Interessenten",
-          "execution_time": "2023-05-16T11:00:00+02:00",
+          "execution_time": "2023-06-13T11:00:00+02:00",
           "attachments": [
             {
               "label": "Economy.xlsx",
@@ -364,7 +363,7 @@
         {
           "name": "results-haver",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 2 Interessenten",
-          "execution_time": "2023-05-16T11:00:00+02:00",
+          "execution_time": "2023-06-13T11:00:00+02:00",
           "attachments": [
             {
               "label": "haver.xlsx",
@@ -376,7 +375,7 @@
         {
           "name": "results-ndr",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 2 Interessenten",
-          "execution_time": "2023-05-16T11:00:00+02:00",
+          "execution_time": "2023-06-13T11:00:00+02:00",
           "attachments": [
             {
               "label": "NDR.xlsx",
@@ -389,7 +388,7 @@
         {
           "name": "results-a",
           "description": "Dienstags um 11 - 270 Teilnehmer",
-          "execution_time": "2023-05-16T11:00:00+02:00",
+          "execution_time": "2023-06-13T11:00:00+02:00",
           "template_name": "results",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
