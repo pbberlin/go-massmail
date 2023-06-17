@@ -13,6 +13,7 @@ import (
 )
 
 var operationMode string // test or prod
+var startTime time.Time
 
 var loc *time.Location // init in load config
 
@@ -22,19 +23,49 @@ func init() {
 
 	writeExampleConfig()
 
-	om := flag.String(
+	dsc1 := "mode must be 'test' or 'prod' \n\tgo-massmail -mode=test" // can be one or two leading hyphens
+	flg1 := flag.String(
 		"mode",            // -mode=xxx
 		"invalid-default", // default value
-		"mode must be 'test' or 'prod' \n\tgo-massmail -mode=test", // can be one or two leading hyphens
+		dsc1,
 	)
+
+	dsc2 := "parseable date and time - 2006-01-02T15:04" // can be one or two leading hyphens
+	flg2 := flag.String(
+		"start",                               // start=2006-01-02T15:04
+		time.Now().Format("2006-01-02T15:04"), // default value
+		dsc2,
+	)
+
 	flag.Parse()
 
-	operationMode = *om
-	if operationMode != "test" && operationMode != "prod" {
-		log.Fatalf("mode must be 'test' or 'prod', was %q\n\tgo-massmail -mode=test", operationMode)
+	{
+		if *flg1 != "test" && *flg1 != "prod" {
+			log.Fatalf("mode must be 'test' or 'prod', was %q\n\tgo-massmail -mode=test", *flg1)
+		}
+		log.Printf("\tmode is %q\n", *flg1)
+		operationMode = *flg1
 	}
-	log.Printf("\n\toperation mode is %q\n", operationMode)
 
+	{
+		log.Printf("\tstart is %q\n", *flg2)
+		var err error
+		startTime, err = time.Parse("2006-01-02T15:04", *flg2)
+		if err != nil {
+			log.Printf("error parsion start %q - %v", *flg2, err)
+			log.Fatalf("start must be parseable '2006-01-02T15:04', was %q\n\tgo-massmail -start=%v", *flg2, time.Now().Format("2006-01-02T15:04"))
+		}
+		dist := startTime.Sub(time.Now())
+		if dist < 0 {
+			log.Fatalf("start time is in the past %q", *flg2)
+		}
+		if dist > 24*time.Hour {
+			log.Fatalf("start time cannot be more than 24 hours in the future; %q", *flg2)
+		}
+	}
+
+	//
+	//
 	// read prod config
 	bts2, err := os.ReadFile("config.json")
 	if err != nil {
