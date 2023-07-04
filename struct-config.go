@@ -13,7 +13,10 @@ import (
 )
 
 var operationMode string // test or prod
+
 var startTime time.Time
+
+const stfmt = "2006-01-02T15:04" // start time format
 
 var loc *time.Location // init in load config
 
@@ -22,47 +25,6 @@ func init() {
 	log.SetFlags(log.Lshortfile | log.Ltime)
 
 	writeExampleConfig()
-
-	dsc1 := "mode must be 'test' or 'prod' \n\tgo-massmail -mode=test" // can be one or two leading hyphens
-	flg1 := flag.String(
-		"mode",            // -mode=xxx
-		"invalid-default", // default value
-		dsc1,
-	)
-
-	dsc2 := "parseable date and time - 2006-01-02T15:04" // can be one or two leading hyphens
-	flg2 := flag.String(
-		"start",                               // start=2006-01-02T15:04
-		time.Now().Format("2006-01-02T15:04"), // default value
-		dsc2,
-	)
-
-	flag.Parse()
-
-	{
-		if *flg1 != "test" && *flg1 != "prod" {
-			log.Fatalf("mode must be 'test' or 'prod', was %q\n\tgo-massmail -mode=test", *flg1)
-		}
-		log.Printf("\tmode is %q\n", *flg1)
-		operationMode = *flg1
-	}
-
-	{
-		log.Printf("\tstart is %q\n", *flg2)
-		var err error
-		startTime, err = time.Parse("2006-01-02T15:04", *flg2)
-		if err != nil {
-			log.Printf("error parsion start %q - %v", *flg2, err)
-			log.Fatalf("start must be parseable '2006-01-02T15:04', was %q\n\tgo-massmail -start=%v", *flg2, time.Now().Format("2006-01-02T15:04"))
-		}
-		dist := startTime.Sub(time.Now())
-		if dist < 0 {
-			log.Fatalf("start time is in the past %q", *flg2)
-		}
-		if dist > 24*time.Hour {
-			log.Fatalf("start time cannot be more than 24 hours in the future; %q", *flg2)
-		}
-	}
 
 	//
 	//
@@ -168,6 +130,51 @@ func init() {
 	}
 
 	// log.Print(util.IndentedDump(cfg))
+
+	//
+	//
+	// flags
+	// (requiring loc set above)
+	dsc1 := "mode must be 'test' or 'prod' \n\tgo-massmail -mode=test" // can be one or two leading hyphens
+	flg1 := flag.String(
+		"mode",            // -mode=xxx
+		"invalid-default", // default value
+		dsc1,
+	)
+
+	dsc2 := "parseable date and time - 2006-01-02T15:04" // can be one or two leading hyphens
+	flg2 := flag.String(
+		"start",                  // start=2006-01-02T15:04
+		time.Now().Format(stfmt), // default value
+		dsc2,
+	)
+
+	flag.Parse()
+
+	{
+		if *flg1 != "test" && *flg1 != "prod" {
+			log.Fatalf("mode must be 'test' or 'prod', was %q\n\tgo-massmail -mode=test", *flg1)
+		}
+		log.Printf("\tmode is %q\n", *flg1)
+		operationMode = *flg1
+	}
+
+	{
+		log.Printf("\tstart time %q\n", *flg2)
+		var err error
+		startTime, err = time.ParseInLocation(stfmt, *flg2, loc)
+		if err != nil {
+			log.Printf("\terror parsing start %q - %v", *flg2, err)
+			log.Fatalf("\tstart must be parseable '2006-01-02T15:04', was %q\n\tgo-massmail -start=%v", *flg2, time.Now().Format(stfmt))
+		}
+		dist := time.Until(startTime) // more succint, but less explicit than   startTime.Sub(time.Now())
+		if dist < -60*time.Second {
+			log.Fatalf("\tstart time %q is %d secs in the past", *flg2, dist/time.Second)
+		}
+		if dist > 24*time.Hour {
+			log.Fatalf("\tstart time cannot be more than 24 hours in the future; %q", *flg2)
+		}
+	}
 
 }
 
@@ -461,6 +468,7 @@ func writeExampleConfig() {
 						TTL:  60 * 60, // deadline for new participants
 						User: "pbu",
 					},
+					TemplateName: "invitation",
 				},
 				{
 					Name:          "reminder",
@@ -471,6 +479,7 @@ func writeExampleConfig() {
 						TTL:  0, // reminders should not be stale
 						User: "pbu",
 					},
+					TemplateName: "reminder",
 				},
 				{
 					Name:          "results1a",

@@ -81,6 +81,7 @@
         {
           "name": "invitation",
           "description": "Montag",
+          "template_name": "invitation",
           "relay_host": "zimbra.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
@@ -92,6 +93,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
+          "template_name": "reminder",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder",
             "TTL": 0,

@@ -287,6 +287,8 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 
 }
 
+// getText reads template files and fuses them with recipient data;
+// supports partial templates such as footer
 func getText(rec Recipient, project string, tsk TaskT, language string) (subject, body string) {
 
 	templateFile := tsk.Name
@@ -354,6 +356,7 @@ func getText(rec Recipient, project string, tsk TaskT, language string) (subject
 	return lines[0], strings.Join(lines[1:], "\n")
 }
 
+// singleEmail puts together email headers and email body and sends SMTP
 // project - fmt, pds, difi
 // task - invitation, reminder
 func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error {
@@ -602,15 +605,10 @@ func dueTasks() (surveys []string, waves []WaveT, tasks []TaskT) {
 	return
 }
 
-func iterTasks() {
-
-	surveys, waves, tasks := dueTasks()
-	for idx, survey := range surveys {
-		processTask(survey, waves[idx], tasks[idx])
-	}
-
-}
-
+// processTask reads a CSV file containing recipients
+// and emails each recipients using singleEmail().
+// There is a dry run (preflight) to catch missing elements and
+// then the "prod" run.
 func processTask(project string, wv WaveT, tsk TaskT) {
 
 	log.Printf("\n\n\t%v-%-22v   %v - %v att(s)\n\t==================", project, tsk.Name, tsk.Description, len(tsk.Attachments))
@@ -813,6 +811,34 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		return
 	}
 
+	//
+	//
+	// waiting for startTime
+	const interval = 5
+	dist := time.Until(startTime)
+	if dist > time.Second {
+		ticker := time.NewTicker(interval * time.Second)
+		defer ticker.Stop()
+		strStartTime := startTime.Format(stfmt)
+		log.Printf("%5d secs until %s", dist.Round(time.Second)/time.Second, strStartTime)
+	labelFor:
+		for {
+			select {
+			case <-ticker.C:
+				dist := time.Until(startTime)
+				log.Printf("%5d secs until %s", dist.Round(time.Second)/time.Second, strStartTime)
+				if dist > interval*time.Second {
+					// wait for next tick
+				} else {
+					log.Printf(" sleep %5d secs - to the point", dist.Round(time.Second)/time.Second)
+					// ticker.Stop()
+					time.Sleep(dist)
+					break labelFor
+				}
+			}
+		}
+	}
+
 	log.Print("\n\t prod")
 	for idx1, rec := range recs {
 		log.Printf(
@@ -838,6 +864,16 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 			return
 		}
 
+	}
+
+}
+
+// iterTasks reads dueTasks() and executes them using processTask
+func iterTasks() {
+
+	surveys, waves, tasks := dueTasks()
+	for idx, survey := range surveys {
+		processTask(survey, waves[idx], tasks[idx])
 	}
 
 }

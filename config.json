@@ -154,8 +154,8 @@
         {
           "name": "mail-test-exchange",
           "description": "checking exchange - via mail-tester.com and mxtoolbox.com",
-          "html": true,
           "template_name": "mail-test",
+          "html": true,
           "execution_interval": "xx-daily",
           "xx-url-1": "https://www.mail-tester.com/manager/latest-tests.html",
           "xx-url-2a": "https://www.mail-tester.com/pbberlin-ZXTV",
@@ -201,7 +201,8 @@
         {
           "name": "mail-test-zimbra",
           "description": "checking zimbra -   via mail-tester.com and mxtoolbox.com",
-          "execution_interval": "xx-daily",
+          "template_name": "mail-test",
+          "execution_interval": "daily",
           "relay_host": "zimbra.zew.de",
           "same_as": "mail-test-exchange"
         }
