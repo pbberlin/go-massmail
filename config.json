@@ -6,7 +6,7 @@
       "email.zew.de": {
         "host_name_port": "email.zew.de:587",
         "username": "pbu",
-        "delay": 15200
+        "delay": 15300
       },
       "zimbra.zew.de": {
         "host_name_port": "zimbra.zew.de:25",
@@ -209,7 +209,7 @@
           "name": "mail-test-zimbra",
           "description": "checking zimbra -   via mail-tester.com and mxtoolbox.com",
           "template_name": "mail-test",
-          "execution_interval": "daily",
+          "execution_interval": "xx-daily",
           "relay_host": "zimbra.zew.de",
           "same_as": "mail-test-exchange"
         }

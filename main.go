@@ -605,13 +605,7 @@ func dueTasks() (surveys []string, waves []WaveT, tasks []TaskT) {
 	return
 }
 
-// processTask reads a CSV file containing recipients
-// and emails each recipients using singleEmail().
-// There is a dry run (preflight) to catch missing elements and
-// then the "prod" run.
-func processTask(project string, wv WaveT, tsk TaskT) {
-
-	log.Printf("\n\n\t%v-%-22v   %v - %v att(s)\n\t==================", project, tsk.Name, tsk.Description, len(tsk.Attachments))
+func getCSV(project string, wv WaveT, tsk TaskT) ([]*Recipient, error) {
 
 	// CSV file containing participants
 	fn := fmt.Sprintf("./csv/%v/%v.csv", project, tsk.Name)
@@ -624,8 +618,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		os.ModePerm,
 	)
 	if err != nil && !os.IsNotExist(err) {
-		log.Print(err)
-		return
+		return nil, fmt.Errorf("getCSV(): %w", err)
 	}
 
 	// update of CSV required?
@@ -636,8 +629,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		// checking for stale - if file already exists
 		stat, err := inFile.Stat()
 		if err != nil {
-			log.Printf("inFile Stat error: %v", err)
-			return
+			return nil, fmt.Errorf("getCSV(): inFile Stat error: %v", err)
 		}
 		ttl := time.Duration(0)
 		if tsk.URL != nil {
@@ -657,7 +649,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 	} else {
 		log.Printf("      filename %v  not exists", fn)
 		if tsk.URL == nil || tsk.URL.URL == "" {
-			return
+			return nil, fmt.Errorf("getCSV(): no file %v and tsk.URL empty", fn)
 		}
 	}
 
@@ -672,8 +664,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 			}
 			err := wget(opts, os.Stderr)
 			if err != nil {
-				log.Printf("wget error %v", err)
-				return
+				return nil, fmt.Errorf("getCSV(): wget error %w", err)
 			}
 			inFile, err = os.OpenFile(
 				fn,
@@ -682,8 +673,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 				os.ModePerm,
 			)
 			if err != nil {
-				log.Printf("error opening wgetted file: %v", err)
-				return
+				return nil, fmt.Errorf("getCSV(): error opening wgetted file %w", err)
 			}
 		}
 	}
@@ -692,13 +682,12 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 
 	err = fileCopy(inFile, fnCopy)
 	if err != nil {
-		log.Printf("fileCopy error %v", err)
-		return
+		return nil, fmt.Errorf("getCSV(): fileCopy error %w", err)
 	}
+
 	_, err = inFile.Seek(0, 0) // after the copy operation above
 	if err != nil {
-		log.Printf("seek back to start error %v", err)
-		return
+		return nil, fmt.Errorf("getCSV(): seek back to start error %w", err)
 	}
 
 	recs := []*Recipient{} // recipients
@@ -714,16 +703,20 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 	})
 
 	if err := gocsv.UnmarshalFile(inFile, &recs); err != nil {
-		log.Print(err)
-		return
+		return nil, fmt.Errorf("getCSV(): unmarshal CSV error %w", err)
 	}
+
+	return recs, nil
+
+}
+
+func testRecipients(project string, wv WaveT, tsk TaskT, recs []*Recipient) ([]*Recipient, error) {
 
 	if operationMode != "prod" || tsk.testmode {
 
 		lnTR := len(cfg.Projects[project].TestRecipients)
 		if lnTR < 1 {
-			log.Printf("TestRecipients must be set in config")
-			return
+			return nil, fmt.Errorf("recsTestSubset() TestRecipients must be set in config")
 		}
 
 		// langs is a map of languages containing a list of recipient IDs.
@@ -768,8 +761,34 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 
 		}
 
-		recs = subsetRec
+		return subsetRec, nil
 
+	} else {
+
+		return recs, nil
+
+	}
+
+}
+
+// processTask reads a CSV file containing recipients
+// and emails each recipients using singleEmail().
+// There is a dry run (preflight) to catch missing elements and
+// then the "prod" run.
+func processTask(project string, wv WaveT, tsk TaskT) {
+
+	log.Printf("\n\n\t%v-%-22v   %v - %v att(s)\n\t==================", project, tsk.Name, tsk.Description, len(tsk.Attachments))
+
+	recs, err := getCSV(project, wv, tsk)
+	if err != nil {
+		log.Print(err)
+		return
+	}
+
+	recs, err = testRecipients(project, wv, tsk, recs)
+	if err != nil {
+		log.Print(err)
+		return
 	}
 
 	log.Print("\n\t preflight")
@@ -790,6 +809,9 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		}
 	}
 
+	//
+	//
+	// menu skip - continue...
 	const waitSeconds = 8
 	bt1 := loopAsync(waitSeconds)
 	if bt1 == 97 {
@@ -803,12 +825,6 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 	} else {
 		log.Print("loopAsync returned invalid byte code; aborting...")
 		os.Exit(0)
-	}
-
-	// back to start of file
-	if _, err := inFile.Seek(0, 0); err != nil {
-		log.Print(err)
-		return
 	}
 
 	//
@@ -830,13 +846,26 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 				if dist > interval*time.Second {
 					// wait for next tick
 				} else {
-					log.Printf(" sleep %5d secs - to the point", dist.Round(time.Second)/time.Second)
-					// ticker.Stop()
+					log.Printf("  %5.2f secs until precise start time", float64(dist.Round(time.Second))/float64(time.Second))
 					time.Sleep(dist)
 					break labelFor
 				}
 			}
 		}
+
+		// refresh recipients
+		recs, err = getCSV(project, wv, tsk)
+		if err != nil {
+			log.Print(err)
+			return
+		}
+
+		recs, err = testRecipients(project, wv, tsk, recs)
+		if err != nil {
+			log.Print(err)
+			return
+		}
+
 	}
 
 	log.Print("\n\t prod")
