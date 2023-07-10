@@ -92,8 +92,14 @@ for file in ./ftp/tab-*.*; do
         file1=${file//tab-/}
         file2=${file1//.pdf/_Tabelle.pdf}
         mv $file $file2
-        echo "      copy to aktuelle_Tabelle.pdf"
-        cp $file2 "./ftp/aktuelle_Tabelle.pdf"
+
+        if  [[ "$file2" == *.pdf ]]; then
+            echo "      copy $file2 to aktuelle_Tabelle.pdf" 
+            cp $file2 "./ftp/aktuelle_Tabelle.pdf"
+        else 
+            echo "      copy $file2 to aktuelle_Tabelle.xlsx" 
+            cp $file2 "./ftp/aktuelle_Tabelle.xlsx"
+        fi
     fi 
 done
 

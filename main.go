@@ -846,7 +846,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 				if dist > interval*time.Second {
 					// wait for next tick
 				} else {
-					log.Printf("  %5.2f secs until precise start time", float64(dist.Round(time.Second))/float64(time.Second))
+					log.Printf("   %5.2f secs until precise start time", float64(dist.Round(time.Second))/float64(time.Second))
 					time.Sleep(dist)
 					break labelFor
 				}
