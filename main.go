@@ -34,6 +34,7 @@ type Recipient struct {
 
 	Anrede                 string `csv:"anrede"`
 	MonthYear              string `csv:"-"` // Oktober 2022, October 2022
+	Quarter                string `csv:"-"` // Q1
 	QuarterYear            string `csv:"-"` // Q1 2023
 	ClosingDatePreliminary string `csv:"-"` // Friday, 11th November 2022   Freitag, den 11. November 2022,
 	// two days later
@@ -248,6 +249,7 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 
 	quarter := int(m-1)/3 + 1
 	r.QuarterYear = fmt.Sprintf("Q%v %v", quarter, y)
+	r.Quarter = fmt.Sprintf("Q%v", quarter)
 
 	// due dates
 	prelimi := wv.ClosingDatePreliminary
@@ -445,6 +447,12 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		lbl := att.Label
 		// xx = tpl.ParseFiles("")
 		// if attachment label contains placeholders, replace with wave data
+		if strings.Contains(lbl, "{{Quarter}}") {
+			lbl = strings.ReplaceAll(lbl, "{{Quarter}}", rec.Quarter)
+		}
+		if strings.Contains(lbl, "{{QuarterYear}}") {
+			lbl = strings.ReplaceAll(lbl, "{{QuarterYear}}", rec.QuarterYear)
+		}
 		if strings.Contains(lbl, "%v") {
 			lbl = fmt.Sprintf(lbl, wv.Year, int(wv.Month))
 		}
