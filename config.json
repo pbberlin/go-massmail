@@ -233,7 +233,7 @@
           "name": "mail-test-inxmail",
           "description": "checking inxmail smtp relay",
           "template_name": "mail-test",
-          "execution_interval": "daily",
+          "execution_interval": "xx-daily",
           "relay_host": "inxmail.smtp",
           "same_as": "mail-test-exchange"
         }
@@ -338,7 +338,7 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2023-07-03T08:15:00+02:00",
+          "execution_time": "2023-08-07T08:15:00+02:00",
           "relay_host":      "email.zew.de",
           "xx-1-relay_host": "zimbra.zew.de",
           "url": {
@@ -350,7 +350,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2023-07-06T09:00:00+02:00",
+          "execution_time": "2023-07-11T09:00:00+02:00",
           "relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder",

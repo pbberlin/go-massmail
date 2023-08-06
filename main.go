@@ -144,6 +144,27 @@ func formatDate(dt time.Time, lang string) string {
 
 }
 
+func formatDuration(d time.Duration) string {
+	d = d.Round(time.Second)
+
+	h := d / time.Hour
+	d -= h * time.Hour
+
+	m := d / time.Minute
+	d -= m * time.Minute
+
+	s := d / time.Second
+
+	if h > 0 {
+		return fmt.Sprintf("%02dh %02dm %02ds", h, m, s)
+	}
+	if m > 0 {
+		return fmt.Sprintf("    %02dm %02ds", m, s)
+	}
+	return fmt.Sprintf("        %02ds", s)
+
+}
+
 // stackoverflow.com/questions/30376921
 func fileCopy(in io.Reader, dst string) (err error) {
 
@@ -847,13 +868,15 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		ticker := time.NewTicker(interval * time.Second)
 		defer ticker.Stop()
 		strStartTime := startTime.Format(stfmt)
-		log.Printf("%5d secs until %s", dist.Round(time.Second)/time.Second, strStartTime)
+		// log.Printf("%5d secs until %s", dist.Round(time.Second)/time.Second, strStartTime)
+		log.Printf("%5s  until %s", formatDuration(dist), strStartTime)
 	labelFor:
 		for {
 			select {
 			case <-ticker.C:
 				dist := time.Until(startTime)
-				log.Printf("%5d secs until %s", dist.Round(time.Second)/time.Second, strStartTime)
+				// log.Printf("%5d secs until %s", dist.Round(time.Second)/time.Second, strStartTime)
+				log.Printf("%5s  until %s", formatDuration(dist), strStartTime)
 				if dist > interval*time.Second {
 					// wait for next tick
 				} else {
