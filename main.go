@@ -174,7 +174,7 @@ func fileCopy(in io.Reader, dst string) (err error) {
 
 }
 
-// SetDerived computes helper fields from base columns
+// SetDerived fills additional fields for the recipient - derived from base columns
 func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 
 	if r.SourceTable == "" {
@@ -423,6 +423,7 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		m.AddHeader("Return-Path", cfg.Projects[project].Bounce)
 	}
 	m.AddHeader("List-Unsubscribe", fmt.Sprintf("<maito:%v>", cfg.Projects[project].ReplyTo))
+	// todo
 
 	if rec.Email == "" || !strings.Contains(rec.Email, "@") {
 		return fmt.Errorf("email field %q is suspect \n\t%+v", rec.Email, rec)
@@ -529,20 +530,20 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 }
 
 // inBetween if start < t < start+24h
-func inBetween(desc string, t, start, stop time.Time) bool {
+func inBetween(desc string, start, nw, stop time.Time) bool {
 
-	//     t > start"
-	due := t.After(start)
+	//     nw > start"
+	due := nw.After(start)
 
-	//     t < stpp
-	fresh := stop.After(t)
+	//     nw < stop
+	fresh := stop.After(nw)
 
 	if due && fresh {
 		log.Printf(
 			"%6v: %v < %v < %v",
 			desc,
 			start.Format("2006-01-02--15:04"),
-			t.Format("2006-01-02--15:04"),
+			nw.Format("2006-01-02--15:04"),
 			stop.Format("2006-01-02--15:04"),
 		)
 
@@ -559,7 +560,8 @@ func dueTasks() (surveys []string, waves []WaveT, tasks []TaskT) {
 
 	msg := &strings.Builder{}
 
-	now := time.Now()
+	// nw := time.Now()
+	nw := startTime
 
 	for survey, wvs := range cfg.Waves {
 		last := len(wvs) - 1
@@ -580,7 +582,8 @@ func dueTasks() (surveys []string, waves []WaveT, tasks []TaskT) {
 				}
 			}
 
-			if inBetween("prod", now, tsk.ExecutionTime, tsk.ExecutionTime.AddDate(0, 0, 1)) {
+			// executionTime  <  now <  executionTime + 24hours
+			if inBetween("prod", tsk.ExecutionTime, nw, tsk.ExecutionTime.AddDate(0, 0, 1)) {
 				surveys = append(surveys, survey)
 				waves = append(waves, wv)
 				tasks = append(tasks, tsk)
@@ -591,7 +594,7 @@ func dueTasks() (surveys []string, waves []WaveT, tasks []TaskT) {
 			// one day advance - for testing
 			if operationMode == "test" {
 				dayBefore := tsk.ExecutionTime.AddDate(0, 0, -1)
-				if inBetween("advance", now, dayBefore, dayBefore.AddDate(0, 0, 1)) {
+				if inBetween("advance", dayBefore, nw, dayBefore.AddDate(0, 0, 1)) {
 					surveys = append(surveys, survey)
 					waves = append(waves, wv)
 					tsk.testmode = true
