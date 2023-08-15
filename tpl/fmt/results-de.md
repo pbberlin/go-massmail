@@ -6,6 +6,12 @@ anbei übersende ich Ihnen die Ergebnisse unseres aktuellen Finanzmarkttests.
 Excel Datei unter 
 {{.ExcelLink}}
 
+Pressemitteilung deutsch unter  
+{{.PressReleaseDe}}
+
+Pressemitteilung englisch unter  
+{{.PressReleaseEn}}
+
 
 Mit freundlichen Grüßen
   Peter Buchmann

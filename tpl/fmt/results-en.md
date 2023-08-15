@@ -3,8 +3,12 @@ ZEW Financial Market Survey - Results
 
 Please find attached the results and the press release of the ZEW-Financial Market Survey for Germany.
 
-Excel file can be downloaded from 
+Excel file can be downloaded from  
 {{.ExcelLink}}
+
+Press release can be downloaded from  
+{{.PressReleaseEn}}
+
 
 Thank you for your participation.
 

@@ -39,6 +39,8 @@ type Recipient struct {
 	ClosingDatePreliminary string `csv:"-"` // Friday, 11th November 2022   Freitag, den 11. November 2022,
 	// two days later
 	ClosingDateLastDue string `csv:"-"` // Monday, 14th November 2022   Freitag, den 14. November 2022,
+	PressReleaseEn     string `csv:"-"`
+	PressReleaseDe     string `csv:"-"`
 	ExcelLink          string `csv:"-"`
 }
 
@@ -301,6 +303,20 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 		int(publication.Day()),
 	)
 
+	r.PressReleaseDe = fmt.Sprintf(
+		`https://fmtdownload.zew.de/fdl/download/public/%v-%02d-%02d_1100/Pressemitteilung_dt.pdf`,
+		publication.Year(),
+		int(publication.Month()),
+		int(publication.Day()),
+	)
+
+	r.PressReleaseEn = fmt.Sprintf(
+		`https://fmtdownload.zew.de/fdl/download/public/%v-%02d-%02d_1100/Pressemitteilung_en.pdf`,
+		publication.Year(),
+		int(publication.Month()),
+		int(publication.Day()),
+	)
+
 	if project == "fmt" && r.Language == "en" {
 		if r.Link != "" && !strings.Contains(string(r.Link), "&lang_code=en") {
 			// log.Printf("langcode added 3")
@@ -554,7 +570,7 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 func inBetween(desc string, start, nw, stop time.Time) bool {
 
 	//     nw > start"
-	due := nw.After(start)
+	due := nw.After(start.Add(-1 * time.Microsecond))
 
 	//     nw < stop
 	fresh := stop.After(nw)
