@@ -653,6 +653,7 @@ func dueTasks() (surveys []string, waves []WaveT, tasks []TaskT) {
 	return
 }
 
+// load recipients from CSV
 func getCSV(project string, wv WaveT, tsk TaskT) ([]*Recipient, error) {
 
 	// CSV file containing participants
@@ -754,10 +755,18 @@ func getCSV(project string, wv WaveT, tsk TaskT) ([]*Recipient, error) {
 		return nil, fmt.Errorf("getCSV(): unmarshal CSV error %w", err)
 	}
 
+	// always set derived fields after loading or re-loading
+	for _, rec := range recs {
+		rec.SetDerived(project, &wv, &tsk)
+	}
+
+	//
 	return recs, nil
 
 }
 
+// reduce recipients to a few test-recipients;
+// changing rec.Email - but not changing any other field
 func testRecipients(project string, wv WaveT, tsk TaskT, recs []*Recipient) ([]*Recipient, error) {
 
 	if operationMode != "prod" || tsk.testmode {
@@ -841,14 +850,13 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 
 	log.Print("\n\t preflight")
 	for idx1, rec := range recs {
-		rec.SetDerived(project, &wv, &tsk)
 		log.Printf(
-			"#%03v %-28v %-28v - %v",
+			"#%03v %-28v %-28v",
 			idx1+1,
 			// rec.MonthYear,
 			rec.Email,
 			rec.Anrede,
-			rec.ClosingDatePreliminary,
+			// rec.ClosingDatePreliminary,
 		)
 		err := singleEmail("test", project, *rec, wv, tsk)
 		if err != nil {
@@ -921,14 +929,14 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 	log.Print("\n\t prod")
 	for idx1, rec := range recs {
 		log.Printf(
-			"#%03v %-28v %v  %v %v%v %v",
+			"#%03v %-28v %v  %v%v %v",
 
 			idx1+1,
 
 			rec.Email,
 			rec.Anrede,
 
-			rec.ClosingDatePreliminary,
+			// rec.ClosingDatePreliminary,
 			rec.Language, rec.Sex,
 			rec.MonthYear,
 		)

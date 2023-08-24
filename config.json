@@ -6,7 +6,7 @@
       "email.zew.de": {
         "host_name_port": "email.zew.de:587",
         "username": "pbu",
-        "delay": 15300
+        "delay": 15400
       },
       "zimbra.zew.de": {
         "host_name_port": "zimbra.zew.de:25",
@@ -247,7 +247,7 @@
           "description": "PDS invitation",
           "template_name": "invitation",
           "relay_host": "email.zew.de",
-          "execution_time": "2023-08-23T09:00:00+02:00",
+          "execution_time": "2023-08-24T09:00:00+02:00",
           "html": true,
           "xx-attachments": [
             {
@@ -485,7 +485,7 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2023-07-17T10:15:00+02:00",
+          "execution_time": "2023-08-29T10:15:00+02:00",
           "relay_host": "email.zew.de",
           "attachments": [
             {
@@ -498,7 +498,7 @@
         {
           "name": "report-b",
           "description": "Finanzmarkt Report am Freitag - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt und 118 x FMR Email",
-          "execution_time": "2023-07-17T10:15:00+02:00",
+          "execution_time": "2023-08-29T10:15:00+02:00",
           "relay_host": "email.zew.de",
           "attachments": [
             {
