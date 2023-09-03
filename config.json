@@ -24,7 +24,8 @@
       },
       "inxmail.smtp": {
         "host_name_port": "smtp.inxmail-commerce.com:25",
-        "username": "zew@mx-auth"
+        "username": "zew@mx-auth",
+        "delay": 5
       }
     },
     "xx-1-default_horst": "zimbra.zew.de",
@@ -39,9 +40,9 @@
 
     "projects": {
       
-      "test": {
+      "test-1": {
         "from": {
-          "Name": "go-mailer-test",
+          "Name": "go-massmailer",
           "Address": "finanzmarkttest@zew.de",
           "xx-Address": "finanzmarkttest@zimbra.zew.de",
           "xx-Address": "noreply@zew.de",
@@ -49,6 +50,19 @@
         },
         "replyto": "finanzmarkttest@zew.de",
         "bounce": "noreply@zew.de",
+        "test_recipients": [
+          "peter.buchmann@web.de",
+          "peter.buchmann.68@gmail.com"
+        ]
+      },
+
+      "test-2": {
+        "from": {
+          "Name": "go-massmail-via-inx",
+          "Address": "finanzmarkttest@mails2.zew.de"
+        },
+        "replyto": "finanzmarkttest@zew.de",
+        "bounce":  "noreply@zew.de",
         "test_recipients": [
           "peter.buchmann@web.de",
           "peter.buchmann.68@gmail.com"
@@ -88,7 +102,13 @@
       
     },
     "waves": {
-      "test": [
+      "test-1": [
+        {
+          "year": 2023,
+          "month": 4
+        }
+      ],
+      "test-2": [
         {
           "year": 2023,
           "month": 4
@@ -173,20 +193,13 @@
 
 
     "tasks": {
-      "test": [
+      "test-1": [
         {
           "name": "mail-test-exchange",
           "description": "checking exchange - via mail-tester.com and mxtoolbox.com",
           "template_name": "mail-test",
           "html": true,
           "execution_interval": "xx-daily",
-          "xx-url-1": "https://www.mail-tester.com/manager/latest-tests.html",
-          "xx-url-2a": "https://www.mail-tester.com/pbberlin-ZXTV",
-          "xx-url-2b": "https://www.mail-tester.com/pbberlin-KNLB",
-          "xx-url-3": "https://delivery.mxtoolbox.com/ delivery test",
-          "xx-url-4": "delivery report",
-          "xx-url-5a": "http://email.mxtoolbox.com/c/eJxUybFywyAMANCvgc0-IQkjBoYu_g8QysV3pORcX5v06zt3fr1kZSBvJWwpI2YR8feiVoVUQWJAI96CBqwRRSlJJSV_FAQkoJADMrOsnQ1Sqqit1xrRHMPjdc052nytOh9-lPt1Pb8cfTjcHe7_1OHebRzfdtZ2jON6O9zTdiOqOS5isS-85bg0AFsI1MDajVjBn-VznvYcb8fwaz9rt78AAAD__z41Pfo",
-          "xx-url-5b": "http://email.mxtoolbox.com/c/eJxUzbFuxCAMANCvgS2RMXYSDwxd8h8GjC4SV05p1N7166uON7_h1SSFIHpLYVkFUQTI35KSFiUMG3BZuDUKQZa2LisKbSTFHwkBI8QgAYmB5txKVANhUWYwdgT35zVGz-M5l3H3Pd2u6_Hl4ofD3eH-pg73av34tlPz0Y_r5XC3ao2z6vTfT5RXnrZobYLcqmapW6zkz_Q5Tnv0lyP4tZ-52l8AAAD__xvdPqU",
           "relay_host": "email.zew.de",
           "attachments": [
             {
@@ -228,16 +241,52 @@
           "execution_interval": "xx-daily",
           "relay_host": "zimbra.zew.de",
           "same_as": "mail-test-exchange"
-        },
-        {
-          "name": "mail-test-inxmail",
-          "description": "checking inxmail smtp relay",
-          "template_name": "mail-test",
-          "execution_interval": "xx-daily",
-          "relay_host": "inxmail.smtp",
-          "same_as": "mail-test-exchange"
         }
 
+      ],
+
+
+      "test-2": [
+        {
+		  "name": "mail-test-inxmail",
+		  "description": "checking inxmail smtp relay",
+		  "template_name": "mail-test",
+          "html": true,
+          "execution_interval": "daily",
+          "relay_host": "inxmail.smtp",
+          "attachments": [
+            {
+              "label": "img1.gif",
+              "filename": "./img1-de.gif",
+              "language": "de",
+              "inline": true
+            },
+            {
+              "label": "img2.gif",
+              "filename": "./img2-de.gif",
+              "language": "de",
+              "inline": true
+            },
+            {
+              "label": "img3-de.gif",
+              "filename": "./img3-de.gif",
+              "language": "de",
+              "inline": true
+            },
+            {
+              "label": "Pressemitteilung.pdf",
+              "filename": "./1-de.pdf",
+              "language": "de",
+              "inline": true
+            },
+            {
+              "label": "Pressemitteilung-2.pdf",
+              "filename": "./2-de.pdf",
+              "language": "de",
+              "inline": true
+            }
+          ]
+        }
       ],
 
 
