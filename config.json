@@ -71,7 +71,11 @@
 
       "pds": {
         "from": {
-          "Name": "Private Debt Survey",
+          "Name":    "Private Debt Survey",
+          "Address": "private-debt-survey@mails2.zew.de"
+        },
+        "xx-from": {
+          "Name":    "Private Debt Survey",
           "Address": "noreply@zew.de"
         },
         "replyto": "private-debt-survey@zew.de",
@@ -303,54 +307,28 @@
       "pds": [
         {
           "name": "invitation-recipients",
-          "description": "PDS invitation",
-          "template_name": "invitation",
-          "relay_host": "email.zew.de",
-          "execution_time": "2023-08-24T09:00:00+02:00",
-          "html": true,
-          "xx-attachments": [
-            {
-              "label": "doktor-f-brueckbauer.jpg",
-              "filename": "tmp-brueckbauer.jpg",
-              "language": "en",
-              "inline": true
-            },
-            {
-              "label": "doktor-k-kirschenmann.jpg",
-              "filename": "tmp-kirschenmann.jpg",
-              "language": "en",
-              "inline": true
-            }
-          ]
+          "description":     "PDS invitation",
+          "template_name":   "invitation",
+          "relay_host":      "inxmail.smtp",
+          "xx-relay_host":   "email.zew.de",
+          "execution_time":  "2023-08-24T09:00:00+02:00",
+          "html": true
         },
         {
-          "name": "invitation-recipients-additional",
-          "description": "PDS invitation additional",
-          "same_as": "invitation-recipients",
-          "template_name": "invitation",
+          "name":            "invitation-recipients-additional",
+          "description":     "PDS invitation additional",
+          "same_as":         "invitation-recipients",
+          "template_name":   "invitation",
           "attachments": []
         },
         {
-          "name": "reminder",
-          "description": "PDS reminder",
-          "relay_host": "email.zew.de",
-          "execution_time-a": "2023-06-16T09:15:00+02:00",
-          "execution_time":   "2023-06-22T09:15:00+02:00",
+          "name":            "reminder",
+          "description":     "PDS reminder",
+          "template_name":   "reminder",
+          "relay_host":      "inxmail.smtp",
+          "xx-relay_host":   "email.zew.de",
+          "execution_time":  "2023-09-06T09:15:00+02:00",
           "html": true,
-          "attachments": [
-            {
-              "label": "doktor-f-brueckbauer.jpg",
-              "filename": "tmp-brueckbauer.jpg",
-              "language": "en",
-              "inline": true
-            },
-            {
-              "label": "doktor-k-kirschenmann.jpg",
-              "filename": "tmp-kirschenmann.jpg",
-              "language": "en",
-              "inline": true
-            }
-          ],
           "user_id_skip": {
             "10006":"10006",
             "10037":"10037",
@@ -360,10 +338,16 @@
             "10057":"10057",
             "10065":"10065",
             "10068":"10068",
+            "10078":"10078",
+            "10079":"10079",
             "10080":"10080",
             "10082":"10082",
+            "10083":"10083",
+            "10086":"10086",
+            "10094":"10094",
             "10096":"10096",
             "10103":"10103",
+            "10106":"10106",
             "10125":"10125",
             "10522":"10522",
             "10619":"10619",
@@ -372,8 +356,15 @@
             "10696":"10696",
             "10704":"10704",
             "10740":"10740",
-            "10797":"10797"
+            "10746":"10746",
+            "10797":"10797"            
           }
+        },
+        {
+          "name":            "reminder-additional",
+          "description":     "PDS reminder additional",
+          "same_as":         "reminder",
+          "template_name":   "reminder"
         },
         {
           "name": "report",

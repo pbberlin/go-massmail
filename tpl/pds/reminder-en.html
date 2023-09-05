@@ -5,26 +5,26 @@ Reminder - ZEW Private Debt Survey - {{.QuarterYear}}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Reminder</title>
 </head>
 <body>
-<table border="0" cellspacing="0" width="100%">
-    <tr>
-        <td></td>
-        <td width="660">
-            <!-- 660 pixels max, but shrink if less. -->
-            <!-- content start -->
-
-
-    <p>{{.Anrede}},</p>
-
 <style>
 .sc {
     font-variant: small-caps;
 }
 
-.bigger {
-    font-size: 115%;
+.larger1 {
+    font-size: 103%;
+    letter-spacing: 0.04rem;
+}
+
+i{
+    font-size: 105%;
+    letter-spacing: 0.04rem;    
+}
+
+.larger2 {
+    font-size: 120%;
 }
 
 * {
@@ -38,6 +38,13 @@ body, root {
 p, .cell1{
     text-align: justify;
     margin: 0.8rem 0.4rem;
+}
+
+h3, .h3{
+    margin-top: 2.5rem;
+    margin-bottom: 0.05rem;
+    font-weight: bold;
+    font-size: 101%;
 }
 
 .cell1 {
@@ -59,123 +66,68 @@ p, .cell1{
 }
 
 </style>
+<table border="0" cellspacing="0" width="100%">
+    <tr>
+        <td></td>
+        <td width="660">
+            <!-- 660 pixels max, but shrink if less. -->
+            <!-- content start -->
+
+
+    <p>{{.Anrede}},</p>
+
 
 <p>
-this is a friendly reminder for the current wave of the ZEW Private Debt Survey. We would appreciate your participation
-in this survey. With your answers, you contribute to the collection of richer data about private credit investments that
-will support investors to make qualified investment decisions.
-
+this is a friendly reminder for the current wave of the ZEW Private Debt Survey. 
+We would appreciate your participation in this survey. 
+With your answers, you contribute to the collection of richer data about private credit investments that will support investors to make qualified investment decisions.
 The questionnaire <b>can be completed in 5 to 10 minutes</b>.
 </p>
 
 <p>
-We would like to kindly remind you to submit your questionnaire until next
+We would like to kindly remind you to submit your questionnaire until
 {{.ClosingDateLastDue}} (5 PM CET)
 at the latest.
 </p>
 
-<p class="bigger" style="font-size:110%">Here is your <a href="{{.Link}}">personal link</a> for the ZEW Private Debt Survey {{.QuarterYear}}.</p>
-
-<h3>About the survey</h3>
 <p>
+Here is your <a href="{{.Link}}" class="larger2">participation link</a> for the ZEW Private Debt Survey for {{.QuarterYear}}.
+</p>
+    
+
+<br>
+<p><b>About the survey</b><br/>
 The main objective of the <a href="{{.Link}}">ZEW Private Debt Survey</a> is to enhance the knowledge of market participants about the European
-private debt market. The survey refers to your Corporate Direct Lending, Real Estate Debt, and Infrastructure Debt
-investments and addresses quantitative and qualitative aspects of your investments and the respective investment
-strategy. It also contains questions about the overall market environment.
+private debt market. The focus of the survey are overall conditions of the European Corporate Direct Lending, Real
+Estate Debt, and Infrastructure Debt markets.
+</p>
+
+<p><b>About ZEW Mannheim</b><br />
+The <span class="sc">ZEW</span> - Leibniz Centre for European Economic Research in Mannheim is a non-profit and independent institute with the
+legal form of a limited liability company (GmbH). ZEW is a member of the Leibniz Association. We are one of Germany's
+leading economic research institutes and enjoy a strong reputation throughout Europe. Our <a style="text-decoration:none; color: #888;" href="https://de.wikipedia.org/wiki/ZEW-Index">ZEW Indicator</a> of Economic
+Sentiment is one of the closest followed indicators of investor sentiment for the German economy.
 </p>
 
 
-<h3>Data protection</h3>
-<p>
+<p><b>Data protection</b><br/>
 Of course, we will treat all responses to this survey as strictly confidential and in compliance with the GDPR. We will
-only pass on aggregated, anonymized responses to our cooperation partner Prime Capital AG, who will write the report.
-Only if you give your explicit consent, we will also pass on your individual answers to Prime Capital AG in a
-non-anonymized form. In this case, no personal data is passed on to Prime Capital AG, only the company name and the
-answers given in the survey.
+only pass on aggregated, anonymized responses to our cooperation partner <span class="sc">Prime Capital AG</span>, who will prepare the document
+featuring the survey results.
 </p>
 
+<br>
 
 <p>If you have questions, do not hesitate to 
     <a href="mailto:private-debt-survey@zew.de">contact us</a>.
 </p>
 
 <br>
-<table style="margin:0;padding:0;border:none;">
-    <tr style="margin:0;padding:0;border:none;">
-        <td style="margin:0;padding:0;border:none;" >
-            <img 
-                src="cid:doktor-k-kirschenmann.jpg"   
-                alt="Karolin Kirschenmann" 
-                class="cell2"
-            /><br>
-            Karolin Kirschenmann<br>
-            Phone +49 (0) 621 1235 351<br>
-            Karolin.Kirschenmann@zew.de&nbsp;&nbsp;<br>        
-        </td>
-        <td style="margin:0;padding:0;border:none;" >
-                <img 
-                    src="cid:doktor-f-brueckbauer.jpg"   
-                    alt="Frank Brückbauer" 
-                    class="cell2"
-                /><br>
-                Frank Brückbauer<br>
-                Phone +49 (0) 621 1235 148<br>
-                Frank.Brueckbauer@zew.de<br>        
-        </td>
-    </tr>
-</table>
 
-    <!-- 
-
-
-    <div class="cell1">
-        <img 
-            src="cid:doktor-k-kirschenmann.jpg"   
-            alt="Karolin Kirschenmann" 
-            class="cell2"
-        /><br>
-        Karolin Kirschenmann<br>
-        Phone +49 (0) 621 1235 351<br>
-        Karolin.Kirschenmann@zew.de<br>
-
-
-    </div>
-    <div class="cell1">
-        <img 
-            src="cid:doktor-f-brueckbauer.jpg"   
-            alt="Frank Brückbauer" 
-            class="cell2"
-        /><br>
-        Frank Brückbauer<br>
-        Phone +49 (0) 621 1235 148<br>
-        Frank.Brueckbauer@zew.de<br>
-
-    </div>
-
-    -->
-
-    <!--
-
-        image2
-        <img src="doktor-brueckbauer.jpg"       alt="Doktor Brückbauer" style="width: 50%">
-        <br>
-        
-        image3
-        <img src="cid:tmp-brueckbauer.jpg" alt="">
-        <br>
-        
-        image4
-        <img src="tmp-brueckbauer.jpg" alt="">
-        <br>
-    -->
-    
-
-
-<p style="clear: both;">
-    <br>
-    Kind regards, <br>
-    the ZEW Private Debt Survey team
-</p>
+Kind regards,<br>
+the ZEW Private Debt Survey team
+<br>
+<br>
 
 
         <!-- content stop -->
@@ -183,6 +135,7 @@ answers given in the survey.
         <td></td>
     </tr>
 </table>
+
 
 
 </body>
