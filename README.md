@@ -39,9 +39,18 @@
 * Each task can be routed to a different SMTP server;  
   different SMTP server, based on recipients' domain. 
 
-* Command line flag `mode=[test|prod]`  
+* Command line flag `-mode=[test|prod]`  
   for test and production runs  
   integration of DKIM testers i.e. `mail-tester.com` or `mxtoolbox.com`
+
+* Command line flag `-start=[2023-09-06T09:15]`  
+  defers running the program until given date and time.  
+  Default is now().  
+  The first due task is executed in preflight.  
+  Then the application goes into wait loop.  
+  At the end of the wait loop, the preflight run is repeated.  
+  If there are more than one due tasks, only the first one  
+  is preflighted before the wait loop.  
 
 * Due tasks are executed in test mode 24 hours in advance
 
@@ -85,6 +94,24 @@ Each `task` may have additional data points, for example text elements or attach
 
 * Template name derives automatically from the task name.  
   We can set a different template via `TemplateName=[sourceTask]`.
+
+* HTML templates - centered layout with max width.  
+  Outlook strippings CSS block formatting (float:left etc.).  
+  Max-width can only be done using a table: <stackoverflow.com/questions/2426072/>.  
+  See the invitation template of the pds project for an example.  
+  The basic structure is:
+
+```html
+<table border="0" cellspacing="0" width="100%">
+    <tr>
+        <td></td>
+        <td width="350">350 pixels max, but shrink if less.
+        </td>
+        <td></td>
+     </tr>
+</table> 
+```
+
 
 * Partial templates must beging with _partial-[langcode]-_  
   These templates can be embedded into the main template via    
@@ -147,26 +174,11 @@ who have not yet answered.
 
 ### Todo templates
 
-* HTML emails should get a distinct plain text version.  
+* HTML email templates should get a distinct plain text version.  
   At the moment, we just add the HTML file again as plain text.
 
 * Make functions computing dynamic template fields configurable;  
   at the moment `SetDerived` switches depending on `r.SourceTable` etc. 
-
-* Outlook is stripping CSS block formatting (float:left etc.).  
-  We want a max-width.  
-  This can only be done using a table: <stackoverflow.com/questions/2426072/>
-
-```html
-<table border="0" cellspacing="0" width="100%">
-    <tr>
-        <td></td>
-        <td width="350">350 pixels max, but shrink if less.
-        </td>
-        <td></td>
-     </tr>
-</table> 
-```
 
 
 ### Todo Prio C
@@ -174,7 +186,7 @@ who have not yet answered.
 * Continue after 8 seconds or keyboard input:  
   can we get rid of the enter key?
 
-* isInternalGateway():  
+* isInternalGateway() - should we drop this? :  
    IP addresses need to be configurable  
      map[string]bytes positive  
      map[string]bytes negative  
@@ -184,7 +196,7 @@ who have not yet answered.
   I need to simplify this.
   
 
-### Todo - HTML email
+### Old considerations - if going back to go-mail
 
 * HTML inline pictures issue  
   was solved by switching to `github.com/domodwyer/mailyak`.  
@@ -225,9 +237,6 @@ Content-Disposition: inline; filename="moz-screenshot.png"
 
 * Or embedding `<img src="data:image/jpg;base64,{{base64-data-string here}}" />`  
   but "data URIs in emails aren't supported"
-
-
-
 
 
 ## Using MS word and Outlook
