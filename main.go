@@ -658,7 +658,9 @@ func getCSV(project string, wv WaveT, tsk TaskT) ([]*Recipient, error) {
 
 	// CSV file containing participants
 	fn := fmt.Sprintf("./csv/%v/%v.csv", project, tsk.Name)
-	fnCopy := fmt.Sprintf("./csv/%v/%v-%d-%02d.csv", project, tsk.Name, wv.Year, wv.Month)
+	nowHourMin := time.Now().Format("01-02-15h04m") // no month - Format("02T15:04")
+	// fnCopy - first the year and month of the wave - then month, day and time of the sending time
+	fnCopy := fmt.Sprintf("./csv/%v/%v-%d-%02d--%v.csv", project, tsk.Name, wv.Year, wv.Month, nowHourMin)
 	log.Printf("using filename %v\n", fn)
 
 	inFile, err := os.OpenFile(
@@ -729,6 +731,7 @@ func getCSV(project string, wv WaveT, tsk TaskT) ([]*Recipient, error) {
 
 	defer inFile.Close()
 
+	// move / rename as log and report
 	err = fileCopy(inFile, fnCopy)
 	if err != nil {
 		return nil, fmt.Errorf("getCSV(): fileCopy error %w", err)
