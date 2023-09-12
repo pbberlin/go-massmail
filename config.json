@@ -89,11 +89,11 @@
       },
 
       "fmt": {
-        "from": {
+        "xx-from": {
           "Name":    "Finanzmarkttest",
           "Address": "finanzmarkttest@mails2.zew.de"
         },
-        "xx-from": {
+        "from": {
           "Name":       "Finanzmarkttest",
           "Address":    "noreply@zew.de",
           "xx-Address":    "finanzmarkttest@zimbra.zew.de",
@@ -327,38 +327,40 @@
           "template_name":   "reminder",
           "relay_host":      "inxmail.smtp",
           "xx-relay_host":   "email.zew.de",
-          "execution_time":  "2023-09-06T09:15:00+02:00",
+          "execution_time":  "2023-09-12T09:15:00+02:00",
           "html": true,
           "user_id_skip": {
-            "10006":"10006",
+            "9990":"9990",
+            "9992":"9992",
+            "9993":"9993",
+            "9994":"9994",
+            "9995":"9995",
+            "9996":"9996",
+            "9998":"9998",
+
+            "10007":"10007",
+            "10036":"10036",
             "10037":"10037",
             "10041":"10041",
-            "10049":"10049",
-            "10056":"10056",
             "10057":"10057",
+            "10058":"10058",
+            "10061":"10061",
             "10065":"10065",
-            "10068":"10068",
-            "10078":"10078",
+            "10067":"10067",
             "10079":"10079",
-            "10080":"10080",
-            "10082":"10082",
-            "10083":"10083",
             "10086":"10086",
+            "10093":"10093",
             "10094":"10094",
-            "10096":"10096",
-            "10103":"10103",
-            "10106":"10106",
             "10125":"10125",
-            "10522":"10522",
-            "10619":"10619",
+            "10126":"10126",
+            "10127":"10127",
+            "10128":"10128",
+            "10130":"10130",
+            "10136":"10136",
+            "10141":"10141",
+            "10549":"10549",
             "10646":"10646",
-            "10685":"10685",
-            "10696":"10696",
-            "10704":"10704",
-            "10740":"10740",
-            "10746":"10746",
-            "10797":"10797"            
-          }
+            "10750":"10750"          }
         },
         {
           "name":            "reminder-additional",
@@ -402,8 +404,8 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2023-08-11T09:00:00+02:00",
-          "relay_host":      "inxmail.smtp",
+          "execution_time": "2023-09-08T09:00:00+02:00",
+          "relay_host":        "inxmail.smtp",
           "xx-2-relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=reminder",
@@ -416,7 +418,7 @@
         {
           "name": "results-expectation-data",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 25 Interessenten",
-          "execution_time": "2023-08-15T11:00:00+02:00",
+          "execution_time": "2023-09-12T11:00:00+02:00",
           "attachments": [
             {
               "label": "ZEW_FMT_Expectation_Data.xlsx",
@@ -433,7 +435,7 @@
         {
           "name": "results-gmind",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 12 Interessenten",
-          "execution_time": "2023-08-15T11:00:00+02:00",
+          "execution_time": "2023-09-12T11:00:00+02:00",
           "attachments": [
             {
               "label": "G-Mind_werte.xlsx",
@@ -450,7 +452,7 @@
         {
           "name": "results-economy",
           "description": "Dienstags um 11 - Ergebnisverteiler - 1 Interessenten",
-          "execution_time": "2023-08-15T11:00:00+02:00",
+          "execution_time": "2023-09-12T11:00:00+02:00",
           "attachments": [
             {
               "label": "Economy.xlsx",
@@ -462,7 +464,7 @@
         {
           "name": "results-haver",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 2 Interessenten",
-          "execution_time": "2023-08-15T11:00:00+02:00",
+          "execution_time": "2023-09-12T11:00:00+02:00",
           "attachments": [
             {
               "label": "haver.xlsx",
@@ -474,7 +476,7 @@
         {
           "name": "results-ndr",
           "description": "Dienstags um 11 - Ergebnisverteiler - ca. 2 Interessenten",
-          "execution_time": "2023-08-15T11:00:00+02:00",
+          "execution_time": "2023-09-12T11:00:00+02:00",
           "attachments": [
             {
               "label": "NDR.xlsx",
@@ -487,7 +489,7 @@
         {
           "name": "results-a",
           "description": "Dienstags um 11 - 270 Teilnehmer",
-          "execution_time": "2023-08-15T11:00:00+02:00",
+          "execution_time": "2023-09-12T11:00:00+02:00",
           "template_name": "results",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
