@@ -200,6 +200,11 @@ func fileCopy(in io.Reader, dst string) (err error) {
 // SetDerived fills additional fields for the recipient - derived from base columns
 func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 
+	if project == "copol" {
+		// implicitly all English - but we are too lazy to change the CSV
+		r.Language = "en"
+	}
+
 	if r.SourceTable == "" {
 
 		if r.Language == "de" {

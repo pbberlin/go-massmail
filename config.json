@@ -106,7 +106,25 @@
           "peter.buchmann.68@gmail.com",
           "peter.buchmann@zew.de"
         ]
+      },
+
+      "copol": {
+        "from": {
+          "Name":       "EU Cohesion Policy Survey - ZEW Mannheim",
+          "Address":    "noreply@zew.de"
+        },
+        "replyto": "cohesionsurvey@zew.de",
+        "bounce":  "noreply@zew.de",
+        "test_recipients": [
+          "peter.buchmann@web.de",
+          "peter.buchmann.68@gmail.com",
+          "peter.buchmann@zew.de",
+          "carlobirkholz@mac.com",
+          "carlo.birkholz@gess.uni-mannheim.de",
+          "carlobirkholz@web.de"
+        ]
       }
+
       
     },
     "waves": {
@@ -202,7 +220,14 @@
           "closing_date_last_due":    "2023-09-11T17:00:00+02:00"
         }
 
+      ],
+      "copol": [
+        {
+          "year": 2023,
+          "month": 9
+        }
       ]
+       
     },
 
 
@@ -553,6 +578,19 @@
         {
           "name": "report-b",
           "same_as": "report-a"
+        }
+      ],
+
+      "copol": [
+        {
+          "name": "invitation",
+          "description": "initial invitation for Co Pol survey",
+          "html": true,
+          "xx-execution_interval": "daily",
+          "execution_time": "2023-09-26T10:15:00+02:00",
+          "relay_host": "inxmail.smtp",
+          "attachments": [
+          ]
         }
       ]
 
