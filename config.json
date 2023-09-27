@@ -111,7 +111,7 @@
       "copol": {
         "from": {
           "Name":       "EU Cohesion Policy Survey - ZEW Mannheim",
-          "Address":    "noreply@zew.de"
+          "Address":    "cohesionsurvey@mails2.zew.de"
         },
         "replyto": "cohesionsurvey@zew.de",
         "bounce":  "noreply@zew.de",
