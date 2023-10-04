@@ -586,12 +586,19 @@
           "name": "invitation",
           "description": "initial invitation for Co Pol survey",
           "html": true,
-          "xx-execution_interval": "daily",
           "execution_time": "2023-09-26T10:15:00+02:00",
           "relay_host": "inxmail.smtp",
           "attachments": [
           ]
+        },
+        {
+          "name": "reminder",
+          "description": "reminder for Co Pol survey",
+          "html": true,
+          "execution_time": "2023-10-04T09:15:00+02:00",
+          "relay_host": "inxmail.smtp"
         }
+
       ]
 
 
