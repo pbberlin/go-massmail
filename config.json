@@ -39,17 +39,13 @@
     },
 
     "projects": {
-      
       "test-1": {
         "from": {
-          "Name": "go-massmailer",
-          "Address": "finanzmarkttest@zew.de",
-          "xx-Address": "finanzmarkttest@zimbra.zew.de",
-          "xx-Address": "noreply@zew.de",
-          "xx-Address-not-allowed": "finanzmarkttest@zew.de"
+          "Name":    "go-massmail-via-exchange-srv",
+          "Address": "finanzmarkttest@zew.de"
         },
-        "replyto": "finanzmarkttest@zew.de",
-        "bounce": "noreply@zew.de",
+        "replyto":   "finanzmarkttest@zew.de",
+        "bounce":    "noreply@zew.de",
         "test_recipients": [
           "peter.buchmann@web.de",
           "peter.buchmann.68@gmail.com"
@@ -58,11 +54,15 @@
 
       "test-2": {
         "from": {
-          "Name": "go-massmail-via-inx",
+          "Name":    "go-massmail-via-inx",
           "Address": "finanzmarkttest@mails2.zew.de"
         },
-        "replyto": "finanzmarkttest@zew.de",
-        "bounce":  "noreply@zew.de",
+        "xx-from": {
+          "Name":    "go-massmail-via-zimbra",
+          "Address": "finanzmarkttest@zimbra.zew.de"
+        },
+        "replyto":   "finanzmarkttest@zew.de",
+        "bounce":    "noreply@zew.de",
         "test_recipients": [
           "peter.buchmann@web.de",
           "peter.buchmann.68@gmail.com"
@@ -78,8 +78,8 @@
           "Name":    "Private Debt Survey",
           "Address": "noreply@zew.de"
         },
-        "replyto": "private-debt-survey@zew.de",
-        "bounce": "noreply@zew.de",
+        "replyto":   "private-debt-survey@zew.de",
+        "bounce":    "noreply@zew.de",
         "test_recipients-fail": "no-existing-recipient@gmail.com",
         "test_recipients": [
           "peter.buchmann.68@gmail.com",
@@ -89,15 +89,13 @@
       },
 
       "fmt": {
-        "xx-from": {
-          "Name":    "Finanzmarkttest",
-          "Address": "finanzmarkttest@mails2.zew.de"
-        },
         "from": {
-          "Name":       "Finanzmarkttest",
-          "Address":    "noreply@zew.de",
-          "xx-Address":    "finanzmarkttest@zimbra.zew.de",
-          "xx-Address1-not-allowed":    "finanzmarkttest@zew.de"
+          "Name":      "Finanzmarkttest",
+          "Address":   "finanzmarkttest@mails2.zew.de"
+        },
+        "xx-from": {
+          "Name":      "Finanzmarkttest",
+          "Address":   "finanzmarkttest@zimbra.zew.de"
         },
         "replyto": "finanzmarkttest@zew.de",
         "bounce":  "noreply@zew.de",
@@ -218,6 +216,12 @@
           "month": 9,
           "closing_date_preliminary": "2023-09-08T17:00:00+02:00",
           "closing_date_last_due":    "2023-09-11T17:00:00+02:00"
+        },
+        {
+          "year": 2023,
+          "month": 10,
+          "closing_date_preliminary": "2023-10-13T17:00:00+02:00",
+          "closing_date_last_due":    "2023-10-16T17:00:00+02:00"
         }
 
       ],
@@ -272,27 +276,22 @@
               "inline": true
             }
           ]
-        },
-        {
-          "name": "mail-test-zimbra",
-          "description": "checking zimbra -   via mail-tester.com and mxtoolbox.com",
-          "template_name": "mail-test",
-          "execution_interval": "xx-daily",
-          "relay_host": "zimbra.zew.de",
-          "same_as": "mail-test-exchange"
         }
-
       ],
 
 
       "test-2": [
         {
-          "name": "mail-test-inxmail",
-          "description": "checking inxmail smtp relay",
+          "name":        "mail-test-inxmail-or-zimbra",
+          "description": "checking inxmail or zimbra - depending on project settings",
           "template_name": "mail-test",
           "html": true,
           "execution_interval": "xx-daily",
+          
+          "switch": "hosts",
+          "xx-relay_host": "zimbra.zew.de",
           "relay_host": "inxmail.smtp",
+          
           "attachments": [
             {
               "label": "img1.gif",
@@ -416,7 +415,7 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2023-09-04T09:15:00+02:00",
+          "execution_time": "2023-10-09T09:15:00+02:00",
           "relay_host":        "inxmail.smtp",
           "xx-1-relay_host":   "zimbra.zew.de",
           "xx-2-relay_host":   "email.zew.de",
@@ -429,7 +428,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2023-09-08T09:00:00+02:00",
+          "execution_time": "2023-10-13T09:00:00+02:00",
           "relay_host":        "inxmail.smtp",
           "xx-2-relay_host": "email.zew.de",
           "url": {
