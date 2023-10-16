@@ -354,7 +354,7 @@ func getText(rec Recipient, project string, tsk TaskT, language string) (subject
 	}
 
 	// adding partials to template tree
-	fnPt := fmt.Sprintf("partial-%v-*.%v", rec.Language, ext)
+	fnPt := fmt.Sprintf("partial-*-%v.%v", rec.Language, ext)
 	pthPt := filepath.Join(".", "tpl", project, fnPt)
 
 	partials, err := filepath.Glob(pthPt)

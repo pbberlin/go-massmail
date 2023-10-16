@@ -4,4 +4,4 @@ ZEW Expectation Data
 Anbei die Ergebnisse des letzten Finanzmarkttest.
 
 
-{{template "partial-de-footer.md" .}}
+{{template "partial-results-footer-de.md" .}}

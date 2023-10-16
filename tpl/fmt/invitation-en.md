@@ -13,18 +13,4 @@ Thanks in advance for your participation in the ZEW Financial Market Survey.
 
 Best regards,
 
-Dr. Michael Schroeder
---
-Tel.: +49 621 1235-368
-Fax: +49 621 1235-4223
-E-mail: michael.schroeder@zew.de
-
-Frank Brueckbauer
---
-Tel.: +49 621 1235-148
-Fax: +49 621 1235-4223
-E-mail: frank.brueckbauer@zew.de
-
-Leibniz Centre for European Economic Research (ZEW)
-Research Department International Finance and Financial Management
-Internet: www.zew.de www.zew.eu
+{{template "partial-invite-footer-en.md" .}}
