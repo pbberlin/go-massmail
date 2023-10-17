@@ -30,7 +30,7 @@
     },
     "xx-1-default_horst": "zimbra.zew.de",
     "xx-2-default_horst": "email.zew.de",
-    "default_horst":     "zimbra.zew.de",
+    "default_horst":     "inxmail.smtp",
     "domains_to_relay_horsts": {
       "@xx-zew.de":          "email.zew.de",
       "@xx-web.de":      "email.zew.de",
@@ -395,7 +395,6 @@
         {
           "name": "report",
           "description": "PDS report",
-          "relay_host": "email.zew.de",
           "execution_time":   "2023-07-25T09:15:00+02:00",
           "html": true,
           "attachments": [
@@ -565,7 +564,6 @@
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
           "execution_time": "2023-09-18T10:15:00+02:00",
           "xx-relay_host": "email.zew.de",
-          "relay_host": "zimbra.zew.de",
           "attachments": [
             {
               "label": "ZEW-Finanzmarktreport.pdf",
@@ -579,6 +577,8 @@
           "same_as": "report-a"
         }
       ],
+
+
 
       "copol": [
         {
