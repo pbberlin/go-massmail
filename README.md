@@ -162,6 +162,37 @@ Example URLs (internal from ZEW institute)
 This is a quick and dirty way to send reminders to those recipients,  
 who have not yet answered.
 
+## MS Exchange integration
+
+* SMTP auth interface is adapted;  
+  login to ZEW internal exchange server possible
+
+* Sender must be `noreply@zew.de`.  
+  This is a limitation this admin's exchange account.
+
+* `replyto` can be the desired `finanzmarkttest@zew.de`.  
+  Most clients show `replyto` as sender, which is good.
+
+## Inxmail integration - 2023-08
+
+* Using service  `Mail relay` of the company inxmail.
+
+* Commercial details and password in internal ZEW documentation;  
+  <https://git.zew.de/pbu/entry-points/2023-08-inxmail>
+
+* Uses a subdomain mail2.zew.de  
+  [DNS checker](https://dnschecker.org/all-dns-records-of-domain.php?query=mails2.zew.de&rtype=ALL&dns=google) 
+  containing MX records to inxmail SMTP hosts.  
+
+* Sender must belong to this domain, i.e. `finanzmarkttest@mails2.zew.de`
+
+* `replyto` can be the desired `finanzmarkttest@zew.de`.  
+  Most clients show `replyto` as sender, which is good.
+
+* Up to 10.000 emails per month.  
+  Email size is 125 kB.  
+  Each additional 125 kB are billed as another email. 
+
 ## Todo
 
 * ReplyTo and Bounce (via header `"Return-Path"`) are still unclear.      
