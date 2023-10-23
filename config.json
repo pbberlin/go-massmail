@@ -44,6 +44,10 @@
           "Name":    "go-massmail-via-exchange-srv",
           "Address": "finanzmarkttest@zew.de"
         },
+        "xx-from": {
+          "Name":    "go-massmail-via-exchange-srv",
+          "Address": "noreply@zew.de"
+        },
         "replyto":   "finanzmarkttest@zew.de",
         "bounce":    "noreply@zew.de",
         "test_recipients": [
@@ -57,10 +61,6 @@
           "Name":    "go-massmail-via-inx",
           "Address": "finanzmarkttest@mails2.zew.de"
         },
-        "xx-from": {
-          "Name":    "go-massmail-via-zimbra",
-          "Address": "finanzmarkttest@zimbra.zew.de"
-        },
         "replyto":   "finanzmarkttest@zew.de",
         "bounce":    "noreply@zew.de",
         "test_recipients": [
@@ -69,12 +69,14 @@
         ]
       },
 
+
+
       "pds": {
-        "from": {
+        "xx-from": {
           "Name":    "Private Debt Survey",
           "Address": "private-debt-survey@mails2.zew.de"
         },
-        "xx-from": {
+        "from": {
           "Name":    "Private Debt Survey",
           "Address": "noreply@zew.de"
         },
@@ -89,13 +91,13 @@
       },
 
       "fmt": {
-        "from": {
+        "xx-from": {
           "Name":      "Finanzmarkttest",
           "Address":   "finanzmarkttest@mails2.zew.de"
         },
-        "xx-from": {
+        "from": {
           "Name":      "Finanzmarkttest",
-          "Address":   "finanzmarkttest@zimbra.zew.de"
+          "Address":    "noreply@zew.de"
         },
         "replyto": "finanzmarkttest@zew.de",
         "bounce":  "noreply@zew.de",
@@ -395,7 +397,8 @@
         {
           "name": "report",
           "description": "PDS report",
-          "execution_time":   "2023-07-25T09:15:00+02:00",
+          "execution_time":   "2023-10-23T10:16:00+02:00",
+          "relay_host": "email.zew.de",
           "html": true,
           "attachments": [
             {
@@ -562,8 +565,8 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2023-09-18T10:15:00+02:00",
-          "xx-relay_host": "email.zew.de",
+          "execution_time": "2023-10-23T10:15:00+02:00",
+          "relay_host": "email.zew.de",
           "attachments": [
             {
               "label": "ZEW-Finanzmarktreport.pdf",

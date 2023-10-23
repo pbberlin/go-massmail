@@ -290,6 +290,9 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 	r.ClosingDateLastDue = formatDate(lastDue, r.Language)
 
 	tenDaysPast := time.Now().Add(-10 * 24 * 3600 * time.Second)
+	if project == "pds" {
+		tenDaysPast = time.Now().Add(-40 * 24 * 3600 * time.Second)
+	}
 	for _, t := range []time.Time{prelimi, lastDue} {
 		if !t.IsZero() && tenDaysPast.After(t) {
 			log.Fatalf("%v: ClosingDate* %v is older than %v", tsk.Name, formatDate(t, r.Language), formatDate(tenDaysPast, r.Language))
