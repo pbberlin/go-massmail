@@ -740,9 +740,11 @@ func getCSV(project string, wv WaveT, tsk TaskT) ([]*Recipient, error) {
 	defer inFile.Close()
 
 	// move / rename as log and report
-	err = fileCopy(inFile, fnCopy)
-	if err != nil {
-		return nil, fmt.Errorf("getCSV(): fileCopy error %w", err)
+	if operationMode == "prod" {
+		err = fileCopy(inFile, fnCopy)
+		if err != nil {
+			return nil, fmt.Errorf("getCSV(): fileCopy error %w", err)
+		}
 	}
 
 	_, err = inFile.Seek(0, 0) // after the copy operation above

@@ -91,11 +91,11 @@
       },
 
       "fmt": {
-        "xx-from": {
+        "from": {
           "Name":      "Finanzmarkttest",
           "Address":   "finanzmarkttest@mails2.zew.de"
         },
-        "from": {
+        "xx-from": {
           "Name":      "Finanzmarkttest",
           "Address":    "noreply@zew.de"
         },
@@ -104,7 +104,8 @@
         "test_recipients": [
           "peter.buchmann@web.de",
           "peter.buchmann.68@gmail.com",
-          "peter.buchmann@zew.de"
+          "peter.buchmann@zew.de",
+          "ping@tools.mxtoolbox.com"
         ]
       },
 
@@ -224,7 +225,14 @@
           "month": 10,
           "closing_date_preliminary": "2023-10-13T17:00:00+02:00",
           "closing_date_last_due":    "2023-10-16T17:00:00+02:00"
+        },
+        {
+          "year": 2023,
+          "month": 11,
+          "closing_date_preliminary": "2023-11-10T17:00:00+02:00",
+          "closing_date_last_due":    "2023-11-13T17:00:00+02:00"
         }
+
 
       ],
       "copol": [
@@ -417,10 +425,9 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2023-10-09T09:15:00+02:00",
+          "execution_time": "2023-11-06T09:15:00+02:00",
           "relay_host":        "inxmail.smtp",
-          "xx-1-relay_host":   "zimbra.zew.de",
-          "xx-2-relay_host":   "email.zew.de",
+          "xx-relay_host":   "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
             "TTL": 3600,
@@ -430,7 +437,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2023-10-13T09:00:00+02:00",
+          "execution_time": "2023-11-10T09:00:00+02:00",
           "relay_host":        "inxmail.smtp",
           "xx-2-relay_host": "email.zew.de",
           "url": {
@@ -567,6 +574,11 @@
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
           "execution_time": "2023-10-23T10:15:00+02:00",
           "relay_host": "email.zew.de",
+          "url": {
+            "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
+            "TTL": 3600,
+            "User": "pbu"
+          },
           "attachments": [
             {
               "label": "ZEW-Finanzmarktreport.pdf",
@@ -577,7 +589,8 @@
         },
         {
           "name": "report-b",
-          "same_as": "report-a"
+          "same_as": "report-a",
+          "description": "Finanzmarkt Report am Freitag - update CSV from http://fmt-2020.zew.local/fmt/adressverwaltung_start.php - 110 Teilnemer"
         }
       ],
 
