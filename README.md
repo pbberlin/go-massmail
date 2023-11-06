@@ -173,6 +173,12 @@ who have not yet answered.
 * `replyto` can be the desired `finanzmarkttest@zew.de`.  
   Most clients show `replyto` as sender, which is good.
 
+* `SPF` and `DKIM` are well maintained.
+
+* Exchange imposes a severe rate limit of 15.5 seconds between emails.
+
+* mxtoolbox-report is clean
+
 ## Inxmail integration - 2023-08
 
 * Using service  `Mail relay` of the company inxmail.
@@ -192,6 +198,12 @@ who have not yet answered.
 * Up to 10.000 emails per month.  
   Email size is 125 kB.  
   Each additional 125 kB are billed as another email. 
+
+* `SPF` and `DKIM` are well maintained.
+
+* No `rate limit`.
+
+* mxtoolbox-report is clean
 
 ## Todo
 
