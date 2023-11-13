@@ -151,6 +151,11 @@
           "year": 2023,
           "month": 7,
           "closing_date_last_due": "2023-09-15T17:00:00+02:00"
+        },
+        {
+          "year": 2023,
+          "month": 10,
+          "closing_date_last_due": "2023-12-01T17:00:00+02:00"
         }
       ],
       "fmt": [
@@ -345,7 +350,7 @@
           "template_name":   "invitation",
           "relay_host":      "inxmail.smtp",
           "xx-relay_host":   "email.zew.de",
-          "execution_time":  "2023-08-24T09:00:00+02:00",
+          "execution_time":  "2023-11-14T09:00:00+02:00",
           "html": true
         },
         {
@@ -361,7 +366,7 @@
           "template_name":   "reminder",
           "relay_host":      "inxmail.smtp",
           "xx-relay_host":   "email.zew.de",
-          "execution_time":  "2023-09-12T09:15:00+02:00",
+          "execution_time":  "2023-11-24T09:15:00+02:00",
           "html": true,
           "user_id_skip": {
             "9990":"9990",
