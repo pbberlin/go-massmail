@@ -1,5 +1,4 @@
 Dr. Alexander Glas
---
 Tel.:  0621/1235-398
 Email: alexander.glas@zew.de
 
