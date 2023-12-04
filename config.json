@@ -92,11 +92,11 @@
       },
 
       "fmt": {
-        "xx-from": {
+        "from": {
           "Name":      "Finanzmarkttest",
           "Address":   "finanzmarkttest@mails2.zew.de"
         },
-        "from": {
+        "xx-from": {
           "Name":      "Finanzmarkttest",
           "Address":    "noreply@zew.de"
         },
@@ -237,6 +237,12 @@
           "month": 11,
           "closing_date_preliminary": "2023-11-10T17:00:00+02:00",
           "closing_date_last_due":    "2023-11-13T17:00:00+02:00"
+        },
+        {
+          "year": 2023,
+          "month": 12,
+          "closing_date_preliminary": "2023-12-08T17:00:00+02:00",
+          "closing_date_last_due":    "2023-12-11T17:00:00+02:00"
         }
 
 
@@ -367,27 +373,32 @@
           "template_name":   "reminder",
           "relay_host":      "inxmail.smtp",
           "xx-relay_host":   "email.zew.de",
-          "execution_time":  "2023-11-21T09:15:00+02:00",
+          "execution_time":  "2023-11-28T09:15:00+02:00",
           "html": true,
           "user_id_skip": {
-            "9990":"9990",
-            "9993":"9993",
-            "9994":"9994",
-            "9995":"9995",
-            "9996":"9996",
 
             "10018": "10018",
+            "10037": "10037",
             "10041": "10041",
+            "10058": "10058",
+            "10059": "10059",
+            "10065": "10065",
+            "10078": "10078",
             "10079": "10079",
+            "10080": "10080",
             "10083": "10083",
             "10090": "10090",
+            "10094": "10094",
             "10099": "10099",
+            "10101": "10101",
             "10106": "10106",
             "10127": "10127",
+            "10129": "10129",
+            "10130": "10130",
             "10136": "10136",
             "10512": "10512",
             "10635": "10635"
-            
+                        
 
          }
         },
@@ -420,7 +431,7 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2023-11-06T09:15:00+02:00",
+          "execution_time": "2023-12-04T09:15:00+02:00",
           "relay_host":        "inxmail.smtp",
           "xx-relay_host":   "email.zew.de",
           "url": {
