@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -19,6 +20,7 @@ import (
 
 type Recipient struct {
 	ID          string `csv:"id"`
+	Project     string `csv:"project"`
 	Email       string `csv:"email"`
 	Sex         int    `csv:"sex"`
 	Title       string `csv:"title"`
@@ -266,7 +268,9 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 	if r.ID != "" {
 		if _, ok := tsk.UserIDSkip[r.ID]; ok {
 			r.NoMail += " noMail"
-
+		}
+		if _, ok := unsubscribers[project][r.Email]; ok {
+			r.NoMail += " noMail"
 		}
 	}
 
@@ -467,9 +471,26 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		// m.AddCustomHeader("Return-Path", cfg.Projects[project].Bounce)
 		m.AddHeader("Return-Path", cfg.Projects[project].Bounce)
 	}
-	m.AddHeader("List-Unsubscribe", fmt.Sprintf("<maito:%v>", cfg.Projects[project].ReplyTo))
-	// todo
 
+	// old:
+	// m.AddHeader("List-Unsubscribe", fmt.Sprintf("<maito:%v>", cfg.Projects[project].ReplyTo))
+
+	// new 2023-01:
+	// https://help.inxmail.com/de/content/xcom/mailings/list-unsubscribe-header.htm
+	// List-Unsubscribe: <https://example.com/unsubscribe.html?optin=123456789&userid=987654321>
+	// List-Unsubscribe-Post: List-Unsubscribe=One-Click
+	params := url.Values{}
+	params.Set("project", project)
+	params.Set("task", tsk.Name)
+	params.Set("email", rec.Email)
+	urlUnsub := fmt.Sprintf(
+		`<https://survey2.zew.de/unsubscribe?%v>`,
+		params.Encode(),
+	)
+	m.AddHeader("List-Unsubscribe", urlUnsub)
+	m.AddHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click")
+
+	//
 	if rec.Email == "" || !strings.Contains(rec.Email, "@") {
 		return fmt.Errorf("email field %q is suspect \n\t%+v", rec.Email, rec)
 	}
@@ -740,7 +761,7 @@ func getCSV(project string, wv WaveT, tsk TaskT) ([]*Recipient, error) {
 	defer inFile.Close()
 
 	// move / rename as log and report
-	if operationMode == "prod" {
+	if operationMode == "prod" && tsk.Name != "unsubscribe" {
 		err = fileCopy(inFile, fnCopy)
 		if err != nil {
 			return nil, fmt.Errorf("getCSV(): fileCopy error %w", err)
