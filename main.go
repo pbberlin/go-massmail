@@ -289,7 +289,7 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 	r.ClosingDatePreliminary = formatDate(prelimi, r.Language)
 	r.ClosingDateLastDue = formatDate(lastDue, r.Language)
 
-	tenDaysPast := time.Now().Add(-10 * 24 * 3600 * time.Second)
+	tenDaysPast := time.Now().Add(-15 * 24 * 3600 * time.Second)
 	if project == "pds" {
 		tenDaysPast = time.Now().Add(-40 * 24 * 3600 * time.Second)
 	}

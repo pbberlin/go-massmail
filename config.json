@@ -443,7 +443,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2023-11-10T09:00:00+02:00",
+          "execution_time": "2023-12-08T09:00:00+02:00",
           "relay_host":        "inxmail.smtp",
           "xx-2-relay_host": "email.zew.de",
           "url": {
@@ -456,8 +456,8 @@
 
         {
           "name": "results-expectation-data",
-          "description": "Dienstags um 11 - Ergebnisverteiler - ca. 25 Interessenten",
-          "execution_time": "2023-11-14T11:00:00+02:00",
+          "description": "Di 11:00    - Ergebnisverteiler - 25 Interessenten",
+          "execution_time": "2023-12-12T11:00:00+02:00",
           "attachments": [
             {
               "label": "ZEW_FMT_Expectation_Data.xlsx",
@@ -473,8 +473,8 @@
         },
         {
           "name": "results-gmind",
-          "description": "Dienstags um 11 - Ergebnisverteiler - ca. 12 Interessenten",
-          "execution_time": "2023-11-14T11:00:00+02:00",
+          "description": "Dienstags um 11 - Ergebnisverteiler - 12 Interessenten",
+          "execution_time": "2023-12-12T11:00:00+02:00",
           "attachments": [
             {
               "label": "G-Mind_werte.xlsx",
@@ -490,8 +490,8 @@
         },
         {
           "name": "results-economy",
-          "description": "Dienstags um 11 - Ergebnisverteiler - 1 Interessenten",
-          "execution_time": "2023-11-14T11:00:00+02:00",
+          "description": "Dienstags um 11 - Ergebnisverteiler -  1 Interessenten",
+          "execution_time": "2023-12-12T11:00:00+02:00",
           "attachments": [
             {
               "label": "Economy.xlsx",
@@ -502,8 +502,8 @@
         },
         {
           "name": "results-haver",
-          "description": "Dienstags um 11 - Ergebnisverteiler - ca. 2 Interessenten",
-          "execution_time": "2023-11-14T11:00:00+02:00",
+          "description": "Dienstags um 11 - Ergebnisverteiler -  2 Interessenten",
+          "execution_time": "2023-12-12T11:00:00+02:00",
           "attachments": [
             {
               "label": "haver.xlsx",
@@ -514,8 +514,8 @@
         },
         {
           "name": "results-ndr",
-          "description": "Dienstags um 11 - Ergebnisverteiler - ca. 2 Interessenten",
-          "execution_time": "2023-11-14T11:00:00+02:00",
+          "description": "Dienstags um 11 - Ergebnisverteiler -  2 Interessenten",
+          "execution_time": "2023-12-12T11:00:00+02:00",
           "attachments": [
             {
               "label": "NDR.xlsx",
@@ -527,8 +527,8 @@
         },
         {
           "name": "results-a",
-          "description": "Dienstags um 11 - 270 Teilnehmer",
-          "execution_time": "2023-11-14T11:00:00+02:00",
+          "description": "Dienstags um 11 - Ergebnisverteiler -270 Teilnehmer",
+          "execution_time": "2023-12-12T11:00:00+02:00",
           "template_name": "results",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
@@ -565,7 +565,7 @@
         },
         {
           "name": "results-b",
-          "description": "Dienstags um 11 - Ergebnisverteiler - ca. 30 Interessenten FMT-Dt",
+          "description": "Dienstags um 11 - Ergebnisverteiler - 30 Interessenten FMT-Dt",
           "template_name": "results",
           "url": {
             "TTL": 111113600,
@@ -578,8 +578,8 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2023-11-17T10:15:00+02:00",
-          "relay_host": "email.zew.de",
+          "execution_time": "2023-12-19T10:15:00+02:00",
+          "xx-relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
             "TTL": 3600,
@@ -600,7 +600,11 @@
         },
         {
           "name": "report-b",
+          "url": {
+            "keep-this-empty-url": true
+          },
           "same_as": "report-a",
+          "execution_time": "2023-12-19T10:15:00+02:00",
           "description": "Finanzmarkt Report am Freitag - update CSV from http://fmt-2020.zew.local/fmt/adressverwaltung_start.php - 110 Teilnemer"
         }
       ],
