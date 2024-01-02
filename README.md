@@ -56,6 +56,8 @@
 
 * Sending via cron job
 
+* Unsubscribe
+
 ## Verbose explanation
 
 ### Structure
@@ -204,6 +206,24 @@ who have not yet answered.
 * No `rate limit`.
 
 * mxtoolbox-report is clean
+
+## Unsubscribe - header
+
+* Every emails includes headers for single-click unsubscribe
+
+* Header points to [go-questionnaire-instance]/unsubscribe ?project=x&task=y&email=z
+
+## Unsubscribe - exempt
+
+* A list of unsubscription requests is loaded via https at application start
+
+* Unsubscription requests come as CSV from [go-questionnaire-instance]/unsubscribe-...  
+  containing [project, task, email]
+
+* The list is consulted _before_ any email is sent
+
+* Refresh time every 48 hours
+
 
 ## Todo
 
