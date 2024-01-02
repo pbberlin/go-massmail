@@ -268,9 +268,12 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 	if r.ID != "" {
 		if _, ok := tsk.UserIDSkip[r.ID]; ok {
 			r.NoMail += " noMail"
-		}
-		if _, ok := unsubscribers[project][r.Email]; ok {
+			log.Printf("excluding %v - because from config.json UserIDSkip", r.Email)
+		} else if _, ok := unsubscribers[project][r.Email]; ok {
 			r.NoMail += " noMail"
+			log.Printf("excluding %v - because unsubscribe.csv", r.Email)
+		} else {
+			// log.Printf("including %v - %v - %v", r.Email, project, tsk.Name)
 		}
 	}
 
@@ -476,6 +479,7 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	// m.AddHeader("List-Unsubscribe", fmt.Sprintf("<maito:%v>", cfg.Projects[project].ReplyTo))
 
 	// new 2023-01:
+	// https://datatracker.ietf.org/doc/html/rfc2369#section-3.1
 	// https://help.inxmail.com/de/content/xcom/mailings/list-unsubscribe-header.htm
 	// List-Unsubscribe: <https://example.com/unsubscribe.html?optin=123456789&userid=987654321>
 	// List-Unsubscribe-Post: List-Unsubscribe=One-Click
@@ -484,8 +488,10 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	params.Set("task", tsk.Name)
 	params.Set("email", rec.Email)
 	urlUnsub := fmt.Sprintf(
-		`<https://survey2.zew.de/unsubscribe?%v>`,
+		`<https://survey2.zew.de/unsubscribe?%v>, <mailto:%v?subject=unsubscribe%%20%v>`,
 		params.Encode(),
+		cfg.Projects[project].From.Address,
+		project,
 	)
 	m.AddHeader("List-Unsubscribe", urlUnsub)
 	m.AddHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click")

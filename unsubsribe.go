@@ -2,12 +2,17 @@ package main
 
 import (
 	"log"
+	"os"
+	"path/filepath"
 )
 
 var unsubscribers = map[string]map[string]bool{}
 
 // fill unsubscribers
 func init() {
+
+	dir := filepath.Join(".", "csv", "unsubscribe")
+	os.MkdirAll(dir, os.ModePerm)
 
 	wave := WaveT{}
 	wave.Year = 1000
