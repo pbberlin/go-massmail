@@ -84,7 +84,6 @@
         "bounce":    "noreply@zew.de",
         "test_recipients-fail": "no-existing-recipient@gmail.com",
         "test_recipients": [
-          "ping@tools.mxtoolbox.com",
           "peter.buchmann.68@gmail.com",
           "peter.buchmann@zew.de",
           "peter.buchmann@web.de"
@@ -417,7 +416,7 @@
         {
           "name": "report",
           "description": "PDS report",
-          "execution_time":   "2023-10-23T10:16:00+02:00",
+          "execution_time":   "2024-01-08T09:15:00+02:00",
           "relay_host": "email.zew.de",
           "html": true,
           "attachments": [
@@ -437,7 +436,7 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2024-01-03T09:15:00+02:00",
+          "execution_time": "2024-01-08T09:15:00+02:00",
           "relay_host":        "inxmail.smtp",
           "xx-relay_host":   "email.zew.de",
           "url": {
@@ -449,7 +448,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2024-01-08T09:00:00+02:00",
+          "execution_time": "2024-01-12T09:00:00+02:00",
           "relay_host":        "inxmail.smtp",
           "xx-2-relay_host": "email.zew.de",
           "url": {
