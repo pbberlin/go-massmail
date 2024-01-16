@@ -7,7 +7,7 @@ curmonth=$( date +%m )
 
 # src="/c/Users/pbu/Documents/zew_work/git/other/fmtx-ap/"
 src="."
-wave1="${curmonth}_2023"
+wave1="${curmonth}_2024"
 
 echo "  source dir $src"
 echo "  wave       $wave1"

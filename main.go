@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"io"
 	"log"
+	"mime"
 	"net"
 	"net/url"
 	"os"
@@ -268,10 +269,10 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 	if r.ID != "" {
 		if _, ok := tsk.UserIDSkip[r.ID]; ok {
 			r.NoMail += " noMail"
-			log.Printf("excluding %v - because from config.json UserIDSkip", r.Email)
+			log.Printf("    excluding %v - because from config.json UserIDSkip", r.Email)
 		} else if _, ok := unsubscribers[project][r.Email]; ok {
 			r.NoMail += " noMail"
-			log.Printf("excluding %v - because unsubscribe.csv", r.Email)
+			log.Printf("   excluding %v - because unsubscribe.csv", r.Email)
 		} else {
 			// log.Printf("including %v - %v - %v", r.Email, project, tsk.Name)
 		}
@@ -487,12 +488,21 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	params.Set("project", project)
 	params.Set("task", tsk.Name)
 	params.Set("email", rec.Email)
+
+	queryString := params.Encode()
+
 	urlUnsub := fmt.Sprintf(
 		`<https://survey2.zew.de/unsubscribe?%v>, <mailto:%v?subject=unsubscribe%%20%v>`,
-		params.Encode(),
+		queryString,
 		cfg.Projects[project].From.Address,
 		project,
 	)
+
+	// https://en.wikipedia.org/wiki/MIME#Encoded-Word
+	// Do we have to mime encode the query string? - RFC 2047
+	// urlUnsub = mime.QEncoding.Encode("utf-8", urlUnsub)
+	urlUnsub = mime.QEncoding.Encode("ascii", urlUnsub)
+
 	m.AddHeader("List-Unsubscribe", urlUnsub)
 	m.AddHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click")
 
@@ -796,6 +806,7 @@ func getCSV(project string, wv WaveT, tsk TaskT) ([]*Recipient, error) {
 	}
 
 	// always set derived fields after loading or re-loading
+	log.Printf("SetDerived() for %v - %v", project, tsk.Name)
 	for _, rec := range recs {
 		rec.SetDerived(project, &wv, &tsk)
 	}
