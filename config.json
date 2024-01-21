@@ -588,7 +588,7 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2024-01-19T10:15:00+02:00",
+          "execution_time": "2024-01-22T10:00:00+02:00",
           "xx-relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",

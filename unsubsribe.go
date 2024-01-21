@@ -1,12 +1,14 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
-var unsubscribers = map[string]map[string]bool{}
+var unsubscribers = map[string]map[string]map[string]bool{}
 
 // fill unsubscribers
 func init() {
@@ -33,15 +35,20 @@ func init() {
 
 	for _, us := range flat {
 		if unsubscribers[us.Project] == nil {
-			unsubscribers[us.Project] = map[string]bool{}
+			unsubscribers[us.Project] = map[string]map[string]bool{}
 		}
-		unsubscribers[us.Project][us.Email] = true
+		if unsubscribers[us.Project][us.Task] == nil {
+			unsubscribers[us.Project][us.Task] = map[string]bool{}
+		}
+		us.Email = strings.ReplaceAll(us.Email, "pct40", "@")
+		unsubscribers[us.Project][us.Task][us.Email] = true
 	}
 
 	for k := range unsubscribers {
 		log.Printf(" project %v has %v unsubsribers", k, len(unsubscribers[k]))
 	}
 
-	// s, _ := json.MarshalIndent(unsubscribers, "", "\t")
-	// log.Print(string(s))
+	// temporarily dump
+	s, _ := json.MarshalIndent(unsubscribers, "", "\t")
+	log.Print(string(s))
 }

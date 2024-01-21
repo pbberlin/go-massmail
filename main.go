@@ -22,6 +22,7 @@ import (
 type Recipient struct {
 	ID          string `csv:"id"`
 	Project     string `csv:"project"`
+	Task        string `csv:"task"` // using the type for unsubscribe CSV
 	Email       string `csv:"email"`
 	Sex         int    `csv:"sex"`
 	Title       string `csv:"title"`
@@ -270,9 +271,12 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 		if _, ok := tsk.UserIDSkip[r.ID]; ok {
 			r.NoMail += " noMail"
 			log.Printf("    excluding %v - because from config.json UserIDSkip", r.Email)
-		} else if _, ok := unsubscribers[project][r.Email]; ok {
+		} else if _, ok := unsubscribers[project][tsk.Name][r.Email]; ok {
 			r.NoMail += " noMail"
-			log.Printf("   excluding %v - because unsubscribe.csv", r.Email)
+			log.Printf("   excluding %v - because task unsubscribe.csv", r.Email)
+		} else if _, ok := unsubscribers[project]["all"][r.Email]; ok {
+			r.NoMail += " noMail"
+			log.Printf("   excluding %v - because all  unsubscribe.csv", r.Email)
 		} else {
 			// log.Printf("including %v - %v - %v", r.Email, project, tsk.Name)
 		}
@@ -482,25 +486,38 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	// new 2023-01:
 	// https://datatracker.ietf.org/doc/html/rfc2369#section-3.1
 	// https://help.inxmail.com/de/content/xcom/mailings/list-unsubscribe-header.htm
-	// List-Unsubscribe: <https://example.com/unsubscribe.html?optin=123456789&userid=987654321>
+	// List-Unsubscribe: <https://survey2.zew.de/unsubscribe/fmt/report-a/peter.buchmann.68pct40gmail.com?email=peter.buchmann.68pct40gmail.com&project=fmt&task=reporta>, <mailto:finanzmarkttest@mails2.zew.de?subject=unsubscribe%20fmt>
 	// List-Unsubscribe-Post: List-Unsubscribe=One-Click
+
+	// https://survey2.zew.de/unsubscribe/fmt/report-a/peter.buchmann.68pct40gmail.com?email=peter.buchmann.68pct40gmail.com&project=fmt&task=reporta
+
+	// gmail honors List-Unsubscribe only for higly reputable senders ... stackoverflow.com/questions/28497332
+
 	params := url.Values{}
 	params.Set("project", project)
-	params.Set("task", tsk.Name)
-	params.Set("email", rec.Email)
 
+	params.Set("task", tsk.Name)
+	// params.Set("task", strings.ReplaceAll(tsk.Name, "-", ""))
+
+	params.Set("email", rec.Email)
+	emailCoded := strings.ReplaceAll(rec.Email, "@", "pct40")
+	params.Set("email", emailCoded)
+
+	subPath := fmt.Sprintf("/%v/%v/%v", project, tsk.Name, emailCoded)
 	queryString := params.Encode()
 
 	urlUnsub := fmt.Sprintf(
-		`<https://survey2.zew.de/unsubscribe?%v>, <mailto:%v?subject=unsubscribe%%20%v>`,
+		`<https://survey2.zew.de/unsubscribe%v?%v>, <mailto:%v?subject=unsubscribe%%20%v>`,
+		subPath,
 		queryString,
 		cfg.Projects[project].From.Address,
 		project,
 	)
 
-	// https://en.wikipedia.org/wiki/MIME#Encoded-Word
-	// Do we have to mime encode the query string? - RFC 2047
-	// urlUnsub = mime.QEncoding.Encode("utf-8", urlUnsub)
+	// should we try EncodeURIComponent() from github.com/leodido/go-encodeuricomponent?
+	//
+	// mime encode the query string or the entire url according to RFC 2047
+	// but output equals input, "utf-8" or "ascii"
 	urlUnsub = mime.QEncoding.Encode("ascii", urlUnsub)
 
 	m.AddHeader("List-Unsubscribe", urlUnsub)
