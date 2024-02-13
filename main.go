@@ -52,6 +52,20 @@ func (rec Recipient) String() string {
 	return fmt.Sprintf("%05v %v %v - %v", rec.ID, rec.Firstname, rec.Lastname, rec.Email)
 }
 
+// stringToBin writes the bytes of a string to stdout, for example
+// k       =       r       e       s       u       l       t       s       -       b
+// 1101011 0111101 1110010 1100101 1110011 1110101 1101100 1110100 1110011 0101101 1100010
+func stringToBin(s string) {
+	for _, c := range s {
+		fmt.Printf("%7c ", c)
+	}
+	fmt.Println("")
+	for _, c := range s {
+		fmt.Printf("%07b ", c)
+	}
+	fmt.Println("")
+}
+
 // IP addresses need to be configurable
 // map[string]bytes positive
 // map[string]bytes negative
@@ -496,31 +510,77 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	params := url.Values{}
 	params.Set("project", project)
 
-	params.Set("task", tsk.Name)
-	// params.Set("task", strings.ReplaceAll(tsk.Name, "-", ""))
+	tne := strings.ReplaceAll(tsk.Name, "-", "hhyy") // hyphen
+	params.Set("task", tne)
 
-	params.Set("email", rec.Email)
-	emailCoded := strings.ReplaceAll(rec.Email, "@", "pct40")
-	params.Set("email", emailCoded)
+	// email encoded
+	eme := strings.ReplaceAll(rec.Email, "@", "aatt")
+	eme = strings.ReplaceAll(eme, ".", "ddtt")
+	params.Set("email", eme)
 
-	subPath := fmt.Sprintf("/%v/%v/%v", project, tsk.Name, emailCoded)
-	queryString := params.Encode()
+	subPath := fmt.Sprintf("/%v/%v/%v", project, tne, eme)
 
-	urlUnsub := fmt.Sprintf(
-		`<https://survey2.zew.de/unsubscribe%v?%v>, <mailto:%v?subject=unsubscribe%%20%v>`,
+	//
+	// query string
+	qs := params.Encode()
+	qs = strings.ReplaceAll(qs, "=", "qquu") // equal
+	qs = strings.ReplaceAll(qs, "&", "mmpp") // ampersand
+
+	// header field complete
+	/*
+		hfc := fmt.Sprintf(
+			`<https://survey2.zew.de/unsubscribe%v?%v>, <mailto:%v?subject=unsubscribe%%20%v>`,
+			subPath,
+			qs,
+			cfg.Projects[project].From.Address,
+			project,
+		)
+	*/
+	hfc := fmt.Sprintf(
+		`<https://survey2.zew.de/unsubscribe%v?%v>`,
 		subPath,
-		queryString,
-		cfg.Projects[project].From.Address,
-		project,
+		qs,
 	)
 
-	// should we try EncodeURIComponent() from github.com/leodido/go-encodeuricomponent?
-	//
-	// mime encode the query string or the entire url according to RFC 2047
-	// but output equals input, "utf-8" or "ascii"
-	urlUnsub = mime.QEncoding.Encode("ascii", urlUnsub)
+	if false {
+		// mime encode the query string or the entire url according to RFC 2047
+		// but output equals input, "utf-8" or "ascii"
+		hfc = mime.QEncoding.Encode("ascii", hfc)
 
-	m.AddHeader("List-Unsubscribe", urlUnsub)
+		//
+		// should we try EncodeURIComponent() from github.com/leodido/go-encodeuricomponent?
+	}
+
+	// checking for header field validity
+	// https://datatracker.ietf.org/doc/html/rfc5322#section-2.2
+	for _, c := range hfc {
+		if string(c) == ":" {
+			// Special character colon is not allowed,
+			// but we need it for the URL protocol http://...
+			// we would replace it using
+			// 		urlUnsub = strings.ReplaceAll(urlUnsub, ":", "colon")
+			// log.Fatalf("(1) found : in %v", urlUnsub)
+			_ = "pass"
+		}
+		if int(c) == 32 || int(c) == 9 {
+			// space and horizontal tab are allowed
+			continue
+		}
+		if int(c) < 33 || int(c) > 126 {
+			log.Fatalf("(2) found char code %v %c in %v", int(c), rune(c), hfc)
+		}
+	}
+
+	if false {
+		// dont see any rule for the garbling of the vowels
+		stringToBin("k=results-b")
+		stringToBin("k=effhygf-c")
+		// k       =       r       e       s       u       l       t       s       -       b
+		// 1101011 0111101 1110010 1100101 1110011 1110101 1101100 1110100 1110011 0101101 1100010
+		// 1101011 0111101 1100101 1100110 1100110 1101000 1111001 1100111 1100110 0101101 1100011
+	}
+
+	m.AddHeader("List-Unsubscribe", hfc)
 	m.AddHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click")
 
 	//
