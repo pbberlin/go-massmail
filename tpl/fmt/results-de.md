@@ -4,7 +4,7 @@ ZEW-Finanzmarkttest - aktuelle Ergebnisse
 anbei übersende ich Ihnen die Ergebnisse unseres aktuellen Finanzmarkttests.
 
 Excel Datei unter 
-{{.ExcelLink}}
+{{.LinkExcel}}
 
 Pressemitteilung deutsch unter  
 {{.PressReleaseDe}}

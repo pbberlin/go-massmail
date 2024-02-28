@@ -85,9 +85,7 @@
         "test_recipients-fail": "no-existing-recipient@gmail.com",
         "test_recipients": [
           "peter.buchmann.68@gmail.com",
-          "peter.buchmann.68@outlook.com",
-          "peter.buchmann@zew.de",
-          "peter.buchmann@web.de"
+          "peter.buchmann.68@outlook.com"
         ]
       },
 
@@ -162,6 +160,11 @@
           "year": 2023,
           "month": 10,
           "closing_date_last_due": "2023-12-01T17:00:00+02:00"
+        },
+        {
+          "year": 2024,
+          "month": 2,
+          "closing_date_last_due": "2024-03-01T17:00:00+02:00"
         }
       ],
       "fmt": [
@@ -374,7 +377,7 @@
           "template_name":   "invitation",
           "relay_host":      "inxmail.smtp",
           "xx-relay_host":   "email.zew.de",
-          "execution_time":  "2023-11-14T09:00:00+02:00",
+          "execution_time":  "2024-02-14T09:00:00+02:00",
           "html": true
         },
         {
@@ -390,33 +393,21 @@
           "template_name":   "reminder",
           "relay_host":      "inxmail.smtp",
           "xx-relay_host":   "email.zew.de",
-          "execution_time":  "2023-11-28T09:15:00+02:00",
+          "execution_time":  "2024-02-28T09:15:00+02:00",
           "html": true,
           "user_id_skip": {
-
-            "10018": "10018",
-            "10037": "10037",
-            "10041": "10041",
-            "10058": "10058",
-            "10059": "10059",
-            "10065": "10065",
-            "10078": "10078",
-            "10079": "10079",
-            "10080": "10080",
-            "10083": "10083",
-            "10090": "10090",
-            "10094": "10094",
-            "10099": "10099",
-            "10101": "10101",
-            "10106": "10106",
-            "10127": "10127",
-            "10129": "10129",
-            "10130": "10130",
-            "10136": "10136",
-            "10512": "10512",
-            "10635": "10635"
-                        
-
+            "10020":"10020",
+            "10041":"10041",
+            "10058":"10058",
+            "10065":"10065",
+            "10079":"10079",
+            "10080":"10080",
+            "10083":"10083",
+            "10093":"10093",
+            "10127":"10127",
+            "10129":"10129",
+            "10142":"10142",
+            "last": "last"
          }
         },
         {
@@ -474,7 +465,7 @@
         {
           "name": "results-expectation-data",
           "description": "Di 11:00    - Ergebnisverteiler - 25 Interessenten",
-          "execution_time": "2024-02-14T11:00:00+02:00",
+          "execution_time": "2024-02-13T11:00:00+02:00",
           "attachments": [
             {
               "label": "ZEW_FMT_Expectation_Data.xlsx",
@@ -595,7 +586,7 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2024-01-22T10:00:00+02:00",
+          "execution_time": "2024-02-16T10:00:00+02:00",
           "xx-relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
