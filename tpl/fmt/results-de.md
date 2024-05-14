@@ -16,3 +16,4 @@ Pressemitteilung englisch unter
 {{template "partial-results-footer-de.md" .}}
 
 
+{{.LinkUnsubscribe}}

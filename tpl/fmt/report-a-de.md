@@ -7,3 +7,5 @@ mit der Auswertung der ZEW-Finanzmarkttest-Umfrage von diesem Monat.
 Vielen herzlichen Dank für Ihre Teilnahme am ZEW-Finanzmarkttest.
 
 {{template "partial-invite-footer-de.md" .}}
+
+Abbestellen: {{.LinkUnsubscribe}}

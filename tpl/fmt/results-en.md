@@ -13,3 +13,5 @@ Press release can be downloaded from
 Thank you for your participation.
 
 {{template "partial-results-footer-en.md" .}}
+
+{{.LinkUnsubscribe}}
