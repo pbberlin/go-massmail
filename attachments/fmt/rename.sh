@@ -4,13 +4,14 @@ clear
 # date +%m  
 # yields number of month with zero padding - 04 for April
 curmonth=$( date +%m )
+curyear=$( date +%Y )
 
 
 src="/c/Users/pbu/Documents/zew_work/git/other/fmtx-ap/"
-wave1="2024${curmonth}"
-wave2="2024-${curmonth}"
-wave2="2024-${curmonth}"
-wave3="${curmonth}_2024"
+wave1="${curyear}${curmonth}"
+wave2="${curyear}-${curmonth}"
+wave2="${curyear}-${curmonth}"
+wave3="${curmonth}_${curyear}"
 
 echo "  source dir $src"
 echo "  wave       $wave1"
