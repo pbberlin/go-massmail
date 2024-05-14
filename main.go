@@ -43,9 +43,12 @@ type Recipient struct {
 	ClosingDatePreliminary string `csv:"-"` // Friday, 11th November 2022   Freitag, den 11. November 2022,
 	// two days later
 	ClosingDateLastDue string `csv:"-"` // Monday, 14th November 2022   Freitag, den 14. November 2022,
-	PressReleaseEn     string `csv:"-"`
-	PressReleaseDe     string `csv:"-"`
-	ExcelLink          string `csv:"-"`
+
+	PressReleaseEn string `csv:"-"`
+	PressReleaseDe string `csv:"-"`
+	LinkExcel      string `csv:"-"`
+
+	LinkUnsubscribe string `csv:"-"`
 }
 
 func (rec Recipient) String() string {
@@ -215,7 +218,100 @@ func fileCopy(in io.Reader, dst string) (err error) {
 
 }
 
-// SetDerived fills additional fields for the recipient - derived from base columns
+// LinkUnsub constructs a link to unsubscibe
+// for usage as mime header but also in template
+func (r *Recipient) LinkUnsub(project string, tsk *TaskT) string {
+
+	// old:
+	// m.AddHeader("List-Unsubscribe", fmt.Sprintf("<maito:%v>", cfg.Projects[project].ReplyTo))
+
+	// new 2023-01:
+	// https://datatracker.ietf.org/doc/html/rfc2369#section-3.1
+	// https://help.inxmail.com/de/content/xcom/mailings/list-unsubscribe-header.htm
+	// List-Unsubscribe: <https://survey2.zew.de/unsubscribe/fmt/report-a/peter.buchmann.68pct40gmail.com?email=peter.buchmann.68pct40gmail.com&project=fmt&task=reporta>, <mailto:finanzmarkttest@mails2.zew.de?subject=unsubscribe%20fmt>
+	// List-Unsubscribe-Post: List-Unsubscribe=One-Click
+
+	// https://survey2.zew.de/unsubscribe/fmt/report-a/peter.buchmann.68pct40gmail.com?email=peter.buchmann.68pct40gmail.com&project=fmt&task=reporta
+
+	// gmail honors List-Unsubscribe only for higly reputable senders ... stackoverflow.com/questions/28497332
+
+	params := url.Values{}
+	params.Set("project", project)
+
+	tne := strings.ReplaceAll(tsk.Name, "-", "hhyy") // hyphen
+	params.Set("task", tne)
+
+	// email encoded
+	eme := strings.ReplaceAll(r.Email, "@", "aatt")
+	eme = strings.ReplaceAll(eme, ".", "ddtt")
+	params.Set("email", eme)
+
+	//
+	// query string
+	qs := params.Encode()
+	qs = strings.ReplaceAll(qs, "=", "qquu") // equal sign
+	qs = strings.ReplaceAll(qs, "&", "mmpp") // ampersand
+
+	subPath := fmt.Sprintf("/%v/%v/%v/dummy", project, tne, eme)
+
+	// header field complete
+	/*
+		hfc := fmt.Sprintf(
+			`<https://survey2.zew.de/unsubscribe%v?%v>, <mailto:%v?subject=unsubscribe%%20%v>`,
+			subPath,
+			qs,
+			cfg.Projects[project].From.Address,
+			project,
+		)
+	*/
+	hfc := fmt.Sprintf(
+		`https://survey2.zew.de/unsubscribe%v?%v`,
+		subPath,
+		qs,
+	)
+
+	if false {
+		// mime encode the query string or the entire url according to RFC 2047
+		// but output equals input, "utf-8" or "ascii"
+		hfc = mime.QEncoding.Encode("ascii", hfc)
+
+		//
+		// should we try EncodeURIComponent() from github.com/leodido/go-encodeuricomponent?
+	}
+
+	// checking for header field validity
+	// https://datatracker.ietf.org/doc/html/rfc5322#section-2.2
+	for _, c := range hfc {
+		if string(c) == ":" {
+			// Special character colon is not allowed,
+			// but we need it for the URL protocol http://...
+			// we would replace it using
+			// 		urlUnsub = strings.ReplaceAll(urlUnsub, ":", "colon")
+			// log.Fatalf("(1) found : in %v", urlUnsub)
+			_ = "pass"
+		}
+		if int(c) == 32 || int(c) == 9 {
+			// space and horizontal tab are allowed
+			continue
+		}
+		if int(c) < 33 || int(c) > 126 {
+			log.Fatalf("(2) found char code %v %c in %v", int(c), rune(c), hfc)
+		}
+	}
+
+	if false {
+		// dont see any rule for the garbling of the vowels
+		stringToBin("k=results-b")
+		stringToBin("k=effhygf-c")
+		// k       =       r       e       s       u       l       t       s       -       b
+		// 1101011 0111101 1110010 1100101 1110011 1110101 1101100 1110100 1110011 0101101 1100010
+		// 1101011 0111101 1100101 1100110 1100110 1101000 1111001 1100111 1100110 0101101 1100011
+	}
+
+	return hfc
+
+}
+
 func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 
 	if project == "copol" {
@@ -296,6 +392,8 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 		}
 	}
 
+	r.LinkUnsubscribe = r.LinkUnsub(project, tsk)
+
 	// survey identifier
 	y := wv.Year
 	m := wv.Month
@@ -330,7 +428,7 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 	//
 	//
 	// fmt
-	r.ExcelLink = fmt.Sprintf(
+	r.LinkExcel = fmt.Sprintf(
 		`https://fmtdownload.zew.de/fdl/download/public/%v-%02d-%02d_1100/tab.xlsx`,
 		publication.Year(),
 		int(publication.Month()),
@@ -494,93 +592,7 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 		m.AddHeader("Return-Path", cfg.Projects[project].Bounce)
 	}
 
-	// old:
-	// m.AddHeader("List-Unsubscribe", fmt.Sprintf("<maito:%v>", cfg.Projects[project].ReplyTo))
-
-	// new 2023-01:
-	// https://datatracker.ietf.org/doc/html/rfc2369#section-3.1
-	// https://help.inxmail.com/de/content/xcom/mailings/list-unsubscribe-header.htm
-	// List-Unsubscribe: <https://survey2.zew.de/unsubscribe/fmt/report-a/peter.buchmann.68pct40gmail.com?email=peter.buchmann.68pct40gmail.com&project=fmt&task=reporta>, <mailto:finanzmarkttest@mails2.zew.de?subject=unsubscribe%20fmt>
-	// List-Unsubscribe-Post: List-Unsubscribe=One-Click
-
-	// https://survey2.zew.de/unsubscribe/fmt/report-a/peter.buchmann.68pct40gmail.com?email=peter.buchmann.68pct40gmail.com&project=fmt&task=reporta
-
-	// gmail honors List-Unsubscribe only for higly reputable senders ... stackoverflow.com/questions/28497332
-
-	params := url.Values{}
-	params.Set("project", project)
-
-	tne := strings.ReplaceAll(tsk.Name, "-", "hhyy") // hyphen
-	params.Set("task", tne)
-
-	// email encoded
-	eme := strings.ReplaceAll(rec.Email, "@", "aatt")
-	eme = strings.ReplaceAll(eme, ".", "ddtt")
-	params.Set("email", eme)
-
-	subPath := fmt.Sprintf("/%v/%v/%v", project, tne, eme)
-
-	//
-	// query string
-	qs := params.Encode()
-	qs = strings.ReplaceAll(qs, "=", "qquu") // equal
-	qs = strings.ReplaceAll(qs, "&", "mmpp") // ampersand
-
-	// header field complete
-	/*
-		hfc := fmt.Sprintf(
-			`<https://survey2.zew.de/unsubscribe%v?%v>, <mailto:%v?subject=unsubscribe%%20%v>`,
-			subPath,
-			qs,
-			cfg.Projects[project].From.Address,
-			project,
-		)
-	*/
-	hfc := fmt.Sprintf(
-		`<https://survey2.zew.de/unsubscribe%v?%v>`,
-		subPath,
-		qs,
-	)
-
-	if false {
-		// mime encode the query string or the entire url according to RFC 2047
-		// but output equals input, "utf-8" or "ascii"
-		hfc = mime.QEncoding.Encode("ascii", hfc)
-
-		//
-		// should we try EncodeURIComponent() from github.com/leodido/go-encodeuricomponent?
-	}
-
-	// checking for header field validity
-	// https://datatracker.ietf.org/doc/html/rfc5322#section-2.2
-	for _, c := range hfc {
-		if string(c) == ":" {
-			// Special character colon is not allowed,
-			// but we need it for the URL protocol http://...
-			// we would replace it using
-			// 		urlUnsub = strings.ReplaceAll(urlUnsub, ":", "colon")
-			// log.Fatalf("(1) found : in %v", urlUnsub)
-			_ = "pass"
-		}
-		if int(c) == 32 || int(c) == 9 {
-			// space and horizontal tab are allowed
-			continue
-		}
-		if int(c) < 33 || int(c) > 126 {
-			log.Fatalf("(2) found char code %v %c in %v", int(c), rune(c), hfc)
-		}
-	}
-
-	if false {
-		// dont see any rule for the garbling of the vowels
-		stringToBin("k=results-b")
-		stringToBin("k=effhygf-c")
-		// k       =       r       e       s       u       l       t       s       -       b
-		// 1101011 0111101 1110010 1100101 1110011 1110101 1101100 1110100 1110011 0101101 1100010
-		// 1101011 0111101 1100101 1100110 1100110 1101000 1111001 1100111 1100110 0101101 1100011
-	}
-
-	m.AddHeader("List-Unsubscribe", hfc)
+	m.AddHeader("List-Unsubscribe", fmt.Sprintf("<%v>", rec.LinkUnsubscribe))
 	m.AddHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click")
 
 	//
