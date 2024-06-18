@@ -48,7 +48,8 @@ type Recipient struct {
 	PressReleaseDe string `csv:"-"`
 	LinkExcel      string `csv:"-"`
 
-	LinkUnsubscribe string `csv:"-"`
+	LinkUnsubscribe string `csv:"-"` // LinkUnsub()
+	LinkHelp        string `csv:"-"` // LinkHlp()
 }
 
 func (rec Recipient) String() string {
@@ -279,7 +280,7 @@ func (r *Recipient) LinkUnsub(project string, tsk *TaskT) string {
 		// should we try EncodeURIComponent() from github.com/leodido/go-encodeuricomponent?
 	}
 
-	// checking for header field validity
+	// checking each rune for header field validity
 	// https://datatracker.ietf.org/doc/html/rfc5322#section-2.2
 	for _, c := range hfc {
 		if string(c) == ":" {
@@ -308,6 +309,34 @@ func (r *Recipient) LinkUnsub(project string, tsk *TaskT) string {
 		// 1101011 0111101 1100101 1100110 1100110 1101000 1111001 1100111 1100110 0101101 1100011
 	}
 
+	return hfc
+
+}
+
+// LinkHelp constructs a link to an info page for the mailing
+func (r *Recipient) LinkHlp(project string, tsk *TaskT) string {
+
+	// since 2024-06-17
+	// need List-Help header
+	// https://datatracker.ietf.org/doc/html/rfc2369#section-3.1
+
+	emailDummy := "your-email" // not r.Email - but cannot be blank
+
+	params := url.Values{}
+	params.Set("project", project)
+	params.Set("task", tsk.Name)
+	params.Set("email", emailDummy)
+	// to query string
+	qs := params.Encode()
+
+	subPath := fmt.Sprintf("/%v/%v/%v/dummy", project, tsk.Name, emailDummy)
+
+	// header field complete
+	hfc := fmt.Sprintf(
+		`https://survey2.zew.de/unsubscribe%v?%v`,
+		subPath,
+		qs,
+	)
 	return hfc
 
 }
@@ -393,6 +422,7 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 	}
 
 	r.LinkUnsubscribe = r.LinkUnsub(project, tsk)
+	r.LinkHelp = r.LinkHlp(project, tsk)
 
 	// survey identifier
 	y := wv.Year
@@ -594,6 +624,8 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 
 	m.AddHeader("List-Unsubscribe", fmt.Sprintf("<%v>", rec.LinkUnsubscribe))
 	m.AddHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click")
+
+	m.AddHeader("List-Help", fmt.Sprintf("<%v>", rec.LinkHelp))
 
 	//
 	if rec.Email == "" || !strings.Contains(rec.Email, "@") {
