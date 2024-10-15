@@ -6,7 +6,8 @@
       "email.zew.de": {
         "host_name_port": "email.zew.de:587",
         "username": "pbu",
-        "delay": 15800
+        "delay": 18800,
+        "delay-prev": 16800
       },
       "zimbra.zew.de": {
         "host_name_port": "zimbra.zew.de:25",
@@ -287,6 +288,30 @@
           "month":  6,
           "closing_date_preliminary": "2024-06-14T17:00:00+02:00",
           "closing_date_last_due":    "2024-06-17T17:00:00+02:00"
+        },
+        {
+          "year": 2024,
+          "month":  7,
+          "closing_date_preliminary": "2024-07-12T17:00:00+02:00",
+          "closing_date_last_due":    "2024-07-15T17:00:00+02:00"
+        },
+        {
+          "year": 2024,
+          "month":  8,
+          "closing_date_preliminary": "2024-08-09T17:00:00+02:00",
+          "closing_date_last_due":    "2024-08-12T17:00:00+02:00"
+        },
+        {
+          "year": 2024,
+          "month":  9,
+          "closing_date_preliminary": "2024-09-13T17:00:00+02:00",
+          "closing_date_last_due":    "2024-09-16T17:00:00+02:00"
+        },
+        {
+          "year": 2024,
+          "month":  10,
+          "closing_date_preliminary": "2024-10-11T17:00:00+02:00",
+          "closing_date_last_due":    "2024-10-14T17:00:00+02:00"
         }
 
 
@@ -465,7 +490,7 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2024-06-10T09:15:00+02:00",
+          "execution_time": "2024-10-07T08:10:00+02:00",
           "xx-relay_host":        "inxmail.smtp",
           "relay_host":   "email.zew.de",
           "url": {
@@ -477,7 +502,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2024-06-14T09:00:00+02:00",
+          "execution_time": "2024-10-11T09:00:00+02:00",
           "relay_host":        "inxmail.smtp",
           "xx-1-relay_host":   "inxmail.smtp",
           "xx-2-relay_host":   "email.zew.de",
@@ -493,7 +518,7 @@
         {
           "name": "results-expectation-data",
           "description": "Di 11:00    - Ergebnisverteiler - 25 Interessenten",
-          "execution_time": "2024-06-18T11:00:00+02:00",
+          "execution_time": "2024-10-15T11:00:00+02:00",
           "attachments": [
             {
               "label": "ZEW_FMT_Expectation_Data.xlsx",
@@ -510,7 +535,7 @@
         {
           "name": "results-gmind",
           "description": "Dienstags um 11 - Ergebnisverteiler - 12 Interessenten",
-          "execution_time": "2024-06-18T11:00:00+02:00",
+          "execution_time": "2024-10-15T11:00:00+02:00",
           "attachments": [
             {
               "label": "G-Mind_werte.xlsx",
@@ -527,7 +552,7 @@
         {
           "name": "results-economy",
           "description": "Dienstags um 11 - Ergebnisverteiler -  1 Interessenten",
-          "execution_time": "2024-06-18T11:00:00+02:00",
+          "execution_time": "2024-10-15T11:00:00+02:00",
           "attachments": [
             {
               "label": "Economy.xlsx",
@@ -539,7 +564,7 @@
         {
           "name": "results-haver",
           "description": "Dienstags um 11 - Ergebnisverteiler -  2 Interessenten",
-          "execution_time": "2024-06-18T11:00:00+02:00",
+          "execution_time": "2024-10-15T11:00:00+02:00",
           "attachments": [
             {
               "label": "haver.xlsx",
@@ -551,7 +576,7 @@
         {
           "name": "results-ndr",
           "description": "Dienstags um 11 - Ergebnisverteiler -  2 Interessenten",
-          "execution_time": "2024-06-18T11:00:00+02:00",
+          "execution_time": "2024-10-15T11:00:00+02:00",
           "attachments": [
             {
               "label": "NDR.xlsx",
@@ -564,7 +589,7 @@
         {
           "name": "results-a",
           "description": "Dienstags um 11 - Ergebnisverteiler -270 Teilnehmer",
-          "execution_time": "2024-06-18T11:00:00+02:00",
+          "execution_time": "2024-10-15T11:00:00+02:00",
           "template_name": "results",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
@@ -614,7 +639,7 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2024-05-23T10:00:00+02:00",
+          "execution_time": "2024-09-20T09:00:00+02:00",
           "xx-relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
