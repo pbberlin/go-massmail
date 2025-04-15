@@ -24,3 +24,5 @@ for file in ./*dummy*.pdf; do
 done
 
 
+echo "touch expection data - copy by hand"
+touch ./ZEW_FMT_Expectation_Data.xlsx
