@@ -611,6 +611,16 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	m.From(cfg.Projects[project].From.Address)
 	m.FromName(cfg.Projects[project].From.Name)
 
+	if tsk.From != nil {
+		if tsk.From.Address != "" && tsk.From.Name != "" {
+			// task specific 'from' setting - overriding project setting
+			log.Printf("task specific 'from' setting - overriding project setting - %v", tsk.From.Address )
+			m.From(tsk.From.Address)
+			m.FromName(tsk.From.Name)
+		}
+	}
+
+
 	// m.ReplyTo = m.From.Address
 	if cfg.Projects[project].ReplyTo != "" {
 		m.ReplyTo(cfg.Projects[project].ReplyTo)

@@ -529,6 +529,11 @@
           "execution_time": "2025-04-07T08:00:00+02:00",
           "xx-relay_host":        "inxmail.smtp",
           "relay_host":   "email.zew.de",
+          "from": {
+            "distinct": "from project setting",
+            "Name":      "Finanzmarkttest",
+            "Address":    "noreply@zew.de"
+          },
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
             "TTL": 3600,

@@ -205,8 +205,8 @@ func (rh RelayHorst) getAuth() (auth smtp.Auth) {
 	pw := os.Getenv(env)
 	if pw == "" {
 		log.Fatalf(`Set password for %v via ENV %v
-		SET %v=secret 
-		export %v=secret  
+		SET %v=secret
+		export %v=secret
 		`,
 			pureHost, env,
 			env,
@@ -271,9 +271,14 @@ type TaskT struct {
 
 	TemplateName string        `json:"template_name,omitempty"` // default is Name
 	Attachments  []AttachmentT `json:"attachments,omitempty"`
-	// distinct SMTP server for distinct tasks
+
+	// distinct SMTP server for certain tasks
 	// if empty, then default horst will be chosen
 	RelayHost string `json:"relay_host,omitempty"`
+
+	// distinct from server for certain tasks
+	// if empty, then default from will be chosen
+	From *mail.Address `json:"from,omitempty"`
 
 	HTML bool `json:"html,omitempty"` // is HTML or plain text
 
