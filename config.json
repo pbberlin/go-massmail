@@ -90,6 +90,25 @@
         ]
       },
 
+      "muni": {
+        "from": {
+          "Name":      "Gemeindesteuer Forschungsprojekt",
+          "Address":   "gemeinde-steuer@mails2.zew.de"
+        },
+        "replyto": "gemeinde-steuer@zew.de",
+        "bounce":  "noreply@zew.de",
+
+        "test_recipients": [
+          "peter.buchmann.68@gmail.com",
+          "peter.buchmann@zew.de",
+          "peter.buchmann.68@outlook.com",
+          "kai.thimo.boie@students.uni-mannheim.de",
+          "Zareh.Asatryan@zew.de"
+        ]
+      },
+
+
+
       "fmt": {
         "from": {
           "Name":      "Finanzmarkttest",
@@ -166,6 +185,12 @@
           "year": 2024,
           "month": 2,
           "closing_date_last_due": "2024-03-01T17:00:00+02:00"
+        }
+      ],
+      "muni": [
+        {
+          "year": 2025,
+          "month": 4
         }
       ],
       "fmt": [
@@ -680,7 +705,7 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2025-03-24T09:00:00+02:00",
+          "execution_time": "2025-04-22T09:00:00+02:00",
           "xx-relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
@@ -706,11 +731,23 @@
             "keep-this-empty-url": true
           },
           "same_as": "report-a",
-          "execution_time": "2024-01-19T10:15:00+02:00",
           "description": "Finanzmarkt Report am Freitag - update CSV from http://fmt-2020.zew.local/fmt/adressverwaltung_start.php - 110 Teilnemer"
         }
       ],
 
+
+      "muni": [
+        {
+          "name": "invitation",
+          "description": "initial invitation",
+          "xx-html": true,
+          "execution_time": "2026-04-22T10:15:00+02:00",
+          "relay_host": "inxmail.smtp",
+          "attachments": [
+          ]
+        }
+
+      ],
 
 
       "copol": [

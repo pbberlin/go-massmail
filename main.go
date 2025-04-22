@@ -50,6 +50,8 @@ type Recipient struct {
 
 	LinkUnsubscribe string `csv:"-"` // LinkUnsub()
 	LinkHelp        string `csv:"-"` // LinkHlp()
+
+	IFG_Reference string `csv:"ifg_reference"`
 }
 
 func (rec Recipient) String() string {
@@ -348,6 +350,11 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 		r.Language = "en"
 	}
 
+	if project == "muni" {
+		// implicitly all German
+		r.Language = "de"
+	}
+
 	if r.SourceTable == "" {
 
 		if r.Language == "de" {
@@ -614,12 +621,11 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	if tsk.From != nil {
 		if tsk.From.Address != "" && tsk.From.Name != "" {
 			// task specific 'from' setting - overriding project setting
-			log.Printf("task specific 'from' setting - overriding project setting - %v", tsk.From.Address )
+			log.Printf("task specific 'from' setting - overriding project setting - %v", tsk.From.Address)
 			m.From(tsk.From.Address)
 			m.FromName(tsk.From.Name)
 		}
 	}
-
 
 	// m.ReplyTo = m.From.Address
 	if cfg.Projects[project].ReplyTo != "" {
