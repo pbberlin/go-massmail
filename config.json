@@ -100,11 +100,19 @@
 
         "test_recipients": [
           "peter.buchmann.68@gmail.com",
-          "peter.buchmann@zew.de",
-          "peter.buchmann.68@outlook.com",
           "kai.thimo.boie@students.uni-mannheim.de",
-          "Zareh.Asatryan@zew.de"
+          "Zareh.Asatryan@zew.de",
+          "kai.thimo.boie@students.uni-mannheim.de",
+          "Zareh.Asatryan@zew.de",
+          "peter.buchmann.68@outlook.com"
+        ],
+        "test_recipients-backup": [
+          "peter.buchmann@zew.de",
+          "kai.thimo.boie@students.uni-mannheim.de",
+          "Zareh.Asatryan@zew.de",
+          "peter.buchmann@zew.de"
         ]
+
       },
 
 
@@ -741,7 +749,7 @@
           "name": "invitation",
           "description": "initial invitation",
           "xx-html": true,
-          "execution_time": "2026-04-22T10:15:00+02:00",
+          "execution_time": "2025-04-23T10:15:00+02:00",
           "relay_host": "inxmail.smtp",
           "attachments": [
           ]
