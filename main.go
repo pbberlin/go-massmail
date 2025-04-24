@@ -191,6 +191,24 @@ func formatDuration(d time.Duration) string {
 
 }
 
+
+func fileExists(path string) bool {
+    _, err := os.Stat(path)
+    return err == nil || !os.IsNotExist(err)
+}
+
+
+
+func appendDummyToBase(pth string) string {
+    dir := filepath.Dir(pth)
+    bse := filepath.Base(pth)
+    ext := filepath.Ext(bse)
+    name := strings.TrimSuffix(bse, ext)
+    newBase := name + "_dummy" + ext
+    return filepath.Join(dir, newBase)
+}
+
+
 // stackoverflow.com/questions/30376921
 func fileCopy(in io.Reader, dst string) (err error) {
 
@@ -688,11 +706,20 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 			return err
 		}
 
-		modTimePlus := fi.ModTime().Add(20 * 24 * 3600 * time.Second)
+		maxDays :=  time.Duration(20)
+		modTimePlus := fi.ModTime().Add(maxDays * 24 * 3600 * time.Second)
 		if time.Now().After(modTimePlus) {
-			err := fmt.Errorf("file over 20 days old: %v ", filepath.Base(pth))
+			err := fmt.Errorf("file over %v days old: %v ", maxDays, filepath.Base(pth))
 			log.Print(err)
 			return err
+		}
+
+		// during testing, we send an old file with the suffix "_dummy".exe
+		if mode == "test" || tsk.testmode {
+			pthDummy :=  appendDummyToBase(pth)
+			if fileExists(pthDummy) {
+				pth = pthDummy
+			}
 		}
 
 		f, err := os.OpenFile(pth, os.O_RDONLY, 0x777)
