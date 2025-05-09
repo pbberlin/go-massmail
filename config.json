@@ -100,10 +100,6 @@
 
         "test_recipients": [
           "peter.buchmann.68@gmail.com",
-          "kai.thimo.boie@students.uni-mannheim.de",
-          "Zareh.Asatryan@zew.de",
-          "kai.thimo.boie@students.uni-mannheim.de",
-          "Zareh.Asatryan@zew.de",
           "peter.buchmann.68@outlook.com"
         ],
         "test_recipients-backup": [
@@ -381,8 +377,13 @@
           "month":   4,
           "closing_date_preliminary": "2025-04-11T17:00:00+02:00",
           "closing_date_last_due":    "2025-04-14T17:00:00+02:00"
+        },
+        {
+          "year": 2025,
+          "month":   5,
+          "closing_date_preliminary": "2025-05-09T17:00:00+02:00",
+          "closing_date_last_due":    "2025-05-12T17:00:00+02:00"
         }
-
 
 
       ],
@@ -559,7 +560,7 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2025-04-07T08:00:00+02:00",
+          "execution_time": "2025-05-05T08:00:00+02:00",
           "xx-relay_host":        "inxmail.smtp",
           "relay_host":   "email.zew.de",
           "from": {
@@ -576,7 +577,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2025-04-11T08:00:00+02:00",
+          "execution_time": "2025-05-09T08:00:00+02:00",
           "relay_host":        "inxmail.smtp",
           "xx-1-relay_host":   "inxmail.smtp",
           "xx-2-relay_host":   "email.zew.de",
@@ -749,7 +750,7 @@
           "name": "invitation",
           "description": "initial invitation",
           "xx-html": true,
-          "execution_time": "2025-04-23T10:15:00+02:00",
+          "execution_time": "2025-05-07T09:15:00+02:00",
           "relay_host": "inxmail.smtp",
           "attachments": [
           ]
