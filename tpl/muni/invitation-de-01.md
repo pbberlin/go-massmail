@@ -4,7 +4,7 @@ sehr geehrte Mitarbeiterinnen und Mitarbeiter der Gemeindeverwaltung {{.Anrede}}
 
 im Namen des ZEW – Leibniz-Zentrums für Europäische Wirtschaftsforschung in Mannheim wende ich mich an Sie im Rahmen eines von der Deutschen Forschungsgemeinschaft (DFG) geförderten wissenschaftlichen Projekts. Unser Forschungsvorhaben untersucht die wirtschaftlichen Auswirkungen kommunaler Steuerreformen in Deutschland. Weitere Informationen zu diesem Projekt finden Sie unter: https://www.zew.de/PJ4540
 
-Im Zuge dessen möchten wir Sie herzlich bitten, uns {{.IFG_Reference}} bestehende Unterlagen zu allen Reformvorschlägen der kommunalen Hebesätze seit dem Jahr 2000 zur Verfügung zu stellen. Konkret interessieren uns:
+Im Zuge dessen möchten wir Sie herzlich bitten, uns {{.IFG_Reference}} bestehende Unterlagen zu Reformvorschlägen der kommunalen Hebesätze seit dem Jahr 2000 zur Verfügung zu stellen. Konkret interessieren uns:
 
 -	Beschlussvorlagen und Anträge (angenommen oder abgelehnt) zur Änderung der Hebesätze bei der Gewerbe- und Grundsteuer, einschließlich der Abstimmungsergebnisse,
 -	Sitzungsprotokolle von Gemeinde- oder Stadtrat bzw. zuständigen Ausschüssen, in denen entsprechende Vorschläge behandelt wurden,

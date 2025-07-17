@@ -100,12 +100,15 @@
 
         "test_recipients": [
           "peter.buchmann.68@gmail.com",
-          "peter.buchmann.68@outlook.com"
+          "Kai.Boie@zew.de",
+          "Kai.Boie@zew.de"
         ],
         "test_recipients-backup": [
           "peter.buchmann@zew.de",
+          "Kai.Boie@zew.de",
           "kai.thimo.boie@students.uni-mannheim.de",
           "Zareh.Asatryan@zew.de",
+          "peter.buchmann.68@outlook.com",
           "peter.buchmann@zew.de"
         ]
 
@@ -125,16 +128,18 @@
         "replyto": "finanzmarkttest@zew.de",
         "bounce":  "noreply@zew.de",
 
-        "test_recipients---NOT": [
+        "test_recipients": [
+          "peter.buchmann.68@gmail.com"
+        ],
+        "xx-test_recipients": [
           "ping@tools.mxtoolbox.com",
           "peter.buchmann@web.de",
           "peter.buchmann@zew.de",
+          "peter.buchmann.68@outlook.com",
+          "lora.pavlova@zew.de",
           "xxx"
-        ],
-        "test_recipients": [
-          "peter.buchmann.68@gmail.com",
-          "peter.buchmann.68@outlook.com"
         ]
+
       },
 
       "copol": {
@@ -154,7 +159,7 @@
         ]
       }
 
-      
+
     },
     "waves": {
       "test-1": [
@@ -205,185 +210,25 @@
           "closing_date_last_due":    "2022-11-14T17:00:00+02:00"
         },
         {
-          "year": 2022,
-          "month": 12,
-          "closing_date_preliminary": "2022-12-09T17:00:00+02:00",
-          "closing_date_last_due":    "2022-12-12T17:00:00+02:00"
-        },
-        {
-          "year": 2023,
-          "month": 1,
-          "closing_date_preliminary": "2023-01-13T17:00:00+02:00",
-          "closing_date_last_due": "2023-01-16T17:00:00+02:00"
-        },
-        {
-          "year": 2023,
-          "month": 2,
-          "closing_date_preliminary": "2023-02-17T17:00:00+02:00",
-          "closing_date_last_due":    "2023-02-20T17:00:00+02:00"
-        },
-        {
-          "year": 2023,
-          "month": 3,
-          "closing_date_preliminary": "2023-03-17T17:00:00+02:00",
-          "closing_date_last_due": "2023-03-20T17:00:00+02:00"
-        },
-        {
-          "year": 2023,
-          "month": 4,
-          "closing_date_preliminary": "2023-04-14T17:00:00+02:00",
-          "closing_date_last_due":    "2023-04-17T17:00:00+02:00"
-        },
-        {
-          "year": 2023,
-          "month": 5,
-          "closing_date_preliminary": "2023-05-12T17:00:00+02:00",
-          "closing_date_last_due":    "2023-05-15T17:00:00+02:00"
-        },
-        {
-          "year": 2023,
-          "month": 6,
-          "closing_date_preliminary": "2023-06-09T17:00:00+02:00",
-          "closing_date_last_due":    "2023-06-12T17:00:00+02:00"
-        },
-        {
-          "year": 2023,
-          "month": 7,
-          "closing_date_preliminary": "2023-07-07T17:00:00+02:00",
-          "closing_date_last_due":    "2023-07-10T17:00:00+02:00"
-        },
-        {
-          "year": 2023,
-          "month": 8,
-          "closing_date_preliminary": "2023-08-11T17:00:00+02:00",
-          "closing_date_last_due":    "2023-08-14T17:00:00+02:00"
-        },
-        {
-          "year": 2023,
-          "month": 9,
-          "closing_date_preliminary": "2023-09-08T17:00:00+02:00",
-          "closing_date_last_due":    "2023-09-11T17:00:00+02:00"
-        },
-        {
-          "year": 2023,
-          "month": 10,
-          "closing_date_preliminary": "2023-10-13T17:00:00+02:00",
-          "closing_date_last_due":    "2023-10-16T17:00:00+02:00"
-        },
-        {
-          "year": 2023,
-          "month": 11,
-          "closing_date_preliminary": "2023-11-10T17:00:00+02:00",
-          "closing_date_last_due":    "2023-11-13T17:00:00+02:00"
-        },
-        {
-          "year": 2023,
-          "month": 12,
-          "closing_date_preliminary": "2023-12-08T17:00:00+02:00",
-          "closing_date_last_due":    "2023-12-11T17:00:00+02:00"
-        },
-        {
-          "year": 2024,
-          "month":  1,
-          "closing_date_preliminary": "2024-01-12T17:00:00+02:00",
-          "closing_date_last_due":    "2024-01-15T17:00:00+02:00"
-        },
-        {
-          "year": 2024,
-          "month":  2,
-          "closing_date_preliminary": "2024-02-09T17:00:00+02:00",
-          "closing_date_last_due":    "2024-02-12T17:00:00+02:00"
-        },
-        {
-          "year": 2024,
-          "month":  3,
-          "closing_date_preliminary": "2024-03-15T17:00:00+02:00",
-          "closing_date_last_due":    "2024-03-18T17:00:00+02:00"
-        },
-        {
-          "year": 2024,
-          "month":  4,
-          "closing_date_preliminary": "2024-04-12T17:00:00+02:00",
-          "closing_date_last_due":    "2024-04-15T17:00:00+02:00"
-        },
-        {
-          "year": 2024,
-          "month":  5,
-          "closing_date_preliminary": "2024-05-10T17:00:00+02:00",
-          "closing_date_last_due":    "2024-05-13T17:00:00+02:00"
-        },
-        {
-          "year": 2024,
-          "month":  6,
-          "closing_date_preliminary": "2024-06-14T17:00:00+02:00",
-          "closing_date_last_due":    "2024-06-17T17:00:00+02:00"
-        },
-        {
-          "year": 2024,
-          "month":  7,
-          "closing_date_preliminary": "2024-07-12T17:00:00+02:00",
-          "closing_date_last_due":    "2024-07-15T17:00:00+02:00"
-        },
-        {
-          "year": 2024,
-          "month":  8,
-          "closing_date_preliminary": "2024-08-09T17:00:00+02:00",
-          "closing_date_last_due":    "2024-08-12T17:00:00+02:00"
-        },
-        {
-          "year": 2024,
-          "month":  9,
-          "closing_date_preliminary": "2024-09-13T17:00:00+02:00",
-          "closing_date_last_due":    "2024-09-16T17:00:00+02:00"
-        },
-        {
-          "year": 2024,
-          "month":  10,
-          "closing_date_preliminary": "2024-10-11T17:00:00+02:00",
-          "closing_date_last_due":    "2024-10-14T17:00:00+02:00"
-        },
-        {
-          "year": 2024,
-          "month":  11,
-          "closing_date_preliminary": "2024-11-08T17:00:00+02:00",
-          "closing_date_last_due":    "2024-11-11T17:00:00+02:00"
-        },
-        {
-          "year": 2024,
-          "month":  12,
-          "closing_date_preliminary": "2024-12-13T17:00:00+02:00",
-          "closing_date_last_due":    "2024-12-16T17:00:00+02:00"
-        },
-        {
-          "year": 2025,
-          "month":   1,
-          "closing_date_preliminary": "2025-01-17T17:00:00+02:00",
-          "closing_date_last_due":    "2025-01-20T17:00:00+02:00"
-        },
-        {
-          "year": 2025,
-          "month":   2,
-          "closing_date_preliminary": "2025-02-14T17:00:00+02:00",
-          "closing_date_last_due":    "2025-02-17T17:00:00+02:00"
-        },
-        {
-          "year": 2025,
-          "month":   3,
-          "closing_date_preliminary": "2025-03-14T17:00:00+02:00",
-          "closing_date_last_due":    "2025-03-17T17:00:00+02:00"
-        },
-        {
-          "year": 2025,
-          "month":   4,
-          "closing_date_preliminary": "2025-04-11T17:00:00+02:00",
-          "closing_date_last_due":    "2025-04-14T17:00:00+02:00"
-        },
-        {
           "year": 2025,
           "month":   5,
           "closing_date_preliminary": "2025-05-09T17:00:00+02:00",
           "closing_date_last_due":    "2025-05-12T17:00:00+02:00"
+        },
+        {
+          "year": 2025,
+          "month":   6,
+          "closing_date_preliminary": "2025-06-13T17:00:00+02:00",
+          "closing_date_last_due":    "2025-06-16T17:00:00+02:00"
+        },
+        {
+          "year": 2025,
+          "month":   7,
+          "closing_date_preliminary": "2025-07-11T17:00:00+02:00",
+          "closing_date_last_due":    "2025-07-14T17:00:00+02:00"
         }
+
+
 
 
       ],
@@ -393,7 +238,7 @@
           "month": 9
         }
       ]
-       
+
     },
 
 
@@ -449,11 +294,11 @@
           "template_name": "mail-test",
           "html": true,
           "execution_interval": "xx-daily",
-          
+
           "switch": "hosts",
           "xx-relay_host": "zimbra.zew.de",
           "relay_host": "inxmail.smtp",
-          
+
           "attachments": [
             {
               "label": "img1.gif",
@@ -560,7 +405,7 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2025-05-05T08:00:00+02:00",
+          "execution_time": "2025-07-07T08:00:00+02:00",
           "xx-relay_host":        "inxmail.smtp",
           "relay_host":   "email.zew.de",
           "from": {
@@ -577,7 +422,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2025-05-09T08:00:00+02:00",
+          "execution_time": "2025-07-11T08:00:00+02:00",
           "relay_host":        "inxmail.smtp",
           "xx-1-relay_host":   "inxmail.smtp",
           "xx-2-relay_host":   "email.zew.de",
@@ -593,7 +438,7 @@
         {
           "name": "results-expectation-data",
           "description": "Di 11:00    - Ergebnisverteiler - 25 Interessenten",
-          "execution_time": "2025-04-15T11:00:00+02:00",
+          "execution_time": "2025-07-15T11:00:00+02:00",
           "attachments": [
             {
               "label": "ZEW_FMT_Expectation_Data.xlsx",
@@ -610,7 +455,7 @@
         {
           "name": "results-gmind",
           "description": "Dienstags um 11 - Ergebnisverteiler - 12 Interessenten",
-          "execution_time": "2025-04-15T11:00:00+02:00",
+          "execution_time": "2025-07-15T11:00:00+02:00",
           "attachments": [
             {
               "label": "G-Mind_werte.xlsx",
@@ -627,7 +472,7 @@
         {
           "name": "results-economy",
           "description": "Dienstags um 11 - Ergebnisverteiler -  1 Interessenten",
-          "execution_time": "2025-04-15T11:00:00+02:00",
+          "execution_time": "2025-07-15T11:00:00+02:00",
           "attachments": [
             {
               "label": "Economy.xlsx",
@@ -639,7 +484,7 @@
         {
           "name": "results-haver",
           "description": "Dienstags um 11 - Ergebnisverteiler -  2 Interessenten",
-          "execution_time": "2025-04-15T11:00:00+02:00",
+          "execution_time": "2025-07-15T11:00:00+02:00",
           "attachments": [
             {
               "label": "haver.xlsx",
@@ -651,7 +496,7 @@
         {
           "name": "results-ndr",
           "description": "Dienstags um 11 - Ergebnisverteiler -  2 Interessenten",
-          "execution_time": "2025-04-15T11:00:00+02:00",
+          "execution_time": "2025-07-15T11:00:00+02:00",
           "attachments": [
             {
               "label": "NDR.xlsx",
@@ -664,7 +509,7 @@
         {
           "name": "results-a",
           "description": "Dienstags um 11 - Ergebnisverteiler -270 Teilnehmer",
-          "execution_time": "2025-04-15T11:00:00+02:00",
+          "execution_time": "2025-07-15T11:00:00+02:00",
           "template_name": "results",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
@@ -714,7 +559,7 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2025-04-22T09:00:00+02:00",
+          "execution_time": "2025-07-17T09:00:00+02:00",
           "xx-relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
@@ -750,7 +595,7 @@
           "name": "invitation",
           "description": "initial invitation",
           "xx-html": true,
-          "execution_time": "2025-05-07T09:15:00+02:00",
+          "execution_time": "2025-06-23T09:10:00+02:00",
           "relay_host": "inxmail.smtp",
           "attachments": [
           ]

@@ -191,23 +191,19 @@ func formatDuration(d time.Duration) string {
 
 }
 
-
 func fileExists(path string) bool {
-    _, err := os.Stat(path)
-    return err == nil || !os.IsNotExist(err)
+	_, err := os.Stat(path)
+	return err == nil || !os.IsNotExist(err)
 }
-
-
 
 func appendDummyToBase(pth string) string {
-    dir := filepath.Dir(pth)
-    bse := filepath.Base(pth)
-    ext := filepath.Ext(bse)
-    name := strings.TrimSuffix(bse, ext)
-    newBase := name + "_dummy" + ext
-    return filepath.Join(dir, newBase)
+	dir := filepath.Dir(pth)
+	bse := filepath.Base(pth)
+	ext := filepath.Ext(bse)
+	name := strings.TrimSuffix(bse, ext)
+	newBase := name + "_dummy" + ext
+	return filepath.Join(dir, newBase)
 }
-
 
 // stackoverflow.com/questions/30376921
 func fileCopy(in io.Reader, dst string) (err error) {
@@ -265,6 +261,9 @@ func (r *Recipient) LinkUnsub(project string, tsk *TaskT) string {
 	// email encoded
 	eme := strings.ReplaceAll(r.Email, "@", "aatt")
 	eme = strings.ReplaceAll(eme, ".", "ddtt")
+	// non-breaking space (U+00A0) with regular space
+	eme = strings.ReplaceAll(eme, "\u00A0", " ")
+
 	params.Set("email", eme)
 
 	//
@@ -316,7 +315,7 @@ func (r *Recipient) LinkUnsub(project string, tsk *TaskT) string {
 			continue
 		}
 		if int(c) < 33 || int(c) > 126 {
-			log.Fatalf("(2) found char code %v %c in %v", int(c), rune(c), hfc)
+			log.Fatalf("(2) found char code -%v- -%c- in %v", int(c), rune(c), hfc)
 		}
 	}
 
@@ -706,7 +705,7 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 			return err
 		}
 
-		maxDays :=  time.Duration(20)
+		maxDays := time.Duration(20)
 		modTimePlus := fi.ModTime().Add(maxDays * 24 * 3600 * time.Second)
 		if time.Now().After(modTimePlus) {
 			err := fmt.Errorf("file over %v days old: %v ", maxDays, filepath.Base(pth))
@@ -716,7 +715,7 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 
 		// during testing, we send an old file with the suffix "_dummy".exe
 		if mode == "test" || tsk.testmode {
-			pthDummy :=  appendDummyToBase(pth)
+			pthDummy := appendDummyToBase(pth)
 			if fileExists(pthDummy) {
 				pth = pthDummy
 			}
@@ -863,12 +862,12 @@ func dueTasks() (surveys []string, waves []WaveT, tasks []TaskT) {
 }
 
 // load recipients from CSV
-func getCSV(project string, wv WaveT, tsk TaskT) ([]*Recipient, error) {
+func getCSV(project string, wv WaveT, tsk TaskT, doBackup bool) ([]*Recipient, error) {
 
 	// CSV file containing participants
 	fn := fmt.Sprintf("./csv/%v/%v.csv", project, tsk.Name)
 	nowHourMin := time.Now().Format("01-02-15h04m") // no month - Format("02T15:04")
-	// fnCopy - first the year and month of the wave - then month, day and time of the sending time
+	// backup, log, protocol - first the year and month of the wave - then month, day and time of the sending time
 	fnCopy := fmt.Sprintf("./csv/%v/%v-%d-%02d--%v.csv", project, tsk.Name, wv.Year, wv.Month, nowHourMin)
 	log.Printf("using filename %v\n", fn)
 
@@ -941,7 +940,7 @@ func getCSV(project string, wv WaveT, tsk TaskT) ([]*Recipient, error) {
 	defer inFile.Close()
 
 	// move / rename as log and report
-	if operationMode == "prod" && tsk.Name != "unsubscribe" {
+	if operationMode == "prod" && tsk.Name != "unsubscribe" && doBackup {
 		err = fileCopy(inFile, fnCopy)
 		if err != nil {
 			return nil, fmt.Errorf("getCSV(): fileCopy error %w", err)
@@ -1051,7 +1050,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 
 	log.Printf("\n\n\t%v-%-22v   %v - %v att(s)\n\t==================", project, tsk.Name, tsk.Description, len(tsk.Attachments))
 
-	recs, err := getCSV(project, wv, tsk)
+	recs, err := getCSV(project, wv, tsk, false)
 	if err != nil {
 		log.Print(err)
 		return
@@ -1127,7 +1126,7 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		}
 
 		// refresh recipients
-		recs, err = getCSV(project, wv, tsk)
+		recs, err = getCSV(project, wv, tsk, true)
 		if err != nil {
 			log.Print(err)
 			return

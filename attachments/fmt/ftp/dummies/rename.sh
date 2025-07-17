@@ -24,6 +24,6 @@ for file in ./*dummy*.pdf; do
 done
 
 
-echo "touch expection data - copy by hand"
 touch ./ZEW_FMT_Expectation_Data.xlsx
 cp  -f ./ZEW_FMT_Expectation_Data.xlsx  ../../verkauf/ZEW_FMT_Expectation_Data_dummy.xlsx
+echo "expection data dummy - touched and copied"

@@ -41,7 +41,7 @@ func init() {
 		TTL: 48 * 3600,
 	}
 
-	flat, err := getCSV("unsubscribe", wave, task)
+	flat, err := getCSV("unsubscribe", wave, task, false)
 	if err != nil {
 		log.Print(err)
 		return
