@@ -8,6 +8,7 @@ import (
 	"log"
 	"mime"
 	"net"
+	"net/mail"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -237,7 +238,7 @@ func fileCopy(in io.Reader, dst string) (err error) {
 
 // LinkUnsub constructs a link to unsubscibe
 // for usage as mime header but also in template
-func (r *Recipient) LinkUnsub(project string, tsk *TaskT) string {
+func (rec *Recipient) LinkUnsub(project string, tsk *TaskT) string {
 
 	// old:
 	// m.AddHeader("List-Unsubscribe", fmt.Sprintf("<maito:%v>", cfg.Projects[project].ReplyTo))
@@ -259,7 +260,7 @@ func (r *Recipient) LinkUnsub(project string, tsk *TaskT) string {
 	params.Set("task", tne)
 
 	// email encoded
-	eme := strings.ReplaceAll(r.Email, "@", "aatt")
+	eme := strings.ReplaceAll(rec.Email, "@", "aatt")
 	eme = strings.ReplaceAll(eme, ".", "ddtt")
 	// non-breaking space (U+00A0) with regular space
 	eme = strings.ReplaceAll(eme, "\u00A0", " ")
@@ -333,13 +334,13 @@ func (r *Recipient) LinkUnsub(project string, tsk *TaskT) string {
 }
 
 // LinkHelp constructs a link to an info page for the mailing
-func (r *Recipient) LinkHlp(project string, tsk *TaskT) string {
+func (rec *Recipient) LinkHlp(project string, tsk *TaskT) string {
 
 	// since 2024-06-17
 	// need List-Help header
 	// https://datatracker.ietf.org/doc/html/rfc2369#section-3.1
 
-	emailDummy := "your-email" // not r.Email - but cannot be blank
+	emailDummy := "your-email" // not rec.Email - but cannot be blank
 
 	params := url.Values{}
 	params.Set("project", project)
@@ -360,102 +361,120 @@ func (r *Recipient) LinkHlp(project string, tsk *TaskT) string {
 
 }
 
-func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
+func (rec *Recipient) CheckEmail() error {
+
+	rec.Email = strings.TrimSpace(rec.Email)
+
+	pts := strings.Split(rec.Email, "@")
+	if len(pts) != 2 || pts[1] == "" {
+		return fmt.Errorf("rec.Email malformed-1 - %v\n\t%s", rec.Email, rec)
+	}
+
+	_, err := mail.ParseAddress(rec.Email)
+	if err != nil {
+		return fmt.Errorf("rec.Email malformed-2 - %v\n\t%s\n\t%v", rec.Email, rec, err)
+	}
+
+	return nil
+
+}
+
+func (rec *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 
 	if project == "copol" {
 		// implicitly all English - but we are too lazy to change the CSV
-		r.Language = "en"
+		rec.Language = "en"
 	}
 
 	if project == "muni" {
 		// implicitly all German
-		r.Language = "de"
+		rec.Language = "de"
 	}
 
-	if r.SourceTable == "" {
+	if rec.SourceTable == "" {
 
-		if r.Language == "de" {
-			if r.Sex == 1 {
-				r.Anrede = "Sehr geehrter Herr "
+		if rec.Language == "de" {
+			if rec.Sex == 1 {
+				rec.Anrede = "Sehr geehrter Herr "
 			}
-			if r.Sex == 2 {
-				r.Anrede = "Sehr geehrte Frau "
+			if rec.Sex == 2 {
+				rec.Anrede = "Sehr geehrte Frau "
 			}
-			if r.Title != "" {
-				r.Anrede += r.Title + " "
+			if rec.Title != "" {
+				rec.Anrede += rec.Title + " "
 			}
-			r.Anrede += r.Lastname
+			rec.Anrede += rec.Lastname
 		}
-		if r.Language == "en" {
-			if r.Sex == 1 {
-				r.Anrede = "Dear Mr. "
+		if rec.Language == "en" {
+			if rec.Sex == 1 {
+				rec.Anrede = "Dear Mr. "
 			}
-			if r.Sex == 2 {
-				r.Anrede = "Dear Ms. "
+			if rec.Sex == 2 {
+				rec.Anrede = "Dear Ms. "
 			}
-			if r.Title != "" {
-				r.Anrede = "Dear " + r.Title + " "
+			if rec.Title != "" {
+				rec.Anrede = "Dear " + rec.Title + " "
 			}
-			r.Anrede += r.Lastname
+			rec.Anrede += rec.Lastname
 		}
 
-	} else if r.SourceTable == "mailadresse" {
+	} else if rec.SourceTable == "mailadresse" {
 
 		// this database table has no language column;
 		// default language is 'de'.
 		// we derive the language from the 'anrede'
-		if strings.Contains(r.Anrede, "Dear") {
-			r.Language = "en"
+		if strings.Contains(rec.Anrede, "Dear") {
+			rec.Language = "en"
 		}
 
-	} else if r.SourceTable == "pds" {
+	} else if rec.SourceTable == "pds" {
 
-		r.Anrede = strings.TrimSpace(r.Anrede)
-		r.Firstname = strings.TrimSpace(r.Firstname)
-		r.Lastname = strings.TrimSpace(r.Lastname)
+		rec.Anrede = strings.TrimSpace(rec.Anrede)
+		rec.Firstname = strings.TrimSpace(rec.Firstname)
+		rec.Lastname = strings.TrimSpace(rec.Lastname)
 
-		if r.Anrede != "Mr." && r.Anrede != "Mrs." {
-			if r.Firstname != "" && r.Lastname != "" {
-				r.Anrede = "Dear " + r.Firstname + " " + r.Lastname
+		if rec.Anrede != "Mr." && rec.Anrede != "Mrs." {
+			if rec.Firstname != "" && rec.Lastname != "" {
+				rec.Anrede = "Dear " + rec.Firstname + " " + rec.Lastname
 			} else {
-				r.Anrede = "Dear Sir or Madam"
+				rec.Anrede = "Dear Sir or Madam"
 			}
 		} else {
-			r.Anrede = "Dear " + r.Anrede + " " + r.Lastname
+			rec.Anrede = "Dear " + rec.Anrede + " " + rec.Lastname
 		}
-		r.Language = "en"
+		rec.Language = "en"
 
-	} else if r.SourceTable == "pds-old" {
-		r.NoMail += " noMail"
-		r.Language = "en"
+	} else if rec.SourceTable == "pds-old" {
+		rec.NoMail += " noMail"
+		rec.Language = "en"
 	}
 
-	if r.ID != "" {
-		if _, ok := tsk.UserIDSkip[r.ID]; ok {
-			r.NoMail += " noMail"
-			log.Printf("    excluding %v - because from config.json UserIDSkip", r.Email)
-		} else if _, ok := unsubscribers[project][tsk.Name][r.Email]; ok {
-			r.NoMail += " noMail"
-			log.Printf("   excluding %v - because task unsubscribe.csv", r.Email)
-		} else if _, ok := unsubscribers[project]["all"][r.Email]; ok {
-			r.NoMail += " noMail"
-			log.Printf("   excluding %v - because all  unsubscribe.csv", r.Email)
+	if rec.ID != "" {
+		if _, ok := tsk.UserIDSkip[rec.ID]; ok {
+			rec.NoMail += " noMail"
+			log.Printf("    excluding %v - because from config.json UserIDSkip", rec.Email)
+		} else if _, ok := unsubscribers[project][tsk.Name][rec.Email]; ok {
+			rec.NoMail += " noMail"
+			log.Printf("   excluding %v - because task unsubscribe.csv", rec.Email)
+		} else if _, ok := unsubscribers[project]["all"][rec.Email]; ok {
+			rec.NoMail += " noMail"
+			log.Printf("   excluding %v - because all  unsubscribe.csv", rec.Email)
 		} else {
-			// log.Printf("including %v - %v - %v", r.Email, project, tsk.Name)
+			// log.Printf("including %v - %v - %v", rec.Email, project, tsk.Name)
 		}
 	}
 
-	r.LinkUnsubscribe = r.LinkUnsub(project, tsk)
-	r.LinkHelp = r.LinkHlp(project, tsk)
+	rec.LinkUnsubscribe = rec.LinkUnsub(project, tsk)
+	rec.LinkHelp = rec.LinkHlp(project, tsk)
 
 	// survey identifier
 	y := wv.Year
 	m := wv.Month
-	r.MonthYear = fmt.Sprintf("%v %v", MonthByInt(int(m), r.Language), y)
+	rec.MonthYear = fmt.Sprintf("%v %v", MonthByInt(int(m), rec.Language), y)
 
 	quarter := int(m-1)/3 + 1
-	r.QuarterYear = fmt.Sprintf("Q%v %v", quarter, y)
-	r.Quarter = fmt.Sprintf("Q%v", quarter)
+	rec.QuarterYear = fmt.Sprintf("Q%v %v", quarter, y)
+	rec.Quarter = fmt.Sprintf("Q%v", quarter)
 
 	// due dates
 	prelimi := wv.ClosingDatePreliminary
@@ -464,8 +483,8 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 		prelimi = time.Date(2022, 11, 11+0, 17, 0, 0, 0, loc)
 		lastDue = prelimi.AddDate(0, 0, 3)
 	}
-	r.ClosingDatePreliminary = formatDate(prelimi, r.Language)
-	r.ClosingDateLastDue = formatDate(lastDue, r.Language)
+	rec.ClosingDatePreliminary = formatDate(prelimi, rec.Language)
+	rec.ClosingDateLastDue = formatDate(lastDue, rec.Language)
 
 	tenDaysPast := time.Now().Add(-15 * 24 * 3600 * time.Second)
 	if project == "pds" {
@@ -473,7 +492,7 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 	}
 	for _, t := range []time.Time{prelimi, lastDue} {
 		if !t.IsZero() && tenDaysPast.After(t) {
-			log.Fatalf("%v: ClosingDate* %v is older than %v", tsk.Name, formatDate(t, r.Language), formatDate(tenDaysPast, r.Language))
+			log.Fatalf("%v: ClosingDate* %v is older than %v", tsk.Name, formatDate(t, rec.Language), formatDate(tenDaysPast, rec.Language))
 		}
 	}
 
@@ -482,31 +501,31 @@ func (r *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 	//
 	//
 	// fmt
-	r.LinkExcel = fmt.Sprintf(
+	rec.LinkExcel = fmt.Sprintf(
 		`https://fmtdownload.zew.de/fdl/download/public/%v-%02d-%02d_1100/tab.xlsx`,
 		publication.Year(),
 		int(publication.Month()),
 		int(publication.Day()),
 	)
 
-	r.PressReleaseDe = fmt.Sprintf(
+	rec.PressReleaseDe = fmt.Sprintf(
 		`https://fmtdownload.zew.de/fdl/download/public/%v-%02d-%02d_1100/Pressemitteilung_dt.pdf`,
 		publication.Year(),
 		int(publication.Month()),
 		int(publication.Day()),
 	)
 
-	r.PressReleaseEn = fmt.Sprintf(
+	rec.PressReleaseEn = fmt.Sprintf(
 		`https://fmtdownload.zew.de/fdl/download/public/%v-%02d-%02d_1100/Pressemitteilung_en.pdf`,
 		publication.Year(),
 		int(publication.Month()),
 		int(publication.Day()),
 	)
 
-	if project == "fmt" && r.Language == "en" {
-		if r.Link != "" && !strings.Contains(string(r.Link), "&lang_code=en") {
+	if project == "fmt" && rec.Language == "en" {
+		if rec.Link != "" && !strings.Contains(string(rec.Link), "&lang_code=en") {
 			// log.Printf("langcode added 3")
-			r.Link += "&lang_code=en"
+			rec.Link += "&lang_code=en"
 		}
 	}
 
@@ -602,10 +621,6 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	rh := cfg.RelayHorsts[relayHostKey]
 
 	nameDomain := strings.Split(rec.Email, "@")
-	if len(nameDomain) != 2 {
-		err := fmt.Errorf("rec.Email seems malformed %v\n\t%s", rec.Email, rec)
-		return err
-	}
 	domain := "@" + nameDomain[1]
 
 	// no longer used - see DomainsToRelayHorsts
@@ -660,10 +675,6 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 
 	m.AddHeader("List-Help", fmt.Sprintf("<%v>", rec.LinkHelp))
 
-	//
-	if rec.Email == "" || !strings.Contains(rec.Email, "@") {
-		return fmt.Errorf("email field %q is suspect \n\t%+v", rec.Email, rec)
-	}
 	m.To(rec.Email)
 
 	//
@@ -1056,6 +1067,14 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		return
 	}
 
+	for _, rec := range recs {
+		err := rec.CheckEmail()
+		if err != nil {
+			log.Print(err)
+			return
+		}
+	}
+
 	recs, err = testRecipients(project, wv, tsk, recs)
 	if err != nil {
 		log.Print(err)
@@ -1156,7 +1175,6 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		)
 		err := singleEmail("prod", project, *rec, wv, tsk)
 		if err != nil {
-			log.Printf("error in prod run:\n\t%v", err)
 			log.Printf("error in prod run:\n\t%v\n\t%s", err, rec)
 			// log.Printf("\t%v", project)
 			// log.Printf("\t%v", wv)

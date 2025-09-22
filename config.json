@@ -614,7 +614,17 @@
           "relay_host": "inxmail.smtp",
           "attachments": [
           ]
+        },
+        {
+          "name": "reminder",
+          "description": "reminder",
+          "xx-html": true,
+          "execution_time": "2025-09-22T09:10:00+02:00",
+          "relay_host": "inxmail.smtp",
+          "attachments": [
+          ]
         }
+
 
       ],
 
