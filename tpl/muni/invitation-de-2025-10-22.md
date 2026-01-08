@@ -1,9 +1,4 @@
-Erinnerung: Bitte um Dokumente zu Steuerreformvorschlägen – DFG-gefördertes Forschungsprojekt am ZEW Mannheim
-
-Wir möchten Sie hiermit höflich an unsere ursprüngliche Anfrage (siehe unten) erinnern und wären Ihnen für die Übersendung vorhandener Unterlagen sehr verbunden. Für Rückfragen erreichen Sie uns gerne unter gemeinde-steuer@zew.de
-
----
-
+Bitte um Dokumente zu Steuerreformvorschlägen – DFG-gefördertes Forschungsprojekt am ZEW Mannheim
 Sehr geehrte Damen und Herren,
 sehr geehrte Mitarbeiterinnen und Mitarbeiter der Gemeindeverwaltung {{.Anrede}},
 

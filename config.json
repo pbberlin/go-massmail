@@ -129,7 +129,8 @@
         "bounce":  "noreply@zew.de",
 
         "test_recipients": [
-          "peter.buchmann.68@gmail.com"
+          "peter.buchmann.68@gmail.com",
+          "annette.gilsa@zew.de"
         ],
         "xx-test_recipients": [
           "ping@tools.mxtoolbox.com",
@@ -137,6 +138,7 @@
           "peter.buchmann@zew.de",
           "peter.buchmann.68@outlook.com",
           "lora.pavlova@zew.de",
+          "annette.gilsa@zew.de",
           "xxx"
         ]
 
@@ -244,6 +246,24 @@
           "month":   10,
           "closing_date_preliminary": "2025-10-10T17:00:00+02:00",
           "closing_date_last_due":    "2025-10-13T17:00:00+02:00"
+        },
+        {
+          "year": 2025,
+          "month":   11,
+          "closing_date_preliminary": "2025-11-07T17:00:00+02:00",
+          "closing_date_last_due":    "2025-11-10T17:00:00+02:00"
+        },
+        {
+          "year": 2025,
+          "month":   12,
+          "closing_date_preliminary": "2025-12-12T17:00:00+02:00",
+          "closing_date_last_due":    "2025-12-15T17:00:00+02:00"
+        },
+        {
+          "year": 2026,
+          "month":   1,
+          "closing_date_preliminary": "2026-01-16T17:00:00+02:00",
+          "closing_date_last_due":    "2026-01-19T17:00:00+02:00"
         }        
 
 
@@ -421,10 +441,56 @@
 
 
       "fmt": [
+
+
+        {
+          "name": "christmas",
+          "description":     "christmas",
+          "xx-template_name":   "invitation",
+          "execution_time":  "2025-12-22T09:00:00+02:00",
+          "html": true,
+          "url": {
+            "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
+            "TTL": 3600,
+            "User": "pbu"
+          },
+          "attachments": [
+            {
+              "label": "christmas-2025.gif",
+              "filename": "./x-html-inline/christmas-2025-de.gif",
+              "language": "de",
+              "inline": true
+            },
+            {
+              "label": "christmas-2025.gif",
+              "filename": "./x-html-inline/christmas-2025-en.gif",
+              "language": "en",
+              "inline": true
+            },
+
+            {
+              "label": "ZEW-Standpunkte.pdf",
+              "filename": "./x-html-inline/ZEW-Standpunkte.pdf",
+              "language": "de",
+              "inline": true
+            },
+            {
+              "label": "ZEW-perspectives (German language).pdf",
+              "filename": "./x-html-inline/ZEW-Standpunkte.pdf",
+              "language": "en",
+              "inline": true
+            }
+
+          ]
+        },
+
+
+
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2025-10-06T08:00:00+02:00",
+          "xx-execution_time": "2026-01-12T08:00:00+02:00",
+          "execution_time": "2026-01-12T08:00:00+02:00",
           "xx-relay_host":        "inxmail.smtp",
           "relay_host":   "email.zew.de",
           "from": {
@@ -441,7 +507,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2025-10-10T08:00:00+02:00",
+          "execution_time": "2025-12-12T08:00:00+02:00",
           "relay_host":        "inxmail.smtp",
           "xx-1-relay_host":   "inxmail.smtp",
           "xx-2-relay_host":   "email.zew.de",
@@ -457,7 +523,7 @@
         {
           "name": "results-expectation-data",
           "description": "Di 11:00    - Ergebnisverteiler - 25 Interessenten",
-          "execution_time": "2025-10-14T11:00:00+02:00",
+          "execution_time": "2025-12-16T11:00:00+02:00",
           "attachments": [
             {
               "label": "ZEW_FMT_Expectation_Data.xlsx",
@@ -474,7 +540,7 @@
         {
           "name": "results-gmind",
           "description": "Dienstags um 11 - Ergebnisverteiler - 12 Interessenten",
-          "execution_time": "2025-10-14T11:00:00+02:00",
+          "execution_time": "2025-12-16T11:00:00+02:00",
           "attachments": [
             {
               "label": "G-Mind_werte.xlsx",
@@ -491,7 +557,7 @@
         {
           "name": "results-economy",
           "description": "Dienstags um 11 - Ergebnisverteiler -  1 Interessenten",
-          "execution_time": "2025-10-14T11:00:00+02:00",
+          "execution_time": "2025-12-16T11:00:00+02:00",
           "attachments": [
             {
               "label": "Economy.xlsx",
@@ -503,7 +569,7 @@
         {
           "name": "results-haver",
           "description": "Dienstags um 11 - Ergebnisverteiler -  2 Interessenten",
-          "execution_time": "2025-10-14T11:00:00+02:00",
+          "execution_time": "2025-12-16T11:00:00+02:00",
           "attachments": [
             {
               "label": "haver.xlsx",
@@ -515,7 +581,7 @@
         {
           "name": "results-ndr",
           "description": "Dienstags um 11 - Ergebnisverteiler -  2 Interessenten",
-          "execution_time": "2025-10-14T11:00:00+02:00",
+          "execution_time": "2025-12-16T11:00:00+02:00",
           "attachments": [
             {
               "label": "NDR.xlsx",
@@ -528,7 +594,7 @@
         {
           "name": "results-a",
           "description": "Dienstags um 11 - Ergebnisverteiler -270 Teilnehmer",
-          "execution_time": "2025-10-14T11:00:00+02:00",
+          "execution_time": "2025-12-16T11:00:00+02:00",
           "template_name": "results",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
@@ -580,7 +646,7 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2025-10-17T09:00:00+02:00",
+          "execution_time": "2025-12-17T09:00:00+02:00",
           "xx-relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
@@ -616,7 +682,9 @@
           "name": "invitation",
           "description": "initial invitation",
           "xx-html": true,
-          "execution_time": "2025-06-23T09:10:00+02:00",
+          "xx-execution_time": "2025-06-23T09:10:00+02:00",
+          "xx2-execution_time": "2025-10-27T09:10:00+02:00",
+          "execution_time": "2025-11-26T09:10:00+02:00",
           "relay_host": "inxmail.smtp",
           "attachments": [
           ]

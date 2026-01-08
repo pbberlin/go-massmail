@@ -7,7 +7,8 @@ curmonth=$( date +%m )
 curyear=$( date +%Y )
 
 
-src="/c/Users/pbu/Documents/zew_work/git/other/fmtx-ap/"
+# src="/c/Users/pbu/Documents/zew_work/git/other/fmtx-ap/"
+src="/c/goprojects/fmt-ap/"
 wave1="${curyear}${curmonth}"
 wave2="${curyear}-${curmonth}"
 wave2="${curyear}-${curmonth}"
