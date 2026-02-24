@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/csv"
 	"fmt"
 	"html/template"
@@ -14,6 +15,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"golang.org/x/term"
 
 	"github.com/domodwyer/mailyak"
 	"github.com/gocarina/gocsv"
@@ -1195,4 +1198,38 @@ func iterTasks() {
 		processTask(survey, waves[idx], tasks[idx])
 	}
 
+}
+
+func userStdin(prompt string) (string, error) {
+	fmt.Fprint(os.Stderr, prompt)
+	reader := bufio.NewReader(os.Stdin)
+	username, err := reader.ReadString('\n')
+	if err != nil {
+		return "", err
+	}
+	username = strings.TrimRight(username, "\r\n")
+	return username, nil
+}
+
+func passStdin(prompt string) (string, error) {
+	fmt.Fprint(os.Stderr, prompt)
+	passwordBytes, err := term.ReadPassword(int(os.Stdin.Fd()))
+	fmt.Fprintln(os.Stderr) // add newline after password input
+	if err != nil {
+		return "", err
+	}
+	return string(passwordBytes), nil
+}
+
+// userPassStdin reads both username and password.
+func userPass(userPrompt, passPrompt string) (string, string, error) {
+	user, err := userStdin(userPrompt)
+	if err != nil {
+		return "", "", err
+	}
+	pass, err := passStdin(passPrompt)
+	if err != nil {
+		return "", "", err
+	}
+	return user, pass, nil
 }

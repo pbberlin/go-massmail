@@ -264,7 +264,14 @@
           "month":   1,
           "closing_date_preliminary": "2026-01-16T17:00:00+02:00",
           "closing_date_last_due":    "2026-01-19T17:00:00+02:00"
+        },
+        {
+          "year": 2026,
+          "month":   2,
+          "closing_date_preliminary": "2026-02-13T17:00:00+02:00",
+          "closing_date_last_due":    "2026-02-16T17:00:00+02:00"
         }        
+
 
 
 
@@ -489,8 +496,7 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "xx-execution_time": "2026-01-12T08:00:00+02:00",
-          "execution_time": "2026-01-12T08:00:00+02:00",
+          "execution_time": "2026-02-09T08:00:00+02:00",
           "xx-relay_host":        "inxmail.smtp",
           "relay_host":   "email.zew.de",
           "from": {
@@ -507,7 +513,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2025-12-12T08:00:00+02:00",
+          "execution_time": "2026-02-13T08:00:00+02:00",
           "relay_host":        "inxmail.smtp",
           "xx-1-relay_host":   "inxmail.smtp",
           "xx-2-relay_host":   "email.zew.de",
@@ -523,7 +529,7 @@
         {
           "name": "results-expectation-data",
           "description": "Di 11:00    - Ergebnisverteiler - 25 Interessenten",
-          "execution_time": "2025-12-16T11:00:00+02:00",
+          "execution_time": "2026-02-17T11:00:00+02:00",
           "attachments": [
             {
               "label": "ZEW_FMT_Expectation_Data.xlsx",
@@ -540,7 +546,7 @@
         {
           "name": "results-gmind",
           "description": "Dienstags um 11 - Ergebnisverteiler - 12 Interessenten",
-          "execution_time": "2025-12-16T11:00:00+02:00",
+          "execution_time": "2026-02-17T11:00:00+02:00",
           "attachments": [
             {
               "label": "G-Mind_werte.xlsx",
@@ -557,7 +563,7 @@
         {
           "name": "results-economy",
           "description": "Dienstags um 11 - Ergebnisverteiler -  1 Interessenten",
-          "execution_time": "2025-12-16T11:00:00+02:00",
+          "execution_time": "2026-02-17T11:00:00+02:00",
           "attachments": [
             {
               "label": "Economy.xlsx",
@@ -569,7 +575,7 @@
         {
           "name": "results-haver",
           "description": "Dienstags um 11 - Ergebnisverteiler -  2 Interessenten",
-          "execution_time": "2025-12-16T11:00:00+02:00",
+          "execution_time": "2026-02-17T11:00:00+02:00",
           "attachments": [
             {
               "label": "haver.xlsx",
@@ -581,7 +587,7 @@
         {
           "name": "results-ndr",
           "description": "Dienstags um 11 - Ergebnisverteiler -  2 Interessenten",
-          "execution_time": "2025-12-16T11:00:00+02:00",
+          "execution_time": "2026-02-17T11:00:00+02:00",
           "attachments": [
             {
               "label": "NDR.xlsx",
@@ -594,7 +600,7 @@
         {
           "name": "results-a",
           "description": "Dienstags um 11 - Ergebnisverteiler -270 Teilnehmer",
-          "execution_time": "2025-12-16T11:00:00+02:00",
+          "execution_time": "2026-02-17T11:00:00+02:00",
           "template_name": "results",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
@@ -646,7 +652,7 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2025-12-17T09:00:00+02:00",
+          "execution_time": "2026-02-20T09:00:00+02:00",
           "xx-relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
@@ -675,6 +681,8 @@
           "description": "Finanzmarkt Report am Freitag - update CSV from http://fmt-2020.zew.local/fmt/adressverwaltung_start.php - 110 Teilnemer"
         }
       ],
+
+
 
 
       "muni": [
