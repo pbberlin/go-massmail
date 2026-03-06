@@ -270,6 +270,12 @@
           "month":   2,
           "closing_date_preliminary": "2026-02-13T17:00:00+02:00",
           "closing_date_last_due":    "2026-02-16T17:00:00+02:00"
+        },
+        {
+          "year": 2026,
+          "month":   3,
+          "closing_date_preliminary": "2026-03-13T17:00:00+02:00",
+          "closing_date_last_due":    "2026-03-16T17:00:00+02:00"
         }        
 
 
@@ -453,7 +459,6 @@
         {
           "name": "christmas",
           "description":     "christmas",
-          "xx-template_name":   "invitation",
           "execution_time":  "2025-12-22T09:00:00+02:00",
           "html": true,
           "url": {
@@ -496,7 +501,7 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2026-02-09T08:00:00+02:00",
+          "execution_time": "2026-03-09T08:00:00+02:00",
           "xx-relay_host":        "inxmail.smtp",
           "relay_host":   "email.zew.de",
           "from": {

@@ -1221,13 +1221,13 @@ func passStdin(prompt string) (string, error) {
 	return string(passwordBytes), nil
 }
 
-// userPassStdin reads both username and password.
-func userPass(userPrompt, passPrompt string) (string, string, error) {
-	user, err := userStdin(userPrompt)
+// userPass reads both username and password.
+func userPass(prompt string) (string, string, error) {
+	user, err := userStdin(prompt)
 	if err != nil {
 		return "", "", err
 	}
-	pass, err := passStdin(passPrompt)
+	pass, err := passStdin("and now password")
 	if err != nil {
 		return "", "", err
 	}

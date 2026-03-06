@@ -194,6 +194,13 @@ func (rh RelayHorst) PasswortEnv() string {
 	return env
 }
 
+var credentials = map[string]map[string]string{
+	"host1": {
+		"user":     "xx",
+		"password": "secret",
+	},
+}
+
 func (rh RelayHorst) getAuth() (auth smtp.Auth) {
 
 	if rh.Username == "" {
@@ -203,15 +210,39 @@ func (rh RelayHorst) getAuth() (auth smtp.Auth) {
 	pureHost := strings.Split(rh.HostNamePort, ":")[0]
 	env := rh.PasswortEnv()
 	pw := os.Getenv(env)
+
+	if credentials[pureHost] != nil {
+		rh.Username = credentials[pureHost]["user"]
+		pw = credentials[pureHost]["password"]
+	}
+
 	if pw == "" {
-		log.Fatalf(`Set password for %v via ENV %v
-		SET %v=secret
-		export %v=secret
-		`,
-			pureHost, env,
-			env,
-			env,
+
+		// xxxxx
+
+		var errInp error
+		rh.Username, pw, errInp = userPass(
+			fmt.Sprintf("user for smtp - %v ", pureHost),
 		)
+
+		if errInp == nil {
+			credentials[pureHost] = map[string]string{}
+			credentials[pureHost]["user"] = rh.Username
+			credentials[pureHost]["password"] = pw
+		}
+
+		if errInp != nil {
+			log.Fatalf(`Set password for %v via ENV %v
+				SET    %v=secret
+				export %v=secret
+				`,
+				pureHost, env,
+				env,
+				env,
+			)
+
+		}
+
 	}
 
 	if false {
