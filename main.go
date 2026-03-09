@@ -13,6 +13,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
@@ -788,6 +789,31 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 
 }
 
+func checkMonotonIncrease(recs []*Recipient) {
+	// assume recs []*Recipient just been populated
+	lastID := -1
+	for idx1, rec := range recs {
+
+		if rec.ID == "" {
+			// log.Printf("row #%03v has empty ID, skipping monotone check", idx1+1)
+			continue
+		}
+
+		// convert ID to int
+		idInt, err := strconv.Atoi(rec.ID)
+		if err != nil {
+			log.Printf("row #%03v has non-numeric ID: %v, skipping", idx1+1, rec.ID)
+			continue
+		}
+
+		if lastID >= 0 && idInt <= lastID {
+			log.Printf("row #%03v ID not increasing: previous=%v current=%v", idx1+1, lastID, idInt)
+
+		}
+		lastID = idInt
+	}
+}
+
 // inBetween if start < t < start+24h
 func inBetween(desc string, start, nw, stop time.Time) bool {
 
@@ -981,6 +1007,8 @@ func getCSV(project string, wv WaveT, tsk TaskT, doBackup bool) ([]*Recipient, e
 	if err := gocsv.UnmarshalFile(inFile, &recs); err != nil {
 		return nil, fmt.Errorf("getCSV(): unmarshal CSV error %w", err)
 	}
+
+	checkMonotonIncrease(recs)
 
 	// always set derived fields after loading or re-loading
 	log.Printf("SetDerived() for %v - %v", project, tsk.Name)
