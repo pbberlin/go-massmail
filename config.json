@@ -518,7 +518,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2026-02-13T08:00:00+02:00",
+          "execution_time": "2026-03-13T08:00:00+02:00",
           "relay_host":        "inxmail.smtp",
           "xx-1-relay_host":   "inxmail.smtp",
           "xx-2-relay_host":   "email.zew.de",
@@ -534,7 +534,7 @@
         {
           "name": "results-expectation-data",
           "description": "Di 11:00    - Ergebnisverteiler - 25 Interessenten",
-          "execution_time": "2026-02-17T11:00:00+02:00",
+          "execution_time": "2026-03-17T11:00:00+02:00",
           "attachments": [
             {
               "label": "ZEW_FMT_Expectation_Data.xlsx",
@@ -551,7 +551,7 @@
         {
           "name": "results-gmind",
           "description": "Dienstags um 11 - Ergebnisverteiler - 12 Interessenten",
-          "execution_time": "2026-02-17T11:00:00+02:00",
+          "execution_time": "2026-03-17T11:00:00+02:00",
           "attachments": [
             {
               "label": "G-Mind_werte.xlsx",
@@ -568,7 +568,7 @@
         {
           "name": "results-economy",
           "description": "Dienstags um 11 - Ergebnisverteiler -  1 Interessenten",
-          "execution_time": "2026-02-17T11:00:00+02:00",
+          "execution_time": "2026-03-17T11:00:00+02:00",
           "attachments": [
             {
               "label": "Economy.xlsx",
@@ -580,7 +580,7 @@
         {
           "name": "results-haver",
           "description": "Dienstags um 11 - Ergebnisverteiler -  2 Interessenten",
-          "execution_time": "2026-02-17T11:00:00+02:00",
+          "execution_time": "2026-03-17T11:00:00+02:00",
           "attachments": [
             {
               "label": "haver.xlsx",
@@ -592,7 +592,7 @@
         {
           "name": "results-ndr",
           "description": "Dienstags um 11 - Ergebnisverteiler -  2 Interessenten",
-          "execution_time": "2026-02-17T11:00:00+02:00",
+          "execution_time": "2026-03-17T11:00:00+02:00",
           "attachments": [
             {
               "label": "NDR.xlsx",
@@ -605,7 +605,7 @@
         {
           "name": "results-a",
           "description": "Dienstags um 11 - Ergebnisverteiler -270 Teilnehmer",
-          "execution_time": "2026-02-17T11:00:00+02:00",
+          "execution_time": "2026-03-17T11:00:00+02:00",
           "template_name": "results",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",

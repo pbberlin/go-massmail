@@ -8,7 +8,7 @@ curyear=$( date +%Y )
 
 
 # src="/c/Users/pbu/Documents/zew_work/git/other/fmtx-ap/"
-src="/c/goprojects/fmt-ap/"
+src="/c/goprojects/fmtx-ap/"
 wave1="${curyear}${curmonth}"
 wave2="${curyear}-${curmonth}"
 wave2="${curyear}-${curmonth}"
@@ -116,3 +116,9 @@ for file in ./verkauf/*; do
         mv $file ${file//.xls.xlsx/.xlsx}
     fi 
 done
+
+
+
+touch   ./ftp-dummies/ZEW_FMT_Expectation_Data.xlsx
+cp  -f  ./ftp-dummies/ZEW_FMT_Expectation_Data.xlsx  ./verkauf/ZEW_FMT_Expectation_Data_dummy.xlsx
+echo "expection data dummy - touched and copied"

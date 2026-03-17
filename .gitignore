@@ -10,7 +10,7 @@
 attachments/*
 !attachments/test/*
 !attachments/fmt/rename.sh
-
+!attachments/fmt/ftp-dummies/rename.sh
 
 tmp/*
 tmp*
