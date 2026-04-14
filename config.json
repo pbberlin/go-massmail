@@ -129,8 +129,7 @@
         "bounce":  "noreply@zew.de",
 
         "test_recipients": [
-          "peter.buchmann.68@gmail.com",
-          "annette.gilsa@zew.de"
+          "peter.buchmann.68@gmail.com"
         ],
         "xx-test_recipients": [
           "ping@tools.mxtoolbox.com",
@@ -139,9 +138,9 @@
           "peter.buchmann.68@outlook.com",
           "lora.pavlova@zew.de",
           "annette.gilsa@zew.de",
+          "Anna-Lena.Herforth@zew.de",
           "xxx"
         ]
-
       },
 
       "copol": {
@@ -276,7 +275,13 @@
           "month":   3,
           "closing_date_preliminary": "2026-03-13T17:00:00+02:00",
           "closing_date_last_due":    "2026-03-16T17:00:00+02:00"
-        }        
+        },
+        {
+          "year": 2026,
+          "month":   4,
+          "closing_date_preliminary": "2026-04-17T17:00:00+02:00",
+          "closing_date_last_due":    "2026-04-20T17:00:00+02:00"
+        }
 
 
 
@@ -501,10 +506,10 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2026-03-09T08:00:00+02:00",
-          "xx-relay_host":        "inxmail.smtp",
-          "relay_host":   "email.zew.de",
-          "from": {
+          "execution_time": "2026-04-13T08:00:00+02:00",
+          "relay_host":        "inxmail.smtp",
+          "xx-relay_host":   "email.zew.de",
+          "xx-from": {
             "distinct": "from project setting",
             "Name":      "Finanzmarkttest",
             "Address":    "noreply@zew.de"
@@ -657,7 +662,7 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2026-02-20T09:00:00+02:00",
+          "execution_time": "2026-03-23T09:00:00+02:00",
           "xx-relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
@@ -671,8 +676,18 @@
               "language": "de"
             },
             {
-              "label": "ZEW-index-report.pdf",
+              "label": "policy-brief-nahost.pdf",
+              "filename": "fmr/policy-brief-iran.pdf",
+              "language": "de"
+            },
+            {
+              "label": "ZEW-index-report-in-german.pdf",
               "filename": "fmr/report.pdf",
+              "language": "en"
+            },
+            {
+              "label": "policy-brief-iran-in-german.pdf",
+              "filename": "fmr/policy-brief-iran.pdf",
               "language": "en"
             }
           ]
