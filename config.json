@@ -9,6 +9,12 @@
         "delay": 18800,
         "delay-prev": 16800
       },
+      "smtp.office365.com": {
+        "host_name_port": "smtp.office365.com:587",
+        "username": "pbu",
+        "delay": 18800,
+        "delay-prev": 16800
+      },
       "zimbra.zew.de": {
         "host_name_port": "zimbra.zew.de:25",
         "xx-host_name_port": "zimbra.zew.de:465",
@@ -281,8 +287,13 @@
           "month":   4,
           "closing_date_preliminary": "2026-04-17T17:00:00+02:00",
           "closing_date_last_due":    "2026-04-20T17:00:00+02:00"
+        },
+        {
+          "year": 2026,
+          "month":   4,
+          "closing_date_preliminary": "2026-05-08T17:00:00+02:00",
+          "closing_date_last_due":    "2026-05-11T17:00:00+02:00"
         }
-
 
 
 
@@ -501,18 +512,18 @@
           ]
         },
 
-
-
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2026-04-13T08:00:00+02:00",
+          "execution_time": "2026-05-04T08:00:00+02:00",
           "relay_host":        "inxmail.smtp",
-          "xx-relay_host":   "email.zew.de",
+          "xx2-relay_host":   "email.zew.de",
+          "xx3-relay_host":   "smtp.office365.com",
           "xx-from": {
             "distinct": "from project setting",
             "Name":      "Finanzmarkttest",
-            "Address":    "noreply@zew.de"
+            "Address":    "noreply@zew.de",
+            "xx-Address":    "Finanzmarkttest@zew.de"
           },
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
