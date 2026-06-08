@@ -120,6 +120,28 @@
 
       },
 
+      "lix": {
+        "from": {
+          "Name":      "Umfrage Standortfaktoren ",
+          "Address":   "unternehmensbefragung@mails2.zew.de"
+        },
+        "replyto": "unternehmensbefragung@zew.de",
+        "bounce":  "noreply@zew.de",
+
+        "test_recipients": [
+          "peter.buchmann.68@gmail.com",
+          "peter.buchmann.68@gmail.com"
+        ],
+        "test_recipients-backup": [
+          "peter.buchmann@zew.de",
+          "karina.kindler@zew.de",
+          "friedrich.heinemann@zew.de",
+          "peter.buchmann.68@outlook.com",
+          "peter.buchmann@zew.de"
+        ]
+
+      },
+
 
 
       "fmt": {
@@ -209,6 +231,12 @@
           "month": 4
         }
       ],
+      "lix": [
+        {
+          "year": 2026,
+          "month": 6
+        }
+      ],
       "fmt": [
         {
           "year": 2022,
@@ -290,10 +318,17 @@
         },
         {
           "year": 2026,
-          "month":   4,
+          "month":   5,
           "closing_date_preliminary": "2026-05-08T17:00:00+02:00",
           "closing_date_last_due":    "2026-05-11T17:00:00+02:00"
+        },
+        {
+          "year": 2026,
+          "month":   6,
+          "closing_date_preliminary": "2026-06-12T17:00:00+02:00",
+          "closing_date_last_due":    "2026-06-15T17:00:00+02:00"
         }
+
 
 
 
@@ -469,6 +504,47 @@
       ],
 
 
+      "muni": [
+        {
+          "name": "invitation",
+          "description": "initial invitation",
+          "xx-html": true,
+          "xx-execution_time": "2025-06-23T09:10:00+02:00",
+          "xx2-execution_time": "2025-10-27T09:10:00+02:00",
+          "execution_time": "2025-11-26T09:10:00+02:00",
+          "relay_host": "inxmail.smtp",
+          "attachments": [
+          ]
+        },
+        {
+          "name": "reminder",
+          "description": "reminder",
+          "xx-html": true,
+          "execution_time": "2025-09-22T09:10:00+02:00",
+          "relay_host": "inxmail.smtp",
+          "attachments": [
+          ]
+        }
+
+
+      ],
+
+      "lix": [
+        {
+          "name": "invitation",
+          "description": "initial invitation",
+          "execution_time": "2026-06-08T08:00:00+02:00",
+          "relay_host": "inxmail.smtp",
+          "attachments": [
+          ],
+          "url": {
+            "TTL": 3600
+          }
+        }
+      ],
+
+
+
       "fmt": [
 
 
@@ -515,7 +591,7 @@
         {
           "name": "invitation",
           "description": "Montag",
-          "execution_time": "2026-05-04T08:00:00+02:00",
+          "execution_time": "2026-06-06T08:00:00+02:00",
           "relay_host":        "inxmail.smtp",
           "xx2-relay_host":   "email.zew.de",
           "xx3-relay_host":   "smtp.office365.com",
@@ -534,7 +610,7 @@
         {
           "name": "reminder",
           "description": "Freitag",
-          "execution_time": "2026-04-17T08:00:00+02:00",
+          "execution_time": "2026-06-12T08:00:00+02:00",
           "relay_host":        "inxmail.smtp",
           "xx-1-relay_host":   "inxmail.smtp",
           "xx-2-relay_host":   "email.zew.de",
@@ -549,8 +625,8 @@
 
         {
           "name": "results-expectation-data",
-          "description": "Di 11:00    - Ergebnisverteiler - 25 Interessenten",
-          "execution_time": "2026-04-21T11:00:00+02:00",
+          "description": "Di 11:00    - Ergebnisverteiler - 20 Interessenten",
+          "execution_time": "2026-06-15T11:00:00+02:00",
           "attachments": [
             {
               "label": "ZEW_FMT_Expectation_Data.xlsx",
@@ -571,7 +647,7 @@
         {
           "name": "results-gmind",
           "description": "Dienstags um 11 - Ergebnisverteiler - 12 Interessenten",
-          "execution_time": "2026-04-21T11:00:00+02:00",
+          "execution_time": "2026-06-15T11:00:00+02:00",
           "attachments": [
             {
               "label": "G-Mind_werte.xlsx",
@@ -588,7 +664,7 @@
         {
           "name": "results-economy",
           "description": "Dienstags um 11 - Ergebnisverteiler -  1 Interessenten",
-          "execution_time": "2026-04-21T11:00:00+02:00",
+          "execution_time": "2026-06-15T11:00:00+02:00",
           "attachments": [
             {
               "label": "Economy.xlsx",
@@ -600,7 +676,7 @@
         {
           "name": "results-haver",
           "description": "Dienstags um 11 - Ergebnisverteiler -  2 Interessenten",
-          "execution_time": "2026-04-21T11:00:00+02:00",
+          "execution_time": "2026-06-15T11:00:00+02:00",
           "attachments": [
             {
               "label": "haver.xlsx",
@@ -610,22 +686,9 @@
           ]
         },
         {
-          "name": "results-ndr",
-          "description": "canceled - obosolete",
-          "execution_time": "2026-04-21T11:00:00+02:00",
-          "attachments": [
-            {
-              "label": "NDR.xlsx",
-              "filename": "verkauf/NDR.xlsx",
-              "language": "en"
-            }
-          ],
-          "comments": "do we need the proquote ??"
-        },
-        {
           "name": "results-a",
           "description": "Dienstags um 11 - Ergebnisverteiler -270 Teilnehmer",
-          "execution_time": "2026-04-21T11:00:00+02:00",
+          "execution_time": "2026-06-15T11:00:00+02:00",
           "template_name": "results",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
@@ -677,7 +740,7 @@
         {
           "name": "report-a",
           "description": "Finanzmarkt Report am Freitag - 270 teilnehmer",
-          "execution_time": "2026-04-24T09:00:00+02:00",
+          "execution_time": "2026-06-18T09:00:00+02:00",
           "xx-relay_host": "email.zew.de",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
@@ -705,56 +768,12 @@
           "same_as": "report-a",
           "description": "Finanzmarkt Report am Freitag - update CSV from http://fmt-2020.zew.local/fmt/adressverwaltung_start.php - 110 Teilnemer"
         }
-      ],
-
-
-
-
-      "muni": [
-        {
-          "name": "invitation",
-          "description": "initial invitation",
-          "xx-html": true,
-          "xx-execution_time": "2025-06-23T09:10:00+02:00",
-          "xx2-execution_time": "2025-10-27T09:10:00+02:00",
-          "execution_time": "2025-11-26T09:10:00+02:00",
-          "relay_host": "inxmail.smtp",
-          "attachments": [
-          ]
-        },
-        {
-          "name": "reminder",
-          "description": "reminder",
-          "xx-html": true,
-          "execution_time": "2025-09-22T09:10:00+02:00",
-          "relay_host": "inxmail.smtp",
-          "attachments": [
-          ]
-        }
-
-
-      ],
-
-
-      "copol": [
-        {
-          "name": "invitation",
-          "description": "initial invitation for Co Pol survey",
-          "html": true,
-          "execution_time": "2023-09-26T10:15:00+02:00",
-          "relay_host": "inxmail.smtp",
-          "attachments": [
-          ]
-        },
-        {
-          "name": "reminder",
-          "description": "reminder for Co Pol survey",
-          "html": true,
-          "execution_time": "2023-10-04T09:15:00+02:00",
-          "relay_host": "inxmail.smtp"
-        }
-
       ]
+
+
+
+
+
 
 
 

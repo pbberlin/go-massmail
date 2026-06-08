@@ -320,7 +320,8 @@ func (rec *Recipient) LinkUnsub(project string, tsk *TaskT) string {
 			continue
 		}
 		if int(c) < 33 || int(c) > 126 {
-			log.Fatalf("(2) found char code -%v- -%c- in %v", int(c), rune(c), hfc)
+			log.Printf("(2b) found char code -%v- -%c- in %v", int(c), rune(c), hfc)
+			// log.Fatalf("(2a) found char code -%v- -%c- in %v", int(c), rune(c), hfc)
 		}
 	}
 
@@ -391,6 +392,11 @@ func (rec *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 	}
 
 	if project == "muni" {
+		// implicitly all German
+		rec.Language = "de"
+	}
+
+	if project == "lix" {
 		// implicitly all German
 		rec.Language = "de"
 	}
