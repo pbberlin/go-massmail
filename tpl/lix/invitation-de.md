@@ -11,14 +11,19 @@ Wir haben die Umfrage knapp gehalten, so dass sie nur wenige Minuten in Anspruch
 
 
 Vielen Dank für Ihre Mitwirkung!
-   
-   Prof. Dr. Friedrich Heinemann
+
+
+Prof. Dr. Friedrich Heinemann
+
+ZEW – Leibniz-Zentrum für Europäische Wirtschaftsforschung  
+L7, 1 · 68161 Mannheim · Germany  
+Email:    friedrich.heinemann@zew.de  
+Internet: www.zew.de · www.zew.eu  
 
 
 
 https://www.zew.de/forschung/projekte/laenderindex-der-stiftung-familienunternehmen-update-2026
 
-https://www.zew.de/team/fhe
 
 Details zum Datenschutz in der Umfrage.
 

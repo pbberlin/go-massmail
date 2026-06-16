@@ -133,11 +133,12 @@
           "peter.buchmann.68@gmail.com"
         ],
         "test_recipients-backup": [
-          "peter.buchmann@zew.de",
+          "peter.buchmann.68@gmail.com",
           "karina.kindler@zew.de",
           "friedrich.heinemann@zew.de",
-          "peter.buchmann.68@outlook.com",
-          "peter.buchmann@zew.de"
+          "karina.kindler@zew.de",
+          "friedrich.heinemann@zew.de",
+          "peter.buchmann.68@gmail.com"
         ]
 
       },
@@ -533,7 +534,7 @@
         {
           "name": "invitation",
           "description": "initial invitation",
-          "execution_time": "2026-06-08T08:00:00+02:00",
+          "execution_time": "3026-06-11T08:00:00+02:00",
           "relay_host": "inxmail.smtp",
           "attachments": [
           ],
@@ -626,7 +627,7 @@
         {
           "name": "results-expectation-data",
           "description": "Di 11:00    - Ergebnisverteiler - 20 Interessenten",
-          "execution_time": "2026-06-15T11:00:00+02:00",
+          "execution_time": "2026-06-16T11:00:00+02:00",
           "attachments": [
             {
               "label": "ZEW_FMT_Expectation_Data.xlsx",
@@ -647,7 +648,7 @@
         {
           "name": "results-gmind",
           "description": "Dienstags um 11 - Ergebnisverteiler - 12 Interessenten",
-          "execution_time": "2026-06-15T11:00:00+02:00",
+          "execution_time": "2026-06-16T11:00:00+02:00",
           "attachments": [
             {
               "label": "G-Mind_werte.xlsx",
@@ -664,7 +665,7 @@
         {
           "name": "results-economy",
           "description": "Dienstags um 11 - Ergebnisverteiler -  1 Interessenten",
-          "execution_time": "2026-06-15T11:00:00+02:00",
+          "execution_time": "2026-06-16T11:00:00+02:00",
           "attachments": [
             {
               "label": "Economy.xlsx",
@@ -676,7 +677,7 @@
         {
           "name": "results-haver",
           "description": "Dienstags um 11 - Ergebnisverteiler -  2 Interessenten",
-          "execution_time": "2026-06-15T11:00:00+02:00",
+          "execution_time": "2026-06-16T11:00:00+02:00",
           "attachments": [
             {
               "label": "haver.xlsx",
@@ -688,7 +689,7 @@
         {
           "name": "results-a",
           "description": "Dienstags um 11 - Ergebnisverteiler -270 Teilnehmer",
-          "execution_time": "2026-06-15T11:00:00+02:00",
+          "execution_time": "2026-06-16T11:00:00+02:00",
           "template_name": "results",
           "url": {
             "URL": "http://fmt-2020.zew.local/fmt/individualbericht-curl.php?mode=invitation",
