@@ -34,6 +34,7 @@ type Recipient struct {
 	Firstname   string `csv:"firstname"`
 	Lastname    string `csv:"lastname"`
 	NoMail      string `csv:"!Mail !Call"` // value noMail
+	Skip        string `csv:"skip"`        // explicit refusal to participat, or already participated
 	SourceTable string `csv:"src_table"`   // either emtpy string or 'mailadresse', serves to control computation of derived fields
 
 	Link     template.HTML `csv:"link"` // avoid escaping
@@ -399,6 +400,9 @@ func (rec *Recipient) SetDerived(project string, wv *WaveT, tsk *TaskT) {
 	if project == "lix" {
 		// implicitly all German
 		rec.Language = "de"
+		if rec.Skip != "" {
+			rec.NoMail += " noMail"
+		}
 	}
 
 	if rec.SourceTable == "" {
@@ -788,6 +792,10 @@ func singleEmail(mode, project string, rec Recipient, wv WaveT, tsk TaskT) error
 	err := m.Send()
 	if err != nil {
 		return fmt.Errorf(" error sending lib-email  %v:\n\t%w", relayHostKey, err)
+
+		// if we have bad email data
+		// log.Printf(" error sending lib-email  %v:\n\t%v", relayHostKey, err)
+		// return nil
 	} else {
 		// log.Printf("  lib-email sent")
 		return nil
@@ -1104,10 +1112,10 @@ func processTask(project string, wv WaveT, tsk TaskT) {
 		return
 	}
 
-	for _, rec := range recs {
+	for idx, rec := range recs {
 		err := rec.CheckEmail()
 		if err != nil {
-			log.Print(err)
+			log.Printf(" checking email for row  %d:   %v", idx, err)
 			return
 		}
 	}

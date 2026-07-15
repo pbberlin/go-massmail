@@ -1,7 +1,10 @@
-Standort Deutschland - wissenschaftliche Untersuchung
+Standort Deutschland - erneute Einladung
+
 Sehr geehrte Damen und Herren,
 
-die Zukunft des Wirtschaftsstandorts Deutschland erscheint unsicherer denn je. Viele Unternehmen beklagen Bedingungen, die ihren Unternehmenserfolg gefährden. Doch welche Standortfaktoren sind wichtig? Hier würden wir gerne Ihre Einschätzung erfahren.
+vor wenigen Tagen haben wir Sie zu unserer Umfrage zum Wirtschaftsstandort Deutschland eingeladen.
+
+Heute möchte ich Sie erneut zur Teilnahme ermuntern. Mit Ihrer Teilnahme helfen Sie uns, die Politik zielgenauer zu den Reformen zu beraten, die Deutschland zur Sicherung der Wettbewerbsfähigkeit des Standorts jetzt benötigt.
 
 Diese Umfrage ist Teil eines Forschungsprojekts, welches wir im Auftrag der Stiftung Familienunternehmen durchführen.
 
