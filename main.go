@@ -260,25 +260,19 @@ func (rec *Recipient) LinkUnsub(project string, tsk *TaskT) string {
 
 	params := url.Values{}
 	params.Set("project", project)
+	params.Set("task", tsk.Name)
 
-	tne := strings.ReplaceAll(tsk.Name, "-", "hhyy") // hyphen
-	params.Set("task", tne)
-
-	// email encoded
-	eme := strings.ReplaceAll(rec.Email, "@", "aatt")
-	eme = strings.ReplaceAll(eme, ".", "ddtt")
 	// non-breaking space (U+00A0) with regular space
-	eme = strings.ReplaceAll(eme, "\u00A0", " ")
-
+	eme := strings.ReplaceAll(rec.Email, "\u00A0", " ")
 	params.Set("email", eme)
 
-	//
 	// query string
+	// url.Values.Encode() automatically applies RFC 3986 percent-encoding
+	// replacing custom ASCII obfuscation to prevent SEG spam score inflation
 	qs := params.Encode()
-	qs = strings.ReplaceAll(qs, "=", "qquu") // equal sign
-	qs = strings.ReplaceAll(qs, "&", "mmpp") // ampersand
 
-	subPath := fmt.Sprintf("/%v/%v/%v/dummy", project, tne, eme)
+	// using url.PathEscape to ensure path segments are properly encoded
+	subPath := fmt.Sprintf("/%v/%v/%v/dummy", url.PathEscape(project), url.PathEscape(tsk.Name), url.PathEscape(eme))
 
 	// header field complete
 	/*
@@ -346,21 +340,27 @@ func (rec *Recipient) LinkHlp(project string, tsk *TaskT) string {
 	// need List-Help header
 	// https://datatracker.ietf.org/doc/html/rfc2369#section-3.1
 
-	emailDummy := "your-email" // not rec.Email - but cannot be blank
+	// resolving template variables by using the actual recipient email
+	// replacing non-breaking space (U+00A0) with regular space
+	eme := strings.ReplaceAll(rec.Email, "\u00A0", " ")
 
 	params := url.Values{}
 	params.Set("project", project)
 	params.Set("task", tsk.Name)
-	params.Set("email", emailDummy)
+	params.Set("email", eme)
 	// to query string
+	// url.Values.Encode() automatically applies RFC 3986 percent-encoding
 	qs := params.Encode()
 
-	subPath := fmt.Sprintf("/%v/%v/%v/dummy", project, tsk.Name, emailDummy)
+	// using url.PathEscape to ensure path segments are properly encoded
+	// pointing to a dedicated help endpoint instead of unsubscribe
+	subPath := fmt.Sprintf("/%v/%v/%v/help", url.PathEscape(project), url.PathEscape(tsk.Name), url.PathEscape(eme))
+	_ = subPath
 
 	// header field complete
 	hfc := fmt.Sprintf(
-		`https://survey2.zew.de/unsubscribe%v?%v`,
-		subPath,
+		`https://survey2.zew.de/doc/site-imprint.md?%v`,
+		// subPath,
 		qs,
 	)
 	return hfc

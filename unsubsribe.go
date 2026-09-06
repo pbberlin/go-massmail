@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -12,6 +13,9 @@ var unsubscribers = map[string]map[string]map[string]bool{}
 
 func restore(s string) string {
 	// s := `https://survey2.zew.de/unsubscribe/fmt/resultshhyyexpectationhhyydata/peterddttbuchmannddtt68aattgmailddttcom?emailqquupeterddttbuchmannddtt68aattgmailddttcommmppprojectqquufmtmmpptaskqquuresultshhyyexpectationhhyydata`
+
+	// Keep historical custom ASCII obfuscation replacements for backwards compatibility
+	// in case older CSV files are processed
 	s = strings.ReplaceAll(s, "mmpp", "&")
 	s = strings.ReplaceAll(s, "qquu", "=")
 	s = strings.ReplaceAll(s, "ddtt", ".")
@@ -19,6 +23,14 @@ func restore(s string) string {
 	s = strings.ReplaceAll(s, "hhyy", "-")
 
 	s = strings.ReplaceAll(s, "pct40", "@") // old - temporarily
+
+	// Decode standard RFC 3986 percent-encoding
+	if unescaped, err := url.QueryUnescape(s); err == nil {
+		s = unescaped
+	} else {
+		log.Printf("error unescaping string %v: %v", s, err)
+	}
+
 	s = strings.TrimSpace(s)
 
 	return s
